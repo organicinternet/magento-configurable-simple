@@ -1,0 +1,12 @@
+<layoutUpdate>
+  <catalog_product_view>
+        <reference name="head">
+            <!-- We need product_extension.js to be loaded after varien/product.js
+                 but we can't guarantee the load order of the script using the addJs mechanism.
+                <action method="addJs"><script>organicinternet/simpleconfigurableproducts/product_extension.js</script></action>
+            -->
+            <!-- ..however, blocks are loaded after js -->
+            <block type="simpleconfigurableproducts/ProductJsExtension" name="product_extension_js" before="-"/>
+        </reference>
+  </catalog_product_view>
+</layoutUpdate>
