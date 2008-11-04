@@ -1,1 +1,9 @@
-/var/www/ctos/magento/app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <OrganicInternet_SimpleConfigurableProducts>
+      <active>true</active>
+      <codePool>community</codePool>
+    </OrganicInternet_SimpleConfigurableProducts>
+  </modules>
+</config>
