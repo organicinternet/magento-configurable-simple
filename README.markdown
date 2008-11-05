@@ -42,10 +42,10 @@ Developers
 
 If you wish to install this code in your local magento installation and still version control with git, create a symlink in your magento webroot which points to the files and directories in the folder you've created for git for this, eg:
 
-ln -s  /{your git dir}/skin/frontend/default/simpleconfigurableproducts/ /{your magento root}/skin/frontend/default/simpleconfigurableproducts
-ln -s  /{your git dir}/app/design/frontend/default/simpleconfigurableproducts/ /{your magento root}/app/design/frontend/default/simpleconfigurableproducts
-ln -s  /{your git dir}/app/code/community/OrganicInternet/SimpleConfigurableProducts/ /{your magento root}/app/code/community/OrganicInternet/SimpleConfigurableProducts
-ln -s  /{your git dir}/app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml /{your magento root}/app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml
+    ln -s  /{your git dir}/skin/frontend/default/simpleconfigurableproducts/ /{your magento root}/skin/frontend/default/simpleconfigurableproducts
+    ln -s  /{your git dir}/app/design/frontend/default/simpleconfigurableproducts/ /{your magento root}/app/design/frontend/default/simpleconfigurableproducts
+    ln -s  /{your git dir}/app/code/community/OrganicInternet/SimpleConfigurableProducts/ /{your magento root}/app/code/community/OrganicInternet/SimpleConfigurableProducts
+    ln -s  /{your git dir}/app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml /{your magento root}/app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml
 
 (this approach keeps the files needed for this module separate to the rest of the files used by Magento)
 
