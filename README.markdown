@@ -19,7 +19,7 @@ Site Admin Users
 ----------------
 
 Once the extension is installed you'll need/want to:
-1. Set your theme to `simpleconfigurableproducts`
+1. Set your theme to 'simpleconfigurableproducts'
 2. Remove price (and other price-related attributes) from configurable products. If you do not do this it's easy to have your admin users confused about which price will be used.
 
 
