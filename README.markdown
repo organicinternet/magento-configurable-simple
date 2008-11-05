@@ -40,12 +40,14 @@ Also, while the name of the configurable product is the one that's shown through
 Developers
 ----------
 
-If you wish to install this extension in your local magento installation and still version control with git, symlink the following files and directories:
+If you wish to install this code in your local magento installation and still version control with git, create a symlink in your magento webroot which points to the files and directories in the folder you've created for git for this, eg:
 
-    ln -s /your_magento_dir/app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml app_etc_modules_OrganicInternet_SimpleConfigurableProducts.xml
-    ln -s /your_magento_dir/app/design/frontend/default/simpleconfigurableproducts/ ./app_design_frontend_default_simpleconfigurableproducts
-    ln -s /your_magento_dir/app/code/community/OrganicInternet/SimpleConfigurableProducts/ ./app_code_community_OrganicInternet_SimpleConfigurableProducts
-    ln -s /your_magento_dir/skin/frontend/default/simpleconfigurableproducts/ ./skin_frontend_default_simpleconfigurable_products
+ln -s  /{your git dir}/skin/frontend/default/simpleconfigurableproducts/ /{your magento root}/skin/frontend/default/simpleconfigurableproducts
+ln -s  /{your git dir}/app/design/frontend/default/simpleconfigurableproducts/ /{your magento root}/app/design/frontend/default/simpleconfigurableproducts
+ln -s  /{your git dir}/app/code/community/OrganicInternet/SimpleConfigurableProducts/ /{your magento root}/app/code/community/OrganicInternet/SimpleConfigurableProducts
+ln -s  /{your git dir}/app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml /{your magento root}/app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml
+
+(this approach keeps the files needed for this module separate to the rest of the files used by Magento)
 
 
 ### Requests for Further Development
