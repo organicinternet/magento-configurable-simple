@@ -34,6 +34,11 @@ class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Render
         }
     }
 
+    /*
+        This forces the image of the configurable product parent to be used in
+        place of the simple product's image, if the simple product has a
+        configurable product parent.
+    */
     public function getProductThumbnail()
     {
         if ($this->getConfigurableProductParentId()) {
@@ -42,5 +47,4 @@ class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Render
             return $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail');
         }
     }
-
 }

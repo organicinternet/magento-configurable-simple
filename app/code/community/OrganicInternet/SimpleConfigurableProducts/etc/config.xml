@@ -2,7 +2,7 @@
 <config>
     <modules>
         <OrganicInternet_SimpleConfigurableProducts>
-            <version>0.1</version>
+            <version>0.2</version>
         </OrganicInternet_SimpleConfigurableProducts>
     </modules>
     <global>
@@ -30,9 +30,6 @@
             </catalogindex_mysql4>
         </models>
         <blocks>
-            <simpleconfigurableproducts>
-                <class>OrganicInternet_SimpleConfigurableProducts_Block</class>
-            </simpleconfigurableproducts>
             <catalog>
                 <rewrite>
                     <product_view_type_configurable>OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type_Configurable</product_view_type_configurable>

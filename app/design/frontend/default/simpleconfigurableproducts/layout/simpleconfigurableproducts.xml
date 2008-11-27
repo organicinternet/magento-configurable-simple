@@ -1,12 +1,12 @@
+<?xml version="1.0"?>
 <layoutUpdate>
-  <catalog_product_view>
+    <catalog_product_view>
         <reference name="head">
             <!-- We need product_extension.js to be loaded after varien/product.js
-                 but we can't guarantee the load order of the script using the addJs mechanism.
-                <action method="addJs"><script>organicinternet/simpleconfigurableproducts/product_extension.js</script></action>
-            -->
-            <!-- ..however, blocks are loaded after js -->
-            <block type="simpleconfigurableproducts/ProductJsExtension" name="product_extension_js" before="-"/>
+                 but we can't necessarily guarantee the load order of the script using the addJs mechanism.
+                 Items of type 'skin_js' load after those of type 'js' however, so we use that.
+                 (See getCssJsHtml in app/code/core/Mage/Page/Block/Html/Head.php) -->
+            <action method="addItem"><type>skin_js</type><name>js/product_extension.js</name></action>
         </reference>
-  </catalog_product_view>
+    </catalog_product_view>
 </layoutUpdate>
