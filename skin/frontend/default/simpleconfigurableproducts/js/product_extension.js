@@ -46,11 +46,18 @@ Product.Config.prototype.getMatchingSimpleProduct = function(){
 
 Product.Config.prototype.getLowestPossiblePrice = function() {
     var childProducts =  this.config.childProducts;
-    var childProductPrices = [];
+    var minPrice = Infinity;
+    var minPriceString = "";
+    //Be careful here to return the exact input price value,
+    //not some (possibly badly) converted version
     for (var x in childProducts) {
-        childProductPrices.push(childProducts[x]);
+        var thisPrice = Number(childProducts[x]);
+        if (thisPrice < minPrice) {
+            minPrice = thisPrice;
+            minPriceString = childProducts[x];
+        }
     }
-    return childProductPrices.min();
+    return minPriceString;
 }
 
 
