@@ -21,6 +21,7 @@ Once the extension is installed you'll also need to set your theme to 'simplecon
 To do this it is recommended that you change your theme globally in the Magento admin interface, under: System->Configuration->Design->Themes->Default = 'simpleconfigurableproducts'
 
 Usually that's all you need to do, however if you want to use a custom theme with this extension you can, but you'll have to:
+
 * Use the new code that's in `price.phtml` in your own theme's `price.phtml` file (the bit in this file that's new as part of this extension is commented)
 * Copy `product_extension.js` into the same folder structure under your own theme.
 * Copy `simpleconfigurableproducts.xml` into the same folder structure under your own theme.
