@@ -14,33 +14,26 @@ This change has two effects on the behaviour of a Magento site:
 
 
 
+Installation
+------------
 
-Site Admin Users
-----------------
+Once the extension is installed you'll also need to set your theme to 'simpleconfigurableproducts'.
+To do this it is recommended that you change your theme globally in the Magento admin interface, under: System->Configuration->Design->Themes->Default = 'simpleconfigurableproducts'
 
-Once the extension is installed you'll need/want to:
-1. Set your theme to 'simpleconfigurableproducts'
-2. Remove price (and other price-related attributes) from configurable products. If you do not do this your admin users may get confused about which price will be used.
-
-
-
-Notes for 1:
-It is recommended that you change your theme globally (In admin: System->Configuration->Design->Themes->Default = 'simpleconfigurableproducts')
-It is possible to use this extension with the theme applied to just product or product categories, but make sure you really know what you're doing before you do this.
-Read [this forum post](http://www.magentocommerce.com/boards/viewreply/80059/) for more information.
-
-If you want to use a custom theme with this extension that's fine too, but you'll have to:
-* Use the code from `price.phtml` in your own theme's `price.phtml` (the bit that's new as part of this extension is commented)
+Usually that's all you need to do, however if you want to use a custom theme with this extension you can, but you'll have to:
+* Use the new code that's in `price.phtml` in your own theme's `price.phtml` file (the bit in this file that's new as part of this extension is commented)
 * Copy `product_extension.js` into the same folder structure under your own theme.
 * Copy `simpleconfigurableproducts.xml` into the same folder structure under your own theme.
 
 
-Notes for 2: The extension will still work if you don't do this, but product pricing may be a bit confusing in the admin interface.
-
-To remove the price and similar attributes: Go into 'Manage Attributes' in admin, find the price-related attributes you want to disable for configurable products, then for each set 'Apply to' to be 'selected product types', and then unselect 'configurable product' (use ctrl-click) and save.  You'll then no longer be able to set/see a price for the parent configurable product (it wouldn't be used with this extention anyway)
+Also, while it is possible to use this extension with the theme applied to just individual products or product categories (rather than globally), make sure you really know what you're doing before you do this.  Read [this forum post](http://www.magentocommerce.com/boards/viewreply/80059/) for more information.
 
 
-Also, while the name of the configurable product is the one that's shown throughout most of the site, it's the name of the underlying simple product that's shown on the basket/cart/order pages, so you'll need to ensure that your underlying simple products have meaningful names.
+
+Site Admin Users
+----------------
+
+Note that while the name of the configurable product is the one that's shown throughout most of the site, it's the name of the underlying simple product that's shown on the basket/cart/order pages, so you'll need to ensure that your configurable products' associated simple products have meaningful names.
 
 
 Developers
@@ -69,8 +62,15 @@ The extension should always use the correct simple product price, including any 
 
 Features currently unsupported:
 * Display of the tier pricing tables on configurable product pages.  (Because tier pricing rules could be different for each underlying simple product, some work would be needed to change the table as users reconfigure their configurable product)
+* Configurable Product 'Custom Options' will not work. This extension never adds the actual configurable product to the cart, so any custom options associated with configurable products will not be used.
+
+Feature Aspirations:
+* Dynamic display of price ranges as product options are selected (for conf products with several options)
 
 Bugs
 -----
+* In a few places some English strings are not localised.
+
+
 Please report and/or fix bugs [here](http://www.magentocommerce.com/boards/viewchild/11415/)
 (Also, please specify which version of Magento you are using when reporting bugs. It's entirely possible that Varien change bits of core code that this extension relies on when they release a new version of Magento. This can sometimes break this extension, though I've tried to minimise the chance of this)
