@@ -49,28 +49,21 @@ If you wish to install this code in your local magento installation and still ve
 (this approach keeps the files needed for this module separate to the rest of the files used by Magento)
 
 
-### Requests for Further Development
-
-* More admin customisation: Currently this extension works in one way. It doesn't provide any customisation of it's functionality without changing the code. (Specifically options to change which image and link are used (i.e. the ones from parent configurable product or the ones from the child simple product) when the item is added the basket.
-* Display of tier pricing tables
-* A price range which changes as subsequent product options are picked
-
 
 Notes
 -----
+
 The extension should always use the correct simple product price, including any discounts etc.
 
-Features currently unsupported:
+### Unsupported Features
 * Display of the tier pricing tables on configurable product pages.  (Because tier pricing rules could be different for each underlying simple product, some work would be needed to change the table as users reconfigure their configurable product)
 * Configurable Product 'Custom Options' will not work. This extension never adds the actual configurable product to the cart, so any custom options associated with configurable products will not be used.
 
-Feature Aspirations:
+### Feature Aspirations
 * Dynamic display of price ranges as product options are selected (for conf products with several options)
 
-Bugs
------
+### Bugs
 * In a few places some English strings are not localised.
-
 
 Please report and/or fix bugs [here](http://www.magentocommerce.com/boards/viewchild/11415/)
 (Also, please specify which version of Magento you are using when reporting bugs. It's entirely possible that Varien change bits of core code that this extension relies on when they release a new version of Magento. This can sometimes break this extension, though I've tried to minimise the chance of this)
