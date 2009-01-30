@@ -9,6 +9,7 @@ This gives site owners direct control to set the price of every configuration of
 
 
 This change has two effects on the behaviour of a Magento site:
+
 * When an attempt is made to add a configurable product to the basket/cart, the matching underlying simple product is added instead.
 * Because the simple products that belong to a configurable product may have different prices, in cases where users haven't yet selected their particular configuration (such as catalog index pages), the site says "Price from:" followed by the lowest price that this product can be configured to. (RSS feeds have been changed in the same way)
 
