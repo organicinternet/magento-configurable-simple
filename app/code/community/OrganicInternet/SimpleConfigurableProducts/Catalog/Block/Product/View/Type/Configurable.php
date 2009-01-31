@@ -73,6 +73,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             'oldPrice'  => $this->_registerJsPrice($this->_convertPrice($this->getProduct()->getPrice())),
             'productId' => $this->getProduct()->getId(),
             'chooseText'=> Mage::helper('catalog')->__('Choose option...'),
+            'priceFromLabel'=> Mage::helper('catalog')->__('Price From:'),
             'childProducts' => $childProducts,
         );
         //Mage::log($config);

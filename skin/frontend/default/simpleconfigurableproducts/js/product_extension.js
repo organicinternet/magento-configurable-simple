@@ -64,7 +64,7 @@ Product.Config.prototype.getLowestPossiblePrice = function() {
 Product.Config.prototype.reloadPriceLabels = function(productPriceIsKnown) {
     var priceLabel = '';
     if (!productPriceIsKnown) {
-        priceLabel = 'Price From:';
+        priceLabel = this.config.priceFromLabel;
     }
 
     //Replace the content of any spans with the css class
