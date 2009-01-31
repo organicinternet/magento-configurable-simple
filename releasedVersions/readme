@@ -1,0 +1,2 @@
+v0.4 had a small bug which caused a harmless error message to show up in admin sometimes.
+v0.4.1 was released to fix this.
