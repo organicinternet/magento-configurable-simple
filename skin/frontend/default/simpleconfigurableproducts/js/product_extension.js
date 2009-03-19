@@ -61,20 +61,6 @@ Product.Config.prototype.getLowestPossiblePrice = function() {
 }
 
 
-Product.Config.prototype.reloadPriceLabels = function(productPriceIsKnown) {
-    var priceLabel = '';
-    if (!productPriceIsKnown) {
-        priceLabel = this.config.priceFromLabel;
-    }
-
-    //Replace the content of any spans with the css class
-    //"configurable-price-from-label"
-    $$('span.configurable-price-from-label').each(function(label) {
-        label.innerHTML = priceLabel;
-    });
-}
-
-
 Product.Config.prototype.updateFormProductId = function(productId){
     if (!productId) {
         return false;
@@ -98,18 +84,57 @@ Product.Config.prototype.addParentProductIdToCartForm = function(parentProductId
 }
 
 
+Product.Config.prototype.showTierPricesBlock = function(productId) {
+    config = this.config;
+    $$('ul.product-pricing').each(function(label) {
+        label.remove();
+    });
+
+    if (productId && config.childProductTierPriceHtml[productId]) {
+        $$('div.product-options-bottom').each(function(label) {
+            label.innerHTML = this.config.childProductTierPriceHtml[productId] + label.innerHTML;
+        });
+    }
+}
+
+
 Product.Config.prototype.reloadPrice = function() {
     var childProductId = this.getMatchingSimpleProduct();
     if (childProductId){
         optionsPrice.productPrice = this.config.childProducts[childProductId];
         optionsPrice.reload();
-        this.reloadPriceLabels(true);
+        optionsPrice.reloadPriceLabels(true);
         this.updateFormProductId(childProductId);
         this.addParentProductIdToCartForm(this.config.productId);
+        this.showTierPricesBlock(childProductId);
     } else {
         optionsPrice.productPrice = this.getLowestPossiblePrice();
         optionsPrice.reload();
-        this.reloadPriceLabels(false);
+        optionsPrice.reloadPriceLabels(false);
+        this.showTierPricesBlock(false);
+    }
+}
+
+
+
+
+Product.OptionsPrice.prototype.reloadPriceLabels = function(productPriceIsKnown) {
+    var priceLabel = '';
+    if (!productPriceIsKnown) {
+        priceLabel = spConfig.config.priceFromLabel;
+    }
+
+    var priceSpanId = 'configurable-price-from-' + this.productId;
+    var duplicatePriceSpanId = priceSpanId + this.duplicateIdSuffix;
+
+    $(priceSpanId).select('span.configurable-price-from-label').each(function(label) {
+        label.innerHTML = priceLabel;
+    });
+
+    if ($(duplicatePriceSpanId) && $(duplicatePriceSpanId).select('span.configurable-price-from-label')) {
+        $(duplicatePriceSpanId).select('span.configurable-price-from-label').each(function(label) {
+            label.innerHTML = priceLabel;
+        });
     }
 }
 

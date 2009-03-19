@@ -2,8 +2,6 @@
 class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Renderer
     extends Mage_Checkout_Block_Cart_Item_Renderer
 {
-    private $_parentProduct = null;
-
     protected function getConfigurableProductParentId()
     {
         if ($this->getItem()->getOptionByCode('cpid')) {
@@ -14,15 +12,9 @@ class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Render
 
     protected function getConfigurableProductParent()
     {
-        if ($this->_parentProduct) {
-            return $this->_parentProduct;
-        } else {
-            $pid = $this->getConfigurableProductParentId();
-            $this->_parentProduct = Mage::getModel('catalog/product')
-                ->setStoreId(Mage::app()->getStore()->getId())
-                ->load($pid);
-            return $this->_parentProduct;
-        }
+        return Mage::getModel('catalog/product')
+            ->setStoreId(Mage::app()->getStore()->getId())
+            ->load($this->getConfigurableProductParentId());
     }
 
     public function getProductUrl()

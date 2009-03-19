@@ -2,7 +2,7 @@
 <config>
     <modules>
         <OrganicInternet_SimpleConfigurableProducts>
-            <version>0.4</version>
+            <version>0.5</version>
         </OrganicInternet_SimpleConfigurableProducts>
     </modules>
     <global>
@@ -28,6 +28,9 @@
             <catalog>
                 <rewrite>
                     <product_view_type_configurable>OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type_Configurable</product_view_type_configurable>
+                </rewrite>
+                <rewrite>
+                    <product_price>OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_Price</product_price>
                 </rewrite>
             </catalog>
             <checkout>

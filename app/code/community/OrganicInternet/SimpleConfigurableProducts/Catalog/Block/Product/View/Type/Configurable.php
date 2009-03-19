@@ -3,81 +3,45 @@
 class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type_Configurable
     extends Mage_Catalog_Block_Product_View_Type_Configurable
 {
-
     public function getJsonConfig()
     {
+        $config = Zend_Json::decode(parent::getJsonConfig());
+
+        //childProducts is an array of productID => price.
         $childProducts = array();
-        $attributes = array();
-        $options = array();
-        $store = Mage::app()->getStore();
+        $childProductTierPriceHtml = array();
+        $childBlock = $this->getLayout()->createBlock('catalog/product_view');
+
+        //Create the extra price and tier price data/html we need.
         foreach ($this->getAllowProducts() as $product) {
             $productId  = $product->getId();
-            $childProducts[$productId] = $product->getFinalPrice();
-
-            foreach ($this->getAllowAttributes() as $attribute) {
-                $productAttribute = $attribute->getProductAttribute();
-                $attributeValue = $product->getData($productAttribute->getAttributeCode());
-                if (!isset($options[$productAttribute->getId()])) {
-                    $options[$productAttribute->getId()] = array();
-                }
-
-                if (!isset($options[$productAttribute->getId()][$attributeValue])) {
-                    $options[$productAttribute->getId()][$attributeValue] = array();
-                }
-                $options[$productAttribute->getId()][$attributeValue][] = $productId;
+            $childProducts[$productId] = $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice()));
+            if (count($childBlock->getTierPrices($product))) {
+                $childProductTierPriceHtml[$productId] = $childBlock->getTierPriceHtml($product);
             }
         }
 
-        $this->_resPrices = array(
-            $this->_preparePrice($this->getProduct()->getFinalPrice())
-        );
-
-        foreach ($this->getAllowAttributes() as $attribute) {
-            $productAttribute = $attribute->getProductAttribute();
-            $attributeId = $productAttribute->getId();
-            $info = array(
-               'id'        => $productAttribute->getId(),
-               'code'      => $productAttribute->getAttributeCode(),
-               'label'     => $attribute->getLabel(),
-               'options'   => array()
-            );
-
-            $optionPrices = array();
-            $prices = $attribute->getPrices();
-            if (is_array($prices)) {
-                foreach ($prices as $value) {
-                    if(!$this->_validateAttributeValue($attributeId, $value, $options)) {
-                        continue;
+        //Remove any existing option prices.
+        //Removing holes out of existing arrays is not nice,
+        //but it keeps the extension's code separate so if Varien's getJsonConfig
+        //is added to, things should still work.
+        if (is_array($config['attributes'])) {
+            foreach ($config['attributes'] as $attributeID => &$info) {
+                if (is_array($info['options'])) {
+                    foreach ($info['options'] as &$option) {
+                        unset($option['price']);
                     }
-
-                    $info['options'][] = array(
-                        'id'    => $value['value_index'],
-                        'label' => $value['label'],
-                        'products'   => isset($options[$attributeId][$value['value_index']]) ? $options[$attributeId][$value['value_index']] : array(),
-                    );
+                    unset($option); //clear foreach var ref
                 }
             }
-
-            if($this->_validateAttributeInfo($info)) {
-               $attributes[$attributeId] = $info;
-            }
+            unset($info); //clear foreach var ref
         }
-        /*echo '<pre>';
-        print_r($this->_prices);
-        echo '</pre>';die();*/
-        $config = array(
-            'attributes'=> $attributes,
-            'template'  => str_replace('%s', '#{price}', $store->getCurrentCurrency()->getOutputFormat()),
-//            'prices'    => $this->_prices,
-            'basePrice' => $this->_registerJsPrice($this->_convertPrice($this->getProduct()->getFinalPrice())),
-            'oldPrice'  => $this->_registerJsPrice($this->_convertPrice($this->getProduct()->getPrice())),
-            'productId' => $this->getProduct()->getId(),
-            'chooseText'=> Mage::helper('catalog')->__('Choose option...'),
-            'priceFromLabel'=> Mage::helper('catalog')->__('Price From:'),
-            'childProducts' => $childProducts,
-        );
+
+        $config['childProducts'] = $childProducts;
+        $config['priceFromLabel'] = Mage::helper('catalog')->__('Price From:');
+        $config['childProductTierPriceHtml'] = $childProductTierPriceHtml;
+
         //Mage::log($config);
         return Zend_Json::encode($config);
     }
 }
-?>

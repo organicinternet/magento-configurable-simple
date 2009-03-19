@@ -19,16 +19,14 @@ Installation
 ------------
 
 Once the extension is installed you'll also need to set your theme to 'simpleconfigurableproducts'.
-To do this it is recommended that you change your theme globally in the Magento admin interface, under: System->Configuration->Design->Themes->Default = 'simpleconfigurableproducts'
+To do this it is recommended that you change your theme globally. To do this use the Magento admin interface, and under: System->Configuration->Design->Themes set the following:
+Templates = 'simpleconfigurableproducts'
+Skin = 'simpleconfigurableproducts'
+Layout = 'simpleconfigurableproducts'
 
-You may also want to refresh your Magento cache and your Layered Navigation Indices. (both under System->Cache Management)
+If you want to use a custom theme with this extension you can, just set 'Default' to be the name of your custom theme (eg 'blue' or 'modern')
 
-
-Usually that's all you need to do, however if you want to use a custom theme with this extension you can, but you'll have to:
-
-* Use the new code that's in `price.phtml` in your own theme's `price.phtml` file (the bit in this file that's new as part of this extension is commented)
-* Copy `product_extension.js` into the same folder structure under your own theme.
-* Copy `simpleconfigurableproducts.xml` into the same folder structure under your own theme.
+You should also refresh your Magento cache and your Layered Navigation Indices. (both under System->Cache Management)
 
 
 Also, while it is possible to use this extension with the theme applied to just individual products or product categories (rather than globally), make sure you really know what you're doing before you do this.  Read [this forum post](http://www.magentocommerce.com/boards/viewreply/80059/) for more information.
@@ -61,14 +59,22 @@ Notes
 The extension should always use the correct simple product price, including any discounts etc.
 
 ### Unsupported Features
-* Display of the tier pricing tables on configurable product pages.  (Because tier pricing rules could be different for each underlying simple product, some work would be needed to change the table as users reconfigure their configurable product)
-* Configurable Product 'Custom Options' will not work. This extension never adds the actual configurable product to the cart, so any custom options associated with configurable products will not be used.
+* Configurable Product 'Custom Options' will not work. This extension never adds the actual configurable product to the cart, so any custom options associated with configurable products will not be used. (And at the moment neither will custom options added to underlying simple products as they're never shown to the user)
 
 ### Feature Aspirations
 * Dynamic display of price ranges as product options are selected (for conf products with several options)
 
 ### Bugs
-* In a few places some English strings are not localised.
+* In a few places some English strings are not localised. (RSS feeds only I think)
+* From Magento 1.2.0 the product page can be slow for products with many product options. Some Magento Core date calculations are very slow and this extension causes them to be called many times.
+
+###Fixed Bugs
+* In v0.5:
+* In the cart the images and urls are the same for all simple products which have been added from a configurable product
+* The 'Price From' string is removed from all products on a product page, not just the product being configured.
+* Price localisation on a per-store basis not working properly - extension uses only global price config
+
+
 
 Please report and/or fix bugs [here](http://www.magentocommerce.com/boards/viewchild/11415/)
 (Also, please specify which version of Magento you are using when reporting bugs. It's entirely possible that Varien change bits of core code that this extension relies on when they release a new version of Magento. This can sometimes break this extension, though I've tried to minimise the chance of this)
