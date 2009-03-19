@@ -18,11 +18,12 @@ This change has two effects on the behaviour of a Magento site:
 Installation
 ------------
 
-Once the extension is installed you'll also need to set your theme to 'simpleconfigurableproducts'.
-To do this it is recommended that you change your theme globally. To do this use the Magento admin interface, and under: System->Configuration->Design->Themes set the following:
-Templates = 'simpleconfigurableproducts'
-Skin = 'simpleconfigurableproducts'
-Layout = 'simpleconfigurableproducts'
+Installation of the extension is the same as for most extensions, that is via your Magento Connect Manager using the extension key found on the MagentoCommerce site.
+Once the extension is installed you'll also need to globally set your theme to 'simpleconfigurableproducts'.
+To do this, use the Magento admin interface, and under: System->Configuration->Design->Themes set the following:
+* Templates = 'simpleconfigurableproducts'
+* Skin = 'simpleconfigurableproducts'
+* Layout = 'simpleconfigurableproducts'
 
 If you want to use a custom theme with this extension you can, just set 'Default' to be the name of your custom theme (eg 'blue' or 'modern')
 
