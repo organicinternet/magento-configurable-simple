@@ -21,6 +21,7 @@ Installation
 Installation of the extension is the same as for most extensions, that is via your Magento Connect Manager using the extension key found on the MagentoCommerce site.
 Once the extension is installed you'll also need to globally set your theme to 'simpleconfigurableproducts'.
 To do this, use the Magento admin interface, and under: System->Configuration->Design->Themes set the following:
+
 * Templates = 'simpleconfigurableproducts'
 * Skin = 'simpleconfigurableproducts'
 * Layout = 'simpleconfigurableproducts'
