@@ -26,7 +26,10 @@ To do this, use the Magento admin interface, and under: System->Configuration->D
 * Skin = 'simpleconfigurableproducts'
 * Layout = 'simpleconfigurableproducts'
 
-If you want to use a custom theme with this extension you can, just set 'Default' to be the name of your custom theme (eg 'blue' or 'modern')
+and if you want to use a custom theme for your site just set:
+
+* Default = 'your custom theme'
+
 
 You should also refresh your Magento cache and your Layered Navigation Indices. (both under System->Cache Management)
 
