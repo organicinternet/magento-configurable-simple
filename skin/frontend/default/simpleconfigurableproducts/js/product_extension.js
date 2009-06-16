@@ -107,13 +107,30 @@ Product.Config.prototype.reloadPrice = function() {
         this.updateFormProductId(childProductId);
         this.addParentProductIdToCartForm(this.config.productId);
         this.showTierPricesBlock(childProductId);
+        this.showCustomOptionsBlock(childProductId, this.config.productId);
     } else {
         optionsPrice.productPrice = this.getLowestPossiblePrice();
         optionsPrice.reload();
         optionsPrice.reloadPriceLabels(false);
         this.showTierPricesBlock(false);
+        this.showCustomOptionsBlock(false, false);
     }
 }
+
+
+Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) {
+    var coUrl = this.config.ajaxBaseUrl + "co/?id=" + productId + '&pid=' + parentId;
+
+    $('SCPcustomOptionsDiv').innerHTML = '';
+    if(productId) {
+        new Ajax.Updater('SCPcustomOptionsDiv', coUrl, { //caching on this?
+          method: 'get',
+          evalScripts: true
+        });
+    } else {
+        window.opConfig = new Product.Options([]);
+    }
+};
 
 
 
@@ -137,5 +154,3 @@ Product.OptionsPrice.prototype.reloadPriceLabels = function(productPriceIsKnown)
         });
     }
 }
-
-/****************** ConfigurableToSimple Module - End *************************/

@@ -1,6 +1,6 @@
 <?php
-class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Simple
-    extends Mage_Catalog_Model_Product_Type_Simple
+class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Virtual
+    extends Mage_Catalog_Model_Product_Type_Virtual
 {
     public function prepareForCart(Varien_Object $buyRequest, $product = null)
     {

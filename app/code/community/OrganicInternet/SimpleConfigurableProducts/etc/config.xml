@@ -2,7 +2,7 @@
 <config>
     <modules>
         <OrganicInternet_SimpleConfigurableProducts>
-            <version>0.5</version>
+            <version>0.6</version>
         </OrganicInternet_SimpleConfigurableProducts>
     </modules>
     <global>
@@ -15,6 +15,12 @@
                     <product_type_simple>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Simple</product_type_simple>
                 </rewrite>
                 <rewrite>
+                    <product_type_virtual>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Virtual</product_type_virtual>
+                </rewrite>
+                <rewrite>
+                    <product_type_configurable>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Configurable</product_type_configurable>
+                </rewrite>
+                <rewrite>
                     <product>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product</product>
                 </rewrite>
             </catalog>
@@ -25,12 +31,20 @@
             </catalogindex>
         </models>
         <blocks>
+            <adminhtml>
+                <rewrite>
+                    <catalog_product_edit_tab_super_config_grid>OrganicInternet_SimpleConfigurableProducts_Adminhtml_Block_Catalog_Product_Edit_Tab_Super_Config_Grid</catalog_product_edit_tab_super_config_grid>
+                </rewrite>
+            </adminhtml>
             <catalog>
                 <rewrite>
                     <product_view_type_configurable>OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type_Configurable</product_view_type_configurable>
                 </rewrite>
                 <rewrite>
                     <product_price>OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_Price</product_price>
+                </rewrite>
+                <rewrite>
+                    <product_view_options>OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Options</product_view_options>
                 </rewrite>
             </catalog>
             <checkout>
@@ -65,5 +79,14 @@
                 </simpleconfigurableproducts>
             </updates>
         </layout>
+        <routers>
+            <oi>
+                <use>standard</use>
+                <args>
+                    <module>OrganicInternet_SimpleConfigurableProducts</module>
+                    <frontName>oi</frontName>
+                </args>
+            </oi>
+        </routers>
     </frontend>
 </config>

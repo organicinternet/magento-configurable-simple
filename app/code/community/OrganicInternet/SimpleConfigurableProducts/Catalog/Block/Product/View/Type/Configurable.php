@@ -9,6 +9,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
 
         //childProducts is an array of productID => price.
         $childProducts = array();
+
         $childProductTierPriceHtml = array();
         $childBlock = $this->getLayout()->createBlock('catalog/product_view');
 
@@ -38,9 +39,9 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         }
 
         $config['childProducts'] = $childProducts;
-        $config['priceFromLabel'] = Mage::helper('catalog')->__('Price From:');
+        $config['priceFromLabel'] = $this->__('Price From:');
         $config['childProductTierPriceHtml'] = $childProductTierPriceHtml;
-
+        $config['ajaxBaseUrl'] = Mage::getUrl('oi/ajax/');
         //Mage::log($config);
         return Zend_Json::encode($config);
     }
