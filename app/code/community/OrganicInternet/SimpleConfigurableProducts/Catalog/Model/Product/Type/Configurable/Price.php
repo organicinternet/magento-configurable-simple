@@ -41,7 +41,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         //return 0 for the price in this case. This may need reconsidering.
         if (count($childPrices) == 0) {
             $product->setFinalPrice(0);
-            $priceCache[$pid] = 0;
+            $priceCache[$cacheKey] = 0;
             return 0;
         }
         $childPrice = min($childPrices);
