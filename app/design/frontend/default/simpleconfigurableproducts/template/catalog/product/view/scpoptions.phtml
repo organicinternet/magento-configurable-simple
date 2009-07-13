@@ -8,12 +8,14 @@
     $('product_addtocart_form').encoding = 'multipart/form-data';
     //]]>
 </script>
+<?php if (count($this->getOptions())): ?>
 <dl>
 <?php $_options = Mage::helper('core')->decorateArray($this->getOptions()) ?>
 <?php foreach($_options as $_option): ?>
     <?php echo $this->getOptionHtml($_option) ?>
 <?php endforeach; ?>
 </dl>
+
 <script type="text/javascript">
     $$('#product-options-wrapper dl').each(function(label) {
         label.removeClassName('last');
@@ -22,4 +24,4 @@
         label.addClassName('last');
     });
 </script>
-
+<?php endif; ?>

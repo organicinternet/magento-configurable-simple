@@ -31,7 +31,7 @@ and if you want to use a custom theme for your site just set:
 * Default = 'your custom theme'
 
 
-You should also refresh your Magento cache and your Layered Navigation Indices. (both under System->Cache Management)
+You should also refresh your Magento cache and your Layered Navigation Indices, etc. (under System->Cache Management)
 
 
 Also, while it is possible to use this extension with the theme applied to just individual products or product categories (rather than globally), make sure you really know what you're doing before you do this.  Read [this forum post](http://www.magentocommerce.com/boards/viewreply/80059/) for more information.
@@ -63,23 +63,23 @@ Notes
 
 The extension should always use the correct simple product price, including any discounts etc.
 
-### Unsupported Features
-* Configurable Product 'Custom Options' will not work. This extension never adds the actual configurable product to the cart, so any custom options associated with configurable products will not be used. (And at the moment neither will custom options added to underlying simple products as they're never shown to the user)
-
 ### Feature Aspirations
 * Dynamic display of price ranges as product options are selected (for conf products with several options)
+* Display of offer prices for simple products, see [here:](http://www.magentocommerce.com/boards/viewreply/143350/)
+* Change to the simple product image on the product page, if there is one, once all configurable options are selected.
 
 ### Bugs
 * In a few places some English strings are not localised. (RSS feeds only I think)
+* RSS feed implementation could well be out of date. I've not looked at them for a while.
 * From Magento 1.2.0 the product page can be slow for products with many product options. Some Magento Core date calculations are very slow and this extension causes them to be called many times.
 
-###Fixed Bugs
+### Fixed Bugs
 * In v0.5:
 * In the cart the images and urls are the same for all simple products which have been added from a configurable product
 * The 'Price From' string is removed from all products on a product page, not just the product being configured.
 * Price localisation on a per-store basis not working properly - extension uses only global price config
-
-
+* In v0.6:
+* One place where the 'price from' string was not using the correct translate method so wasn't localisable using inline translate.
 
 Please report and/or fix bugs [here](http://www.magentocommerce.com/boards/viewchild/11415/)
 (Also, please specify which version of Magento you are using when reporting bugs. It's entirely possible that Varien change bits of core code that this extension relies on when they release a new version of Magento. This can sometimes break this extension, though I've tried to minimise the chance of this)
