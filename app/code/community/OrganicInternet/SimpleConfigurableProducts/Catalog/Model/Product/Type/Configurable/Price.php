@@ -32,6 +32,9 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
 
         $childPrices = array();
         foreach($product->getTypeInstance()->getUsedProducts() as $childProduct) {
+            if(!$childProduct->isSalable()) {
+                continue;
+            }
             $childPrices[] = $childProduct->getFinalPrice();
             //Mage::log("getFinalPrice, examining child: " . $childProduct->getId() . ", has price: " . $childProduct->getFinalPrice());
         }

@@ -120,14 +120,26 @@ Product.Config.prototype.reloadPrice = function() {
 
 Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) {
     var coUrl = this.config.ajaxBaseUrl + "co/?id=" + productId + '&pid=' + parentId;
-
-    $('SCPcustomOptionsDiv').innerHTML = '';
+    var prodForm = $('product_addtocart_form');
+    
+    Effect.Fade('SCPcustomOptionsDiv', { duration: 0.5, from: 1, to: 0.5 });
     if(productId) {
-        new Ajax.Updater('SCPcustomOptionsDiv', coUrl, { //caching on this?
+        //Uncomment the line below if you want an ajax loader to appear while any custom 
+        //options are being loaded.
+        //$$('span.scp-please-wait').each(function(el) {el.show()});
+        
+        //prodForm.getElements().each(function(el) {el.disable()});
+        new Ajax.Updater('SCPcustomOptionsDiv', coUrl, {
           method: 'get',
-          evalScripts: true
+          evalScripts: true,
+          onComplete: function() {
+              $$('span.scp-please-wait').each(function(el) {el.hide()});
+              Effect.Fade('SCPcustomOptionsDiv', { duration: 0.5, from: 0.5, to: 1 });
+              //prodForm.getElements().each(function(el) {el.enable()});
+          }
         });
     } else {
+        $('SCPcustomOptionsDiv').innerHTML = '';
         window.opConfig = new Product.Options([]);
     }
 };

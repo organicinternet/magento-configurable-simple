@@ -67,11 +67,16 @@ The extension should always use the correct simple product price, including any 
 * Dynamic display of price ranges as product options are selected (for conf products with several options)
 * Display of offer prices for simple products, see [here:](http://www.magentocommerce.com/boards/viewreply/143350/)
 * Change to the simple product image on the product page, if there is one, once all configurable options are selected.
+* Indicate that an underlying simple product is only available for backorder (if that's the case) on a conf product page once all options are selected.
 
 ### Bugs
 * In a few places some English strings are not localised. (RSS feeds only I think)
 * RSS feed implementation could well be out of date. I've not looked at them for a while.
 * From Magento 1.2.0 the product page can be slow for products with many product options. Some Magento Core date calculations are very slow and this extension causes them to be called many times.
+
+### Magento (i.e. not SCP) Bugs/Limitations
+* Selecting custom options does not affect the displayed tier price on the product page.
+* Custom options with a percentage price are only reflected on the cart page, not the product page. (not that surprising when you think about it)
 
 ### Fixed Bugs
 * In v0.5:
@@ -80,6 +85,7 @@ The extension should always use the correct simple product price, including any 
 * Price localisation on a per-store basis not working properly - extension uses only global price config
 * In v0.6:
 * One place where the 'price from' string was not using the correct translate method so wasn't localisable using inline translate.
+* Out of stock products were still used to calculate the 'Price From:' lowest price.
 
 Please report and/or fix bugs [here](http://www.magentocommerce.com/boards/viewchild/11415/)
 (Also, please specify which version of Magento you are using when reporting bugs. It's entirely possible that Varien change bits of core code that this extension relies on when they release a new version of Magento. This can sometimes break this extension, though I've tried to minimise the chance of this)
