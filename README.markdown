@@ -19,7 +19,7 @@ Installation
 ------------
 
 Installation of the extension is the same as for most extensions, that is via your Magento Connect Manager using the extension key found on the MagentoCommerce site.
-Once the extension is installed you'll also need to globally set your theme to 'simpleconfigurableproducts'.
+Once the extension is installed you'll also need to configure your site's theme to pick up the theme files included in this extension.
 To do this, use the Magento admin interface, and under: System->Configuration->Design->Themes set the following:
 
 * Templates = 'simpleconfigurableproducts'
@@ -28,13 +28,12 @@ To do this, use the Magento admin interface, and under: System->Configuration->D
 
 and if you want to use a custom theme for your site just set:
 
-* Default = 'your custom theme'
-
+* Default = your custom theme
 
 You should also refresh your Magento cache and your Layered Navigation Indices, etc. (under System->Cache Management)
 
-
-Also, while it is possible to use this extension with the theme applied to just individual products or product categories (rather than globally), make sure you really know what you're doing before you do this.  Read [this forum post](http://www.magentocommerce.com/boards/viewreply/80059/) for more information.
+Note that if you use any per-product or per-category themes you will override these theme settings and SCP will not work as you expect it to.
+It is also not recommended to set any per-product or per-category themes to 'simpleconfigurableproducts'
 
 
 
@@ -61,29 +60,32 @@ If you wish to install this code in your local magento installation and still ve
 Notes
 -----
 
-The extension should always use the correct simple product price, including any discounts etc.
-
 ### Feature Aspirations
+* Static display of price ranges rather than just the 'Price From:' price on catalogue and product pages.
 * Dynamic display of price ranges as product options are selected (for conf products with several options)
 * Display of offer prices for simple products, see [here:](http://www.magentocommerce.com/boards/viewreply/143350/)
 * Change to the simple product image on the product page, if there is one, once all configurable options are selected.
 * Indicate that an underlying simple product is only available for backorder (if that's the case) on a conf product page once all options are selected.
+* Display 'price from' only if there is more than one price for a product. If all prices are identical, just show 'price' or similar.
+* (More of an implementation change/improvement than feature) Make tier price tables load using XHR as pre-generating all tables can be slow for people with 1000's of simple products per configurable product.
 
-### Bugs
+### Bugs / Issues
 * In a few places some English strings are not localised. (RSS feeds only I think)
-* RSS feed implementation could well be out of date. I've not looked at them for a while.
-* From Magento 1.2.0 the product page can be slow for products with many product options. Some Magento Core date calculations are very slow and this extension causes them to be called many times.
+* * From Magento 1.2.0 onwards the product page can be slow for products with many related simple products. Amongst other things, some Magento Core date calculations are very slow and this extension causes them to be called many times.
+* To check: What's the 'price from' behaviour when all simple products are out of stock?
+* If _all_ simple products have a 'required' custom option then no simple products will be used and the configurable product will have no options
 
 ### Magento (i.e. not SCP) Bugs/Limitations
 * Selecting custom options does not affect the displayed tier price on the product page.
-* Custom options with a percentage price are only reflected on the cart page, not the product page. (not that surprising when you think about it)
+* Discounts which result from Custom Options applying a percentage reduction are only reflected on the cart page, not the product page.
 
 ### Fixed Bugs
-* In v0.5:
+* Fixed in v0.5:
 * In the cart the images and urls are the same for all simple products which have been added from a configurable product
 * The 'Price From' string is removed from all products on a product page, not just the product being configured.
 * Price localisation on a per-store basis not working properly - extension uses only global price config
-* In v0.6:
+
+* Fixed in v0.6:
 * One place where the 'price from' string was not using the correct translate method so wasn't localisable using inline translate.
 * Out of stock products were still used to calculate the 'Price From:' lowest price.
 
