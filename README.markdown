@@ -71,7 +71,7 @@ Notes
 
 ### Bugs / Issues
 * In a few places some English strings are not localised. (RSS feeds only I think)
-* * From Magento 1.2.0 onwards the product page can be slow for products with many related simple products. Amongst other things, some Magento Core date calculations are very slow and this extension causes them to be called many times.
+* From Magento 1.2.0 onwards the product page can be slow for products with many related simple products. Amongst other things, some Magento Core date calculations are very slow and this extension causes them to be called many times.
 * To check: What's the 'price from' behaviour when all simple products are out of stock?
 * If _all_ simple products have a 'required' custom option then no simple products will be used and the configurable product will have no options
 
@@ -80,12 +80,12 @@ Notes
 * Discounts which result from Custom Options applying a percentage reduction are only reflected on the cart page, not the product page.
 
 ### Fixed Bugs
-* Fixed in v0.5:
+#### Fixed in v0.5:
 * In the cart the images and urls are the same for all simple products which have been added from a configurable product
 * The 'Price From' string is removed from all products on a product page, not just the product being configured.
 * Price localisation on a per-store basis not working properly - extension uses only global price config
 
-* Fixed in v0.6:
+#### Fixed in v0.6:
 * One place where the 'price from' string was not using the correct translate method so wasn't localisable using inline translate.
 * Out of stock products were still used to calculate the 'Price From:' lowest price.
 
