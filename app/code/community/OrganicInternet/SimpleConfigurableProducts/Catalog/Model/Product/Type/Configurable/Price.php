@@ -31,13 +31,19 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         }
 
         $childPrices = array();
-        foreach($product->getTypeInstance()->getUsedProducts() as $childProduct) {
+
+        $usedProducts = $product->getTypeInstance(true)->getUsedProductCollection($product);
+        $usedProducts->addAttributeToSelect(array('price', 'special_price', 'status'));
+        foreach($usedProducts as $childProduct) {
             if(!$childProduct->isSalable()) {
                 continue;
             }
             $childPrices[] = $childProduct->getFinalPrice();
+            #$childPrices[] = $childProduct->getPrice();
             //Mage::log("getFinalPrice, examining child: " . $childProduct->getId() . ", has price: " . $childProduct->getFinalPrice());
         }
+
+
         //It's possible for a configurable product to have no children if, for
         //example, and admin user is in the process of creating it and hasn't
         //yet added any children but has marked it as enabled.  We currently

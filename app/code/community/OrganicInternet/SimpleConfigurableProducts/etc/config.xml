@@ -6,6 +6,11 @@
         </OrganicInternet_SimpleConfigurableProducts>
     </modules>
     <global>
+        <helpers>
+            <simpleconfigurableproducts>
+                <class>OrganicInternet_SimpleConfigurableProducts_Helper</class>
+            </simpleconfigurableproducts>
+        </helpers>
         <models>
             <catalog>
                 <rewrite>
@@ -86,4 +91,25 @@
             </oi>
         </routers>
     </frontend>
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <SCP_options>
+                                            <title>SCP Module Section</title>
+                                        </SCP_options>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
 </config>

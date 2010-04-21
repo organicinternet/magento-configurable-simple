@@ -11,4 +11,12 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Simp
         }
         return array($product);
     }
+    
+    public function hasConfigurableProductParentId()
+    {
+        if ($this->getProduct()->getCustomOption('cpid')) {
+            return true;
+        }
+        return false;
+    }
 }

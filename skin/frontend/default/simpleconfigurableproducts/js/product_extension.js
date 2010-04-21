@@ -38,28 +38,41 @@ Product.Config.prototype.getMatchingSimpleProduct = function(){
         if (!selected.config){
             return false;
         }
-        attributeProducts.push(selected.config.products);
+        attributeProducts.push(selected.config.allowedProducts);
     }
     return this.getProductByAttributes(childProductIds, attributeProducts);
 }
 
 
 Product.Config.prototype.getLowestPossiblePrice = function() {
+
+    for(var s=0;s<=this.settings.length-1;s++){
+        if (this.settings[s].selectedIndex > 0){
+          var selected = this.settings[s].options[this.settings[s].selectedIndex];
+          if (s==0){
+            var allowedProducts = selected.config.allowedProducts;
+          } else {
+            allowedProducts.intersect(selected.config.allowedProducts).uniq();
+          }
+        } else {
+          break;
+        }
+    }
+
     var childProducts =  this.config.childProducts;
     var minPrice = Infinity;
     var minPriceString = "";
     //Be careful here to return the exact input price value,
     //not some (possibly badly) converted version
-    for (var x in childProducts) {
-        var thisPrice = Number(childProducts[x]);
+    for (var x in allowedProducts) {
+        var thisPrice = Number(childProducts[allowedProducts[x]]);
         if (thisPrice < minPrice) {
             minPrice = thisPrice;
-            minPriceString = childProducts[x];
+            minPriceString = childProducts[allowedProducts[x]];
         }
     }
     return minPriceString;
 }
-
 
 Product.Config.prototype.updateFormProductId = function(productId){
     if (!productId) {
@@ -83,7 +96,7 @@ Product.Config.prototype.addParentProductIdToCartForm = function(parentProductId
     $('product_addtocart_form').appendChild(el);
 }
 
-
+/*
 Product.Config.prototype.showTierPricesBlock = function(productId) {
     config = this.config;
     $$('ul.product-pricing').each(function(label) {
@@ -96,7 +109,7 @@ Product.Config.prototype.showTierPricesBlock = function(productId) {
         });
     }
 }
-
+*/
 
 Product.Config.prototype.reloadPrice = function() {
     var childProductId = this.getMatchingSimpleProduct();
@@ -106,13 +119,13 @@ Product.Config.prototype.reloadPrice = function() {
         optionsPrice.reloadPriceLabels(true);
         this.updateFormProductId(childProductId);
         this.addParentProductIdToCartForm(this.config.productId);
-        this.showTierPricesBlock(childProductId);
+        //this.showTierPricesBlock(childProductId);
         this.showCustomOptionsBlock(childProductId, this.config.productId);
     } else {
         optionsPrice.productPrice = this.getLowestPossiblePrice();
         optionsPrice.reload();
         optionsPrice.reloadPriceLabels(false);
-        this.showTierPricesBlock(false);
+        //this.showTierPricesBlock(false);
         this.showCustomOptionsBlock(false, false);
     }
 }
@@ -121,13 +134,17 @@ Product.Config.prototype.reloadPrice = function() {
 Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) {
     var coUrl = this.config.ajaxBaseUrl + "co/?id=" + productId + '&pid=' + parentId;
     var prodForm = $('product_addtocart_form');
-    
+
+   if ($('SCPcustomOptionsDiv')==null) {
+      return;
+   }
+
     Effect.Fade('SCPcustomOptionsDiv', { duration: 0.5, from: 1, to: 0.5 });
     if(productId) {
-        //Uncomment the line below if you want an ajax loader to appear while any custom 
+        //Uncomment the line below if you want an ajax loader to appear while any custom
         //options are being loaded.
         //$$('span.scp-please-wait').each(function(el) {el.show()});
-        
+
         //prodForm.getElements().each(function(el) {el.disable()});
         new Ajax.Updater('SCPcustomOptionsDiv', coUrl, {
           method: 'get',
@@ -149,7 +166,7 @@ Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) 
 
 Product.OptionsPrice.prototype.reloadPriceLabels = function(productPriceIsKnown) {
     var priceLabel = '';
-    if (!productPriceIsKnown) {
+    if (!productPriceIsKnown && typeof spConfig != "undefined") {
         priceLabel = spConfig.config.priceFromLabel;
     }
 

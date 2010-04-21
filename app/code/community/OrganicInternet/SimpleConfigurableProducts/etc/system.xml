@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <SCP translate="label" module="simpleconfigurableproducts">
+            <label>SCP</label>
+            <sort_order>1000000</sort_order>
+        </SCP>
+    </tabs>
+    <sections>
+        <SCP_options translate="label" module="simpleconfigurableproducts">
+            <label>SCP Config</label>
+            <tab>SCP</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <SCP_group translate="label">
+                    <label>SCP</label>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <SCP_cart_show_config_product_options>
+                            <label>Show Configurable Product Options In Cart</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </SCP_cart_show_config_product_options>
+                        <SCP_cart_show_custom_options>
+                            <label>Show Custom Options In Cart</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Only applies to SCP configurable products</comment>
+                        </SCP_cart_show_custom_options>
+                        <SCP_cart_show_configurable_product_name>
+                            <label>Show Configurable Product Name in Cart</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>No = Show simple product name in cart</comment>
+                        </SCP_cart_show_configurable_product_name>
+                        <SCP_cart_show_configurable_product_image>
+                            <label>Show Configurable Product Image in Cart</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>No = Show simple product image in cart</comment>
+                        </SCP_cart_show_configurable_product_image>
+                    </fields>
+                </SCP_group>
+            </groups>
+        </SCP_options>
+    </sections>
+</config>

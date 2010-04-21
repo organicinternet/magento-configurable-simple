@@ -20,7 +20,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_Price
                 #manually insert extra html needed by the extension into the normal price html
                 return substr_replace($priceHtml, $extraHtml, strpos($priceHtml, $htmlToInsertAfter)+strlen($htmlToInsertAfter),0);
             }
-	    }   
+	    }
         return parent::_toHtml();
     }
 }
