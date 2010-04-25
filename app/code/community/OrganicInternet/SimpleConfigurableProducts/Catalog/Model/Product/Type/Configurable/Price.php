@@ -37,7 +37,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         #calculatedFinalPrice seems not to be set in this version (1.4.0.1)
         if (is_null($qty) && !is_null($product->getCalculatedFinalPrice())) {
             #Doesn't usually get this far as Product.php checks first.
-            Mage::log("returning calculatedFinalPrice for product: " . $product->getId());
+            #Mage::log("returning calculatedFinalPrice for product: " . $product->getId());
             return $product->getCalculatedFinalPrice();
         }
 */
