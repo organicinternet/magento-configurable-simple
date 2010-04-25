@@ -8,6 +8,27 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         return $this->getPrice($product);
     }
 
+    public function getMaxPossibleFinalPrice($product) {
+        #Indexer calculates max_price, so if this value's been loaded, use it
+        $price = $product->getMaxPrice();
+        if ($price !== null) {
+            return $price;
+        }
+
+        $childProduct = $this->getChildProductWithHighestPrice($product, "finalPrice");
+        #If there aren't any salable child products we return the highest price
+        #of all child products, including any ones not currently salable.
+
+        if (!$childProduct) {
+            $childProduct = $this->getChildProductWithHighestPrice($product, "finalPrice", false);
+        }
+
+        if ($childProduct) {
+            return $childProduct->getFinalPrice();
+        }
+        return false;
+    }
+
     #If there aren't any salable child products we return the lowest price
     #of all child products, including any ones not currently salable.
     public function getFinalPrice($qty=null, $product)
@@ -61,6 +82,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         if (isset($childrenCache[$cacheKey])) {
             return $childrenCache[$cacheKey];
         }
+        #Mage::log("getChildProducts called on pid: " . $product->getId());
 
         $childProducts = $product->getTypeInstance(true)->getUsedProductCollection($product);
         $childProducts->addAttributeToSelect(array('price', 'special_price', 'status'));
@@ -93,9 +115,30 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
             $childPrice = false;
         }
         return $childPrice;
-
     }
 
+    #Could no doubt add highest/lowest as param to save 2 near-identical functions
+    public function getChildProductWithHighestPrice($product, $priceType, $checkSalable=true)
+    {
+        $childProducts = $this->getChildProducts($product, $checkSalable);
+        if (count($childProducts) == 0) { #If config product has no children
+            return false;
+        }
+        $maxPrice = 0;
+        $maxProd = false;
+        foreach($childProducts as $childProduct) {
+            if ($priceType == "finalPrice") {
+                $thisPrice = $childProduct->getFinalPrice();
+            } else {
+                $thisPrice = $childProduct->getPrice();
+            }
+            if($thisPrice > $maxPrice) {
+                $maxPrice = $thisPrice;
+                $maxProd = $childProduct;
+            }
+        }
+        return $maxProd;
+    }
 
     public function getChildProductWithLowestPrice($product, $priceType, $checkSalable=true)
     {

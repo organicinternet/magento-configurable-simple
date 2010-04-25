@@ -7,12 +7,18 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
         return Mage::getStoreConfigFlag(Mage_CatalogInventory_Model_Stock_Item::XML_PATH_MANAGE_STOCK);
     }
 
-    #This calculates final price using SCP logic: minimal child product finalprice 
+    #Don't pay any attention to cost of specific conf product options, as SCP doesn't use them
+    protected function _applyConfigurableOption()
+    {
+        return $this;
+    }
+
+    #This calculates final price using SCP logic: minimal child product finalprice
     #instead of the just the entered configurable price
     #It uses a subquery/group-by hack to ensure that the various column values are all from the row with the lowest final price.
     #See Kasey Speakman comment here: http://dev.mysql.com/doc/refman/5.1/en/example-maximum-column-group-row.html
     #It's all quite complicated. :/
-  
+
     protected function _prepareFinalPriceData($entityIds = null)
     {
         $this->_prepareDefaultFinalPriceTable();
@@ -31,7 +37,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
              ->join(
                 array('le' => $this->getTable('catalog/product')),
                 'le.entity_id = l.product_id',
-                array())                
+                array())
             ->join(
                 array('cis' => $this->getTable('cataloginventory/stock')),
                 '',
@@ -66,8 +72,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
                     . ' AND tp.customer_group_id = cg.customer_group_id',
                 array())
             ->where('e.type_id=?', $this->getTypeId());
-            
-            
+
+
         $taxClassId = $this->_addAttributeToSelect($select, 'tax_class_id', 'le.entity_id', 'cs.store_id');
         $select->columns(array('tax_class_id' => $taxClassId));
 
@@ -87,14 +93,14 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
         $isInStockExpr = new Zend_Db_Expr("IF({$stockStatusExpr}, 1, 0)");
 
         $isValidChildProductExpr = new Zend_Db_Expr("LEAST({$isInStockExpr}, {$productStatusExpr})");
-        
+
         $finalPriceExpr = new Zend_Db_Expr("IF(IF({$specialFrom} IS NULL, 1, "
             . "IF(DATE({$specialFrom}) <= {$curentDate}, 1, 0)) > 0 AND IF({$specialTo} IS NULL, 1, "
             . "IF(DATE({$specialTo}) >= {$curentDate}, 1, 0)) > 0 AND {$specialPrice} < {$price}, "
             . "{$specialPrice}, {$price})");
 
         $finalPrice = new Zend_Db_Expr("IF({$isValidChildProductExpr}=1, ${finalPriceExpr}, null)");
-        
+
         $select->columns(array(
             'orig_price'    => $price,
             'price'         => $finalPrice,
@@ -109,7 +115,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
         }
 
         $select->order($finalPrice);
-        
+
 
         /**
          * Add additional external limitation
@@ -124,10 +130,21 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
 
         #This uses the fact that mysql's 'group by' picks the first row, and the subselect is ordered as we want it
         #Bit hacky, but lots of people do it :)
-        $outerSelect = $write->select('*')
-            ->from(array("outer" => $select))
-            ->group(array('outer.entity_id', 'outer.customer_group_id', 'outer.website_id'));
-    
+        $outerSelect = $write->select()
+            ->from(array("inner" => $select), 'entity_id')
+            ->group(array('inner.entity_id', 'inner.customer_group_id', 'inner.website_id'));
+
+        $outerSelect->columns(array(
+            'customer_group_id',
+            'website_id',
+            'tax_class_id',
+            'orig_price',
+            'price',
+            'min_price',
+            'max_price'     => new Zend_Db_Expr('MAX(inner.max_price)'),
+            'tier_price',
+            'base_tier'));
+
         $query = $outerSelect->insertFromSelect($this->_getDefaultFinalPriceTable());
         $write->query($query);
 

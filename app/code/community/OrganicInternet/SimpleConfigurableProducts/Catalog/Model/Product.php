@@ -2,17 +2,16 @@
 class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product
     extends Mage_Catalog_Model_Product
 {
-/*
-    public function getMinimalPrice()
+    public function getMaxPossibleFinalPrice()
     {
-        if(is_callable(array($this->getPriceModel(), 'getMinimalPrice'))) {
-            return $this->getPriceModel()->getMinimalPrice($this);
+        if(is_callable(array($this->getPriceModel(), 'getMaxPossibleFinalPrice'))) {
+            return $this->getPriceModel()->getMaxPossibleFinalPrice($this);
         } else {
             #return $this->_getData('minimal_price');
-            return parent::getMinimalPrice();
+            return parent::getMaxPrice();
         }
     }
-*/
+
     public function isVisibleInSiteVisibility()
     {
         #Force visible any simple products which have a parent conf product.

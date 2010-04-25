@@ -42,8 +42,13 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             unset($info); //clear foreach var ref
         }
 
+        $p = $this->getProduct();
         $config['childProducts'] = $childProducts;
-        $config['priceFromLabel'] = $this->__('Price From:');
+        if ($p->getMaxPossibleFinalPrice() != $p->getFinalPrice()) {
+            $config['priceFromLabel'] = $this->__('Price From:');
+        } else {
+            $config['priceFromLabel'] = $this->__('');
+        }
        # $config['childProductTierPriceHtml'] = $childProductTierPriceHtml;
         $config['ajaxBaseUrl'] = Mage::getUrl('oi/ajax/');
         #$config['minPrice'] = $this->_registerJsPrice($this->_convertPrice($this->getProduct()->getFinalPrice()));
