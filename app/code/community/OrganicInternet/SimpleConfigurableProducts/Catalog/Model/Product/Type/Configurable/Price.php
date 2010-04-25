@@ -5,7 +5,6 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
     //We don't want to show a separate 'minimal' price for configurable products.
     public function getMinimalPrice($product)
     {
-        Mage::log("getMinimalPrice called for product: " . $product->getId());
         return $this->getPrice($product);
     }
 
@@ -13,7 +12,6 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
     #of all child products, including any ones not currently salable.
     public function getFinalPrice($qty=null, $product)
     {
-        Mage::log("getFinalPrice called for product: " . $product->getId());
 /*
         #calculatedFinalPrice seems not to be set in this version (1.4.0.1)
         if (is_null($qty) && !is_null($product->getCalculatedFinalPrice())) {
@@ -30,7 +28,6 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         }
 
         $product->setFinalPrice($fp);
-        //Mage::log("seeting final price to " . $fp);
         return $fp;
     }
 
@@ -40,11 +37,9 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         #(which it will have been for collections, but not on product page)
         $price = $product->getIndexedPrice();
         if ($price !== null) {
-            Mage::log("getPrice returning cached price for product: " . $product->getId());
             return $price;
         }
 
-        Mage::log("getPrice called for product: " . $product->getId());
         $childProduct = $this->getChildProductWithLowestPrice($product, "finalPrice");
         #If there aren't any salable child products we return the lowest price
         #of all child products, including any ones not currently salable.
@@ -64,10 +59,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         $cacheKey = $product->getId() . ':' . $checkSalable;
 
         if (isset($childrenCache[$cacheKey])) {
-            Mage::log("Yay! Returning cached child products for key: " . $cacheKey);
             return $childrenCache[$cacheKey];
         }
-        Mage::log("getChildProducts called for product: " . $product->getId());
 
         $childProducts = $product->getTypeInstance(true)->getUsedProductCollection($product);
         $childProducts->addAttributeToSelect(array('price', 'special_price', 'status'));
