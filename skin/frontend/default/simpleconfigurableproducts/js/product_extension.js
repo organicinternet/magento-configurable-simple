@@ -26,7 +26,7 @@ Product.Config.prototype.getProductByAttributes = function(productIds, attribute
 //map to
 Product.Config.prototype.getMatchingSimpleProduct = function(){
 
-    var childProducts =  this.config.childProducts;
+    var childProducts = this.config.childProducts;
     var childProductIds = [];
     for (var x in childProducts) {
         childProductIds.push(x);
@@ -43,36 +43,53 @@ Product.Config.prototype.getMatchingSimpleProduct = function(){
     return this.getProductByAttributes(childProductIds, attributeProducts);
 }
 
+Product.Config.prototype.getProductIdThatHasLowestPossiblePrice = function(priceType) {
+    //Find products which are within consideration based on user's selection of
+    //config options so far
 
-Product.Config.prototype.getLowestPossiblePrice = function() {
+    //allowedProducts is a normal numeric array containing product ids.
+    //childProducts is a hash keyed on product id
+    var childProducts = this.config.childProducts;
+    var allowedProducts = [];
 
-    for(var s=0;s<=this.settings.length-1;s++){
-        if (this.settings[s].selectedIndex > 0){
-          var selected = this.settings[s].options[this.settings[s].selectedIndex];
-          if (s==0){
-            var allowedProducts = selected.config.allowedProducts;
-          } else {
-            allowedProducts.intersect(selected.config.allowedProducts).uniq();
-          }
+    //For each selected config option, get productids still in scope
+    for(var s=0, len=this.settings.length-1; s<=len; s++) {
+        if (this.settings[s].selectedIndex <= 0){
+            break;
+        }
+        var selected = this.settings[s].options[this.settings[s].selectedIndex];
+        if (s==0){
+            allowedProducts = selected.config.allowedProducts;
         } else {
-          break;
+            allowedProducts.intersect(selected.config.allowedProducts).uniq();
         }
     }
 
-    var childProducts =  this.config.childProducts;
+    //If we can't find any products (because nothing's been selected most likely.
+    if ((typeof allowedProducts == 'undefined') || (allowedProducts.length == 0)) {
+        //Just use all product ids.
+        productIds = Object.keys(childProducts);
+    } else {
+        productIds = allowedProducts;
+    }
+
+
     var minPrice = Infinity;
-    var minPriceString = "";
-    //Be careful here to return the exact input price value,
-    //not some (possibly badly) converted version
-    for (var x in allowedProducts) {
-        var thisPrice = Number(childProducts[allowedProducts[x]]);
+    var lowestPricedProdId = false;
+
+    //Get lowest price from product ids.
+    for (var x=0, len=productIds.length; x<len; ++x) {
+        var thisPrice = Number(childProducts[productIds[x]][priceType]);
         if (thisPrice < minPrice) {
             minPrice = thisPrice;
-            minPriceString = childProducts[allowedProducts[x]];
+            lowestPricedProdId = productIds[x];
         }
     }
-    return minPriceString;
+    return lowestPricedProdId;
 }
+
+
+
 
 Product.Config.prototype.updateFormProductId = function(productId){
     if (!productId) {
@@ -96,36 +113,57 @@ Product.Config.prototype.addParentProductIdToCartForm = function(parentProductId
     $('product_addtocart_form').appendChild(el);
 }
 
-/*
-Product.Config.prototype.showTierPricesBlock = function(productId) {
-    config = this.config;
-    $$('ul.product-pricing').each(function(label) {
-        label.remove();
-    });
 
-    if (productId && config.childProductTierPriceHtml[productId]) {
-        $$('div.product-options-bottom').each(function(label) {
-            label.innerHTML = this.config.childProductTierPriceHtml[productId] + label.innerHTML;
+
+Product.OptionsPrice.prototype.updateSpecialPriceDiplay = function(price, finalPrice) {
+
+    var prodForm = $('product_addtocart_form');
+
+    var specialPriceBox = prodForm.select('p.special-price');
+    var oldPricePriceBox = prodForm.select('p.old-price, p.was-old-price');
+    var magentopriceLabel = prodForm.select('span.price-label');
+
+    if (price == finalPrice) {
+        specialPriceBox.each(function(x) {x.hide();});
+        magentopriceLabel.each(function(x) {x.hide();});
+        oldPricePriceBox.each(function(x) {
+            x.removeClassName('old-price');
+            x.addClassName('was-old-price');
+        });
+    }else{
+        specialPriceBox.each(function(x) {x.show();});
+        magentopriceLabel.each(function(x) {x.show();});
+        oldPricePriceBox.each(function(x) {
+            x.removeClassName('was-old-price');
+            x.addClassName('old-price');
         });
     }
 }
-*/
 
 Product.Config.prototype.reloadPrice = function() {
     var childProductId = this.getMatchingSimpleProduct();
+    var childProducts = this.config.childProducts;
+
     if (childProductId){
-        optionsPrice.productPrice = this.config.childProducts[childProductId];
+        var price = childProducts[childProductId]["price"];
+        var finalPrice = childProducts[childProductId]["finalPrice"];
+        optionsPrice.productPrice = finalPrice;
+        optionsPrice.productOldPrice = price;
         optionsPrice.reload();
         optionsPrice.reloadPriceLabels(true);
+        optionsPrice.updateSpecialPriceDiplay(price, finalPrice);
         this.updateFormProductId(childProductId);
         this.addParentProductIdToCartForm(this.config.productId);
-        //this.showTierPricesBlock(childProductId);
         this.showCustomOptionsBlock(childProductId, this.config.productId);
     } else {
-        optionsPrice.productPrice = this.getLowestPossiblePrice();
+        var cheapestPid = this.getProductIdThatHasLowestPossiblePrice("finalPrice");
+        var price = childProducts[cheapestPid]["price"];
+        var finalPrice = childProducts[cheapestPid]["finalPrice"];
+        optionsPrice.productPrice = finalPrice;
+        optionsPrice.productOldPrice = price;
         optionsPrice.reload();
         optionsPrice.reloadPriceLabels(false);
-        //this.showTierPricesBlock(false);
+        optionsPrice.updateSpecialPriceDiplay(price, finalPrice);
         this.showCustomOptionsBlock(false, false);
     }
 }
@@ -165,21 +203,23 @@ Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) 
 
 
 Product.OptionsPrice.prototype.reloadPriceLabels = function(productPriceIsKnown) {
-    var priceLabel = '';
+    var priceFromLabel = '';
+    var prodForm = $('product_addtocart_form');
+
     if (!productPriceIsKnown && typeof spConfig != "undefined") {
-        priceLabel = spConfig.config.priceFromLabel;
+        priceFromLabel = spConfig.config.priceFromLabel;
     }
 
     var priceSpanId = 'configurable-price-from-' + this.productId;
     var duplicatePriceSpanId = priceSpanId + this.duplicateIdSuffix;
 
     $(priceSpanId).select('span.configurable-price-from-label').each(function(label) {
-        label.innerHTML = priceLabel;
+        label.innerHTML = priceFromLabel;
     });
 
     if ($(duplicatePriceSpanId) && $(duplicatePriceSpanId).select('span.configurable-price-from-label')) {
         $(duplicatePriceSpanId).select('span.configurable-price-from-label').each(function(label) {
-            label.innerHTML = priceLabel;
+            label.innerHTML = priceFromLabel;
         });
     }
 }

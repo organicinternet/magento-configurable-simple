@@ -7,6 +7,7 @@ class OrganicInternet_SimpleConfigurableProducts_Adminhtml_Block_Catalog_Product
     #Only need to comment out addFilterByRequiredOptions but there's no
     #nice way of doing that without cutting and pasting the method into my own
     #derived class. Boo.
+    #This change stops the filtering-out of any configurable product's 'associated products' that have compulsory custom options
     #Have also replaced parent::_prepareCollection with Mage_Adminhtml_Block_Widget_Grid::_prepareCollection();
     protected function _prepareCollection()
     {
@@ -34,6 +35,10 @@ class OrganicInternet_SimpleConfigurableProducts_Adminhtml_Block_Catalog_Product
         }
 
         $this->setCollection($collection);
+
+        if ($this->isReadonly()) {
+            $collection->addFieldToFilter('entity_id', array('in' => $this->_getSelectedProducts()));
+        }
 
         Mage_Adminhtml_Block_Widget_Grid::_prepareCollection();
         return $this;

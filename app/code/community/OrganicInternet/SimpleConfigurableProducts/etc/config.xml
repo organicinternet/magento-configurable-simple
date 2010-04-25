@@ -2,7 +2,7 @@
 <config>
     <modules>
         <OrganicInternet_SimpleConfigurableProducts>
-            <version>0.6</version>
+            <version>0.7</version>
         </OrganicInternet_SimpleConfigurableProducts>
     </modules>
     <global>
@@ -34,6 +34,19 @@
                     <data_configurable>OrganicInternet_SimpleConfigurableProducts_CatalogIndex_Model_Data_Configurable</data_configurable>
                 </rewrite>
             </catalogindex>
+            <cataloginventory_mysql4>
+                <rewrite>
+                    <indexer_stock_configurable>OrganicInternet_SimpleConfigurableProducts_CatalogInventory_Model_Mysql4_Indexer_Stock_Configurable</indexer_stock_configurable>
+                </rewrite>
+            </cataloginventory_mysql4>
+            <catalog_resource_eav_mysql4>
+                <rewrite>
+                    <product_collection>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Collection</product_collection>
+                </rewrite>
+                <rewrite>
+                    <product_indexer_price_configurable>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price_Configurable</product_indexer_price_configurable>
+                </rewrite>
+            </catalog_resource_eav_mysql4>
         </models>
         <blocks>
             <adminhtml>

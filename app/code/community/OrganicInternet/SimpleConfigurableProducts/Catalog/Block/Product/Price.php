@@ -10,10 +10,10 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_Price
         if ($this->getTemplate() == 'catalog/product/price.phtml') {
             $product = $this->getProduct();
             if (is_object($product) && $product->isConfigurable()) {
-                $extraHtml = '<span class="label" id="configurable-price-from-' 
-                . $product->getId() 
-                . $this->getIdSuffix() 
-                . '"><span class="configurable-price-from-label">' 
+                $extraHtml = '<span class="label" id="configurable-price-from-'
+                . $product->getId()
+                . $this->getIdSuffix()
+                . '"><span class="configurable-price-from-label">'
                 . $this->__('Price From:')
                 . '</span></span>';
                 $priceHtml = parent::_toHtml();

@@ -16,7 +16,11 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         //Create the extra price and tier price data/html we need.
         foreach ($this->getAllowProducts() as $product) {
             $productId  = $product->getId();
-            $childProducts[$productId] = $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice()));
+            #$childProducts[$productId] = $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice()));
+            $childProducts[$productId] = array(
+                "price" => $this->_registerJsPrice($this->_convertPrice($product->getPrice())),
+                "finalPrice" => $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice()))
+            );
         #    if (count($childBlock->getTierPrices($product))) {
          #       $childProductTierPriceHtml[$productId] = $childBlock->getTierPriceHtml($product);
          #   }
@@ -30,18 +34,6 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             foreach ($config['attributes'] as $attributeID => &$info) {
                 if (is_array($info['options'])) {
                     foreach ($info['options'] as &$option) {
-                        //if (count($option['products']) == 1) {
-                            //yeah this is probably a horrible way to do it...
-#                            $cProduct = Mage::getModel('catalog/product')
-#                                ->setStoreId(Mage::app()->getStore()->getId())
-#                                ->load($option['products'][0]);
-                            #$cProduct = $this->getProduct($option['products'][0]);
-                            #$option['price'] = $this->_registerJsPrice($this->_convertPrice($cProduct->getFinalPrice()));
-                            #$option['label'] = $option['label'] . " : " . $this->_convertPrice($cProduct->getFinalPrice());
-#                            if ($cProduct->getFinalPrice()) {
-#                                $option['label'] .= " : " . Mage::app()->getStore()->formatPrice($this->_convertPrice($cProduct->getFinalPrice()), false);
-#                            }
-                        //}
                         unset($option['price']);
                     }
                     unset($option); //clear foreach var ref
@@ -54,6 +46,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         $config['priceFromLabel'] = $this->__('Price From:');
        # $config['childProductTierPriceHtml'] = $childProductTierPriceHtml;
         $config['ajaxBaseUrl'] = Mage::getUrl('oi/ajax/');
+        #$config['minPrice'] = $this->_registerJsPrice($this->_convertPrice($this->getProduct()->getFinalPrice()));
         //Mage::log($config);
         return Zend_Json::encode($config);
     }
