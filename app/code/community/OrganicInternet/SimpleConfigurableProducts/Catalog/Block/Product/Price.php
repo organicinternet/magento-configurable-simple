@@ -6,7 +6,6 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_Price
     #This is because there's no nice way to keep price.phtml in sync between this extension and the magento core version
     #Yes, it's dependent on the value of $htmlToInsertAfter; I'm not aware of a better alternative.
     public function _toHtml() {
-        $prod = $this->getProduct();
         $htmlToInsertAfter = '<div class="price-box">';
         if ($this->getTemplate() == 'catalog/product/price.phtml') {
             $product = $this->getProduct();

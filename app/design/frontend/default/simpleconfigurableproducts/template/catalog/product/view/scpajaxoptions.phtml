@@ -1,0 +1,29 @@
+<?php
+//SCP: This is part of the Custom Option AJAX response - it shows custom options for 'associated' products.
+
+//opConfig is forced into global scope even if pulled in via ajax (by using window.)
+//and also ensure correct form encoding
+?>
+<script type="text/javascript">
+    //<![CDATA[
+    window.opConfig = new Product.Options(<?php echo $this->getJsonConfig() ?>);
+    $('product_addtocart_form').encoding = 'multipart/form-data';
+    //]]>
+</script>
+<?php if (count($this->getOptions())): ?>
+<dl>
+<?php $_options = Mage::helper('core')->decorateArray($this->getOptions()) ?>
+<?php foreach($_options as $_option): ?>
+    <?php echo $this->getOptionHtml($_option) ?>
+<?php endforeach; ?>
+</dl>
+
+<script type="text/javascript">
+    $$('#product-options-wrapper dl').each(function(label) {
+        label.removeClassName('last');
+    });
+    $$('#SCPcustomOptionsDiv dl').each(function(label) {
+        label.addClassName('last');
+    });
+</script>
+<?php endif; ?>

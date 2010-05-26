@@ -6,7 +6,7 @@
                  but we can't necessarily guarantee the load order of the script using the addJs mechanism.
                  Items of type 'skin_js' load after those of type 'js' however, so we use that.
                  (See getCssJsHtml in app/code/core/Mage/Page/Block/Html/Head.php) -->
-            <action method="addItem"><type>skin_js</type><name>js/product_extension.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/scp_product_extension.js</name></action>
         </reference>
 
         <reference name="product.info.options.wrapper">
