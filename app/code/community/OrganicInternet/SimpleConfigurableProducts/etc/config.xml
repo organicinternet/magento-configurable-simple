@@ -46,6 +46,9 @@
                 <rewrite>
                     <product_indexer_price_configurable>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price_Configurable</product_indexer_price_configurable>
                 </rewrite>
+                <rewrite>
+                    <product_indexer_price>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price</product_indexer_price>
+                </rewrite>
             </catalog_resource_eav_mysql4>
         </models>
         <blocks>

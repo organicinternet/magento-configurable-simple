@@ -2,8 +2,8 @@
 class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
     extends Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
 {
-    #Adds an additional price 'indexed_price' to stop the indexed_price being 
-    #overidden elsewhere by the normal product price.
+    #Adds an additional price column called 'indexed_price' as the price_index.price value is
+    #overidden elsewhere in the codebase by the normal(i.e. direct on conf product) product price.
     protected function _productLimitationJoinPrice()
     {
         $filters = $this->_productLimitationFilters;
@@ -24,11 +24,11 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             $minimalExpr = new Zend_Db_Expr(
                 'IF(`price_index`.`tier_price`, LEAST(`price_index`.`min_price`, `price_index`.`tier_price`), `price_index`.`min_price`)'
             );
-            $mdExpr = new Zend_Db_Expr('price_index.price');
+            $indexedExpr = new Zend_Db_Expr('price_index.price');
             $this->getSelect()->join(
                 array('price_index' => $this->getTable('catalog/product_index_price')),
                 $joinCond,
-                array('indexed_price'=>$mdExpr,'price', 'final_price', 'minimal_price'=>$minimalExpr , 'min_price', 'max_price', 'tier_price'));
+                array('indexed_price'=>$indexedExpr,'price', 'final_price', 'minimal_price'=>$minimalExpr , 'min_price', 'max_price', 'tier_price'));
 
         } else {
             $fromPart['price_index']['joinCondition'] = $joinCond;

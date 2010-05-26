@@ -114,8 +114,12 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             $select->where('e.entity_id IN(?)', $entityIds);
         }
 
-        $select->order($finalPrice);
-
+        #Inner select order needs to be:
+        #1st) $finalPrice but force NULLs to come last. (if there is no final price it's not the lowest)
+        #2nd) $price, in case all finalPrices are NULL.
+        $sortExpr = new Zend_Db_Expr("${finalPrice} IS NULL ASC, ${finalPrice} ASC, ${price} ASC");
+        #$select->order($finalPrice);
+        $select->order($sortExpr);
 
         /**
          * Add additional external limitation
@@ -147,6 +151,9 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
 
         $query = $outerSelect->insertFromSelect($this->_getDefaultFinalPriceTable());
         $write->query($query);
+
+        #Mage::log("SCP Price inner query: " . $select->__toString());
+        #Mage::log("SCP Price outer query: " . $outerSelect->__toString());
 
         /**
          * Add possibility modify prices from external events
