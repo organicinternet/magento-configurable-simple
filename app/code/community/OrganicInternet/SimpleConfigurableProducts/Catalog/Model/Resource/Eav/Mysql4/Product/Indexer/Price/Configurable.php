@@ -92,7 +92,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
         }
         $isInStockExpr = new Zend_Db_Expr("IF({$stockStatusExpr}, 1, 0)");
 
-        $isValidChildProductExpr = new Zend_Db_Expr("LEAST({$isInStockExpr}, {$productStatusExpr})");
+#        $isValidChildProductExpr = new Zend_Db_Expr("LEAST({$isInStockExpr}, {$productStatusExpr})");
+        $isValidChildProductExpr = new Zend_Db_Expr("{$productStatusExpr}");
 
         $finalPriceExpr = new Zend_Db_Expr("IF(IF({$specialFrom} IS NULL, 1, "
             . "IF(DATE({$specialFrom}) <= {$curentDate}, 1, 0)) > 0 AND IF({$specialTo} IS NULL, 1, "
@@ -108,6 +109,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             'max_price'     => $finalPrice,
             'tier_price'    => new Zend_Db_Expr('tp.min_price'),
             'base_tier'     => new Zend_Db_Expr('tp.min_price'),
+            #'scp_is_in_stock' => $isInStockExpr
         ));
 
         if (!is_null($entityIds)) {
@@ -115,10 +117,10 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
         }
 
         #Inner select order needs to be:
-        #1st) $finalPrice but force NULLs to come last. (if there is no final price it's not the lowest)
-        #2nd) $price, in case all finalPrices are NULL.
-        $sortExpr = new Zend_Db_Expr("${finalPrice} IS NULL ASC, ${finalPrice} ASC, ${price} ASC");
-        #$select->order($finalPrice);
+        #1st) If it's in stock come first (out of stock product prices aren't used if not-all products are out of stock)
+        #2nd) Finalprice
+        #3rd) $price, in case all finalPrices are NULL. (this gives the lowest price for all associated products when they're all out of stock)
+        $sortExpr = new Zend_Db_Expr("${isInStockExpr} DESC, ${finalPrice} ASC, ${price} ASC");
         $select->order($sortExpr);
 
         /**

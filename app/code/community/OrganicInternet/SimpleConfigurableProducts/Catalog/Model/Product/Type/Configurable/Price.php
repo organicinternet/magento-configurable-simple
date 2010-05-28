@@ -1,8 +1,12 @@
 <?php
+
+#The methods in there have become a bit convoluted, so it could benefit from a tidy,
+#...though the logic is not that simple any more.
+
 class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Configurable_Price
     extends Mage_Catalog_Model_Product_Type_Configurable_Price
 {
-    //We don't want to show a separate 'minimal' price for configurable products.
+    #We don't want to show a separate 'minimal' price for configurable products.
     public function getMinimalPrice($product)
     {
         return $this->getPrice($product);
@@ -43,9 +47,13 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
 */
         $childProduct = $this->getChildProductWithLowestPrice($product, "finalPrice");
         if (!$childProduct) {
-            $fp = $this->getPrice($product);
-        } else {
+            $childProduct = $this->getChildProductWithLowestPrice($product, "finalPrice", false);
+        }
+
+        if ($childProduct) {
             $fp = $childProduct->getFinalPrice();
+        } else {
+            return false;
         }
 
         $product->setFinalPrice($fp);
@@ -71,6 +79,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         if ($childProduct) {
             return $childProduct->getPrice();
         }
+
         return false;
     }
 
@@ -82,7 +91,6 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         if (isset($childrenCache[$cacheKey])) {
             return $childrenCache[$cacheKey];
         }
-        #Mage::log("getChildProducts called on pid: " . $product->getId());
 
         $childProducts = $product->getTypeInstance(true)->getUsedProductCollection($product);
         $childProducts->addAttributeToSelect(array('price', 'special_price', 'status'));
