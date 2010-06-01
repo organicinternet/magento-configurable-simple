@@ -39,7 +39,7 @@ Once SCP is uninstalled you must go into Admin and refresh cache and reindex all
 Some key things to be aware of
 ------------------------------
 * SCP does not allow you to have some configurable products using the SCP logic and some others using the default Magento logic on the same site. If SCP is installed all configurable products will use SCP logic.
-* As well as price, any custom options, tier prices, or special prices directly assigned to a Configurable Product will not be used when SCP is installed. They may well be displayed on the Product Page if you assign them to the Configurable Product, but they may cause undefined behaviour so please don't do it.  Assign them to the associated simple products instead, and they'll work just fine.
+* Do not assign any custom options, tier prices, or apply price rules directly to the Configurable Product when SCP is installed. Although SCP will not use them if you do (as SCP only adds the associated products to the cart), they may well still be displayed in various places by the core Magento code and so can be very confusing for your customers. In addition, SCP is not tested for these cases so it's possible that you'll see odd behaviour or errors. If you assign options/prices/rules directly to the associated simple products instead then they'll work just fine.
 
 
 
@@ -63,7 +63,7 @@ Notes
 
 v0.7 of SCP is a significant rewrite. Magento 1.3 and earlier are no longer supported.
 
-* Magento doesn't normally allow Simple Products which have compulsory Custom Options to be associated to a configurable product, as Magento isn't normally able to display the Custom Option to the user. (so it could never be selected despite being compulsory)  
+* Magento doesn't normally allow Simple Products which have compulsory Custom Options to be associated to a configurable product, as Magento isn't normally able to display the Custom Option to the user. (so it could never be selected despite being compulsory)
 SCP *does* allow this association, as it's able to show these custom options to the user. However, if you uninstall SCP then later save any Configurable Products that have Associated Products with compulsory Custom Options they'll no longer be associated to the Configurable Product and will need re-associating if you later install SCP.  (without SCP installed you can't re-associate them while there are still compulsory custom options on the simple product)
 
 * SCP uses a JavaScript file called product_extension.js. This needs to be loaded after the Magento product.js file, and SCP is written such that it will be. However in some cases the new Magento 'Merge JavaScript Files' option may cause it to be loaded earlier, which will cause SCP to break. If you are seeing JavaScript errors, or if you are seeing the Configurable Product being added to the cart instead of the Associated Products, turn off the 'Merge JavaScript Files' option in Admin->Configuration->Developer
@@ -86,14 +86,14 @@ SCP *does* allow this association, as it's able to show these custom options to 
 
 #### Magento (i.e. not SCP) Bugs/Limitations
 * Selecting custom options does not affect the displayed tier price on the product page.
-* Discounts which result from Custom Options applying a percentage reduction are only reflected on the cart page, not the product page.
-    
+* Discounts which result from Custom Options applying a percentage price reduction are only reflected on the cart page, not the product page.
+
 #### Reporting Bugs
 Please report and/or fix bugs [here](http://www.magentocommerce.com/boards/viewchild/11415/)
 
 When reporting bugs, please specify:
 
-* How to reproduce it
+* How to reproduce it, in as much detail as you can
 * Which version of Magento you are using
 * Which version of SCP you are using
 * Whether you're seeing any JavaScript errors, what they are and when they occur (install firebug for firefox, and look at the script console)
