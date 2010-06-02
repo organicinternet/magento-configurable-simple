@@ -24,8 +24,7 @@ Installation
 Installation of SCP is the same as for most extensions, that is via your Magento Connect Manager using the extension key found on the MagentoCommerce site.
 Important: Once installed you will need to logout then login of Admin. You must also refresh cache and reindex all data (under System->Cache Management and System->Index Management).
 
-There are also some SCP configuration options under System->Configuration->SCP Config
-It's likely you will want to change these from their default values. What each option does should hopefully be self-explanatory.
+There are also some SCP configuration options under System->Configuration->SCP Config, and it's likely you will want to change these from their default values. What each option does should hopefully be self-explanatory.
 
 
 
@@ -47,9 +46,9 @@ Main Features
 
 * SCP fully supports special prices, catalog price rules, tier prices, custom options etc.
 * In addition it can optionally change the product's image, associated image gallery, name and description to match the associated product when a user has made their selection of a product's configurable options. (so if a user has chosen a silver phone they can see it in silver before they buy it)
-* Option to show whether the configurable product or associated product name and image are shown in the cart
-* Now uses the new Magento 1.4 indexers to perform most calculations behind the scenes, so doesn't slow down your site.
-* No theme setup needed. Just install the extension like any other, and away you go.
+* There's the option to show whether the configurable product or associated product name and image are shown in the cart
+* It now uses the new Magento 1.4 indexers to perform most calculations behind the scenes, so doesn't slow down your site.
+* There's no theme setup needed. Just install the extension like any other, refresh your caches, and away you go.
 
 
 
