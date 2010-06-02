@@ -42,6 +42,16 @@ Some key things to be aware of
 * Do not assign any custom options, tier prices, or apply price rules directly to the Configurable Product when SCP is installed. Although SCP will not use them if you do (as SCP only adds the associated products to the cart), they may well still be displayed in various places by the core Magento code and so can be very confusing for your customers. In addition, SCP is not tested for these cases so it's possible that you'll see odd behaviour or errors. If you assign options/prices/rules directly to the associated simple products instead then they'll work just fine.
 
 
+Main Features
+-------------
+
+* SCP fully supports special prices, catalog price rules, tier prices, custom options etc.
+* In addition it can optionally change the product's image, associated image gallery, name and description to match the associated product once all options have been chosen. (so if a user has chosen a silver phone they can see it in silver before they buy it)
+* Option to show whether the configurable product or associated product name and image are shown in the cart
+* Now uses the new Magento 1.4 indexers to perform most calculations behind the scenes, so doesn't slow down your site.
+* No theme setup needed. Just install the extension like any other, and away you go.
+
+
 
 Functionality in detail
 -----------------------
@@ -63,10 +73,10 @@ Notes
 
 v0.7 of SCP is a significant rewrite. Magento 1.3 and earlier are no longer supported.
 
-* Magento doesn't normally allow Simple Products which have compulsory Custom Options to be associated to a configurable product, as Magento isn't normally able to display the Custom Option to the user. (so it could never be selected despite being compulsory)
-SCP *does* allow this association, as it's able to show these custom options to the user. However, if you uninstall SCP then later save any Configurable Products that have Associated Products with compulsory Custom Options they'll no longer be associated to the Configurable Product and will need re-associating if you later install SCP.  (without SCP installed you can't re-associate them while there are still compulsory custom options on the simple product)
+* Magento doesn't normally allow Simple Products which have compulsory Custom Options to be associated to a configurable product, as Magento isn't normally able to display these Custom Option to the user. (so it could never be selected despite being compulsory)
+SCP *does* allow this association, as it is able to show these custom options to the user. However, if you uninstall SCP then later save any Configurable Products that have associated products that have compulsory Custom Options they'll no longer be associated to the Configurable Product and will need re-associating if you later install SCP.  (without SCP installed you can't re-associate them while there are still compulsory custom options on the simple product)
 
-* SCP uses a JavaScript file called product_extension.js. This needs to be loaded after the Magento product.js file, and SCP is written such that it will be. However in some cases the new Magento 'Merge JavaScript Files' option may cause it to be loaded earlier, which will cause SCP to break. If you are seeing JavaScript errors, or if you are seeing the Configurable Product being added to the cart instead of the Associated Products, turn off the 'Merge JavaScript Files' option in Admin->Configuration->Developer
+* SCP uses a JavaScript file called product_extension.js. This needs to be loaded after the Magento product.js file, and SCP is written such that it will be. However in some cases the new Magento 'Merge JavaScript Files' option may cause it to be loaded earlier, which will stop SCP from working. If you are seeing JavaScript errors, or if you are seeing the Configurable Product being added to the cart instead of the Associated Products, turn off the 'Merge JavaScript Files' option in Admin->Configuration->Developer
 
 * Some of SCP's JavaScript is dependent on the DOM structure of the Product Page (just as the core Magento product.js is). If you have a very heavily customised theme you may find you have JavaScript errors and may need to modify some of the JS in product_extension.js to match your modified theme.
 
