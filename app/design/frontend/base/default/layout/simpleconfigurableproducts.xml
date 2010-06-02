@@ -18,6 +18,19 @@
         </reference>
     </catalog_product_view>
 
+    <customer_account>
+        <reference name="sale.reorder.sidebar">
+            <action method="setTemplate"><template>sales/reorder/scpsidebar.phtml</template></action>
+        </reference>
+    </customer_account>
+
+
+    <customer_logged_in>
+        <reference name="sale.reorder.sidebar">
+            <action method="setTemplate"><template>sales/reorder/scpsidebar.phtml</template></action>
+        </reference>
+    </customer_logged_in>
+
     <oi_ajax_co>
         <reference name="root">
             <action method="setTemplate"><template>page/scpcontentonly.phtml</template></action>
@@ -32,4 +45,23 @@
             <block type="catalog/product_view" name="product.tierprices" as="tierprices" template="catalog/product/view/tierprices.phtml"/>
         </reference>
     </oi_ajax_co>
+    <oi_ajax_image>
+        <reference name="root">
+            <action method="setTemplate"><template>page/scpcontentonly.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml"/>
+        </reference>
+    </oi_ajax_image>
+
+    <oi_ajax_gallery translate="label">
+        <label>Catalog Product Image Gallery Popup</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/popup.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="catalog/product_gallery" name="catalog_product_gallery" template="catalog/product/gallery.phtml"/>
+        </reference>
+    </oi_ajax_gallery>
+
 </layoutUpdate>

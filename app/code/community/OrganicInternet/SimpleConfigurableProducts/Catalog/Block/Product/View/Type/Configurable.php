@@ -7,11 +7,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
     {
         $config = Zend_Json::decode(parent::getJsonConfig());
 
-        //childProducts is an array of productID => price.
         $childProducts = array();
-
-        #$childProductTierPriceHtml = array();
-        $childBlock = $this->getLayout()->createBlock('catalog/product_view');
 
         //Create the extra price and tier price data/html we need.
         foreach ($this->getAllowProducts() as $product) {
@@ -21,9 +17,24 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                 "price" => $this->_registerJsPrice($this->_convertPrice($product->getPrice())),
                 "finalPrice" => $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice()))
             );
-        #    if (count($childBlock->getTierPrices($product))) {
-         #       $childProductTierPriceHtml[$productId] = $childBlock->getTierPriceHtml($product);
-         #   }
+
+            if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_name')) {
+                $childProducts[$productId]["productName"] = $product->getName();
+            }
+            if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_description')) {
+                $childProducts[$productId]["shortDescription"] = $product->getShortDescription();
+            }
+            #if image changing is enabled..
+            if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_image')) {
+                #but dont bother if fancy image changing is enabled
+                if (!Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_image_fancy')) {
+                    #If image is not placeholder...
+                    if(strpos((string)Mage::helper('catalog/image')->init($product, 'image'), (string)Mage::helper('catalog/image')->getPlaceHolder($product)) === FALSE) {
+                        #add child product image url to json spConfig var
+                        $childProducts[$productId]["imageUrl"] = (string)Mage::helper('catalog/image')->init($product, 'image');
+                    }
+                }
+            }
         }
 
         //Remove any existing option prices.
@@ -49,9 +60,19 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         } else {
             $config['priceFromLabel'] = $this->__('');
         }
-       # $config['childProductTierPriceHtml'] = $childProductTierPriceHtml;
         $config['ajaxBaseUrl'] = Mage::getUrl('oi/ajax/');
-        #$config['minPrice'] = $this->_registerJsPrice($this->_convertPrice($this->getProduct()->getFinalPrice()));
+        $config['productName'] = $this->getProduct()->getName();
+        $config['shortDescription'] = $this->getProduct()->getShortDescription();
+        $config["imageUrl"] = (string)Mage::helper('catalog/image')->init($this->getProduct(), 'image');
+
+        if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_image')) {
+            if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_image_fancy')) {
+                $childBlock = $this->getLayout()->createBlock('catalog/product_view_media');
+                $config["imageZoomer"] =  $childBlock->setTemplate('catalog/product/view/media.phtml')
+                                                     ->setProduct($this->getProduct())
+                                                     ->toHtml();
+            }
+        }
         //Mage::log($config);
         return Zend_Json::encode($config);
     }

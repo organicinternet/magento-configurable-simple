@@ -140,9 +140,15 @@ Product.OptionsPrice.prototype.updateSpecialPriceDiplay = function(price, finalP
     }
 }
 
+//This triggers reload of price and other elements that can change
+//once all options are selected
 Product.Config.prototype.reloadPrice = function() {
     var childProductId = this.getMatchingSimpleProduct();
     var childProducts = this.config.childProducts;
+    var usingZoomer = false;
+    if(this.config.imageZoomer){
+        usingZoomer = true;
+    }
 
     if (childProductId){
         var price = childProducts[childProductId]["price"];
@@ -152,9 +158,17 @@ Product.Config.prototype.reloadPrice = function() {
         optionsPrice.reload();
         optionsPrice.reloadPriceLabels(true);
         optionsPrice.updateSpecialPriceDiplay(price, finalPrice);
+        this.updateShortDescription(childProductId);
+        this.updateProductName(childProductId);
         this.updateFormProductId(childProductId);
         this.addParentProductIdToCartForm(this.config.productId);
         this.showCustomOptionsBlock(childProductId, this.config.productId);
+        if (usingZoomer) {
+            this.showFullImageDiv(childProductId, this.config.productId);
+        }else{
+            this.updateProductImage(childProductId);
+        }
+
     } else {
         var cheapestPid = this.getProductIdThatHasLowestPossiblePrice("finalPrice");
         var price = childProducts[cheapestPid]["price"];
@@ -164,10 +178,63 @@ Product.Config.prototype.reloadPrice = function() {
         optionsPrice.reload();
         optionsPrice.reloadPriceLabels(false);
         optionsPrice.updateSpecialPriceDiplay(price, finalPrice);
+        this.updateShortDescription(false);
+        this.updateProductName(false);
         this.showCustomOptionsBlock(false, false);
+        if (usingZoomer) {
+            this.showFullImageDiv(false, false);
+        }else{
+            this.updateProductImage(false);
+        }
     }
 }
 
+
+Product.Config.prototype.updateProductImage = function(productId) {
+    var imageUrl = this.config.imageUrl;
+    if(productId) {
+        if (this.config.childProducts[productId].imageUrl) {
+            imageUrl = this.config.childProducts[productId].imageUrl;
+        }
+    }
+    $('image').src = imageUrl;
+}
+
+
+Product.Config.prototype.updateProductName = function(productId) {
+    var productName = this.config.productName;
+    if(productId) {
+        if (this.config.childProducts[productId].productName) {
+            productName = this.config.childProducts[productId].productName;
+        }
+    }
+    var nameElements = $$('div.product-name');
+
+    nameElements.each(function(outerEl) {
+        var innerNameElements = outerEl.select('h1');
+        innerNameElements.each(function(innerEl) {
+            innerEl.innerHTML = productName;
+        });
+    });
+}
+
+
+Product.Config.prototype.updateShortDescription = function(productId) {
+    var shortDescription = this.config.shortDescription;
+    if(productId) {
+        if (this.config.childProducts[productId].shortDescription) {
+            shortDescription = this.config.childProducts[productId].shortDescription;
+        }
+    }
+    var descriptionElements = $$('div.short-description');
+
+    descriptionElements.each(function(outerEl) {
+        var innerDescriptionElements = outerEl.select('div.std');
+        innerDescriptionElements.each(function(innerEl) {
+            innerEl.innerHTML = shortDescription;
+        });
+    });
+}
 
 Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) {
     var coUrl = this.config.ajaxBaseUrl + "co/?id=" + productId + '&pid=' + parentId;
@@ -199,6 +266,40 @@ Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) 
     }
 };
 
+
+
+Product.Config.prototype.showFullImageDiv = function(productId, parentId) {
+    var imgUrl = this.config.ajaxBaseUrl + "image/?id=" + productId + '&pid=' + parentId;
+    var prodForm = $('product_addtocart_form');
+    var destElement = false;
+    var defaultZoomer = this.config.imageZoomer;
+
+    prodForm.select('div.product-img-box').each(function(el) {
+        destElement = el;
+    });
+
+    if(productId) {
+        new Ajax.Updater(destElement, imgUrl, {
+            method: 'get',
+            evalScripts: true,
+            onComplete: function() {
+                //There is some kind of race condidtion where Product.Zoom doesn't resize the main image,
+                //hence the setTimeout...
+                setTimeout(function() {
+                    if ($('image')){
+                        product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint')
+                    } else {
+                        destElement.innerHTML = defaultZoomer;
+                        product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint')
+                    }
+                ;}, 250);
+          }
+        });
+    } else {
+        destElement.innerHTML = defaultZoomer;
+        product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint')
+    }
+};
 
 
 

@@ -64,6 +64,9 @@
                 <rewrite>
                     <product_price>OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_Price</product_price>
                 </rewrite>
+                <rewrite>
+                    <product_view_media>OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Media</product_view_media>
+                </rewrite>
             </catalog>
             <checkout>
                 <rewrite>

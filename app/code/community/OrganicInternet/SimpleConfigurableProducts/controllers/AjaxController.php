@@ -12,6 +12,25 @@ class OrganicInternet_SimpleConfigurableProducts_AjaxController extends Mage_Cat
        }
     }
 
+    public function imageAction()
+    {
+       $product = $this->_initProduct();
+       if (!empty($product)) {
+           $this->_initProductLayout($product);
+           $this->renderLayout();
+       }
+    }
+
+    public function galleryAction()
+    {
+       $product = $this->_initProduct();
+       if (!empty($product)) {
+           #$this->_initProductLayout($product);
+           $this->loadLayout();
+           $this->renderLayout();
+       }
+    }
+
     //Copy of parent _initProduct but changes visibility checks.
     //Reproducing functionality like this is far from great for future compatibilty
     //but at the moment I don't see a better alternative.
@@ -49,6 +68,7 @@ class OrganicInternet_SimpleConfigurableProducts_AjaxController extends Mage_Cat
             $category = Mage::getModel('catalog/category')->load($categoryId);
             Mage::register('current_category', $category);
         }
+        $product->setCpid($parentId);
         Mage::register('current_product', $product);
         Mage::register('product', $product);
         return $product;

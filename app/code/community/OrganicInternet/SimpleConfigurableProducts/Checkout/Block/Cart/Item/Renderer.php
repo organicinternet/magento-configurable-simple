@@ -81,12 +81,22 @@ class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Render
 
     public function getProductThumbnail()
     {
-        if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_cart_show_configurable_product_image')
-            && $this->getConfigurableProductParentId()) {
-           return $this->helper('catalog/image')->init($this->getConfigurableProductParent(), 'thumbnail');
-        } else {
-            return parent::getProductThumbnail();
-            #return $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail');
+
+        if (!Mage::getStoreConfig('SCP_options/SCP_group/SCP_cart_show_configurable_product_image')) {
+            $childThumbnail = parent::getProductThumbnail();
+            #If image is not placeholder...
+            Mage::log("thumb:" . $childThumbnail);
+            Mage::log("place:" . Mage::helper('catalog/image')->getPlaceHolder($this->getProduct()));
+            if(strpos($childThumbnail, Mage::helper('catalog/image')->getPlaceHolder($this->getProduct())) === FALSE) {
+                return $childThumbnail;
+            }
+        }
+
+        #If we're showing parents anyway, or we can't show the child, show the parent.
+        #If there's no image then a placeholder will be shown
+        if ($this->getConfigurableProductParentId()) {
+            $parentProduct = $this->getConfigurableProductParent();
+            return $this->helper('catalog/image')->init($parentProduct, 'thumbnail');
         }
     }
 }
