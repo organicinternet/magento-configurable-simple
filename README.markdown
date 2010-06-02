@@ -46,7 +46,7 @@ Main Features
 -------------
 
 * SCP fully supports special prices, catalog price rules, tier prices, custom options etc.
-* In addition it can optionally change the product's image, associated image gallery, name and description to match the associated product once all options have been chosen. (so if a user has chosen a silver phone they can see it in silver before they buy it)
+* In addition it can optionally change the product's image, associated image gallery, name and description to match the associated product when a user has made their selection of a product's configurable options. (so if a user has chosen a silver phone they can see it in silver before they buy it)
 * Option to show whether the configurable product or associated product name and image are shown in the cart
 * Now uses the new Magento 1.4 indexers to perform most calculations behind the scenes, so doesn't slow down your site.
 * No theme setup needed. Just install the extension like any other, and away you go.
