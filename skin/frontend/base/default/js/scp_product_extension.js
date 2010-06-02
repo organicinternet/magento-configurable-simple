@@ -1,58 +1,30 @@
 /*
-Some of these override earlier varien/product.js methods, therefore
-varien/product.js must have been included prior to this file.
+    Some of these override earlier varien/product.js methods, therefore
+    varien/product.js must have been included prior to this file.
 */
 
-
-//Helper function which works out which productId all passed attributes match.
-//Assumes array(productIds), array(array(productIds))
-Product.Config.prototype.getProductByAttributes = function(productIds, attributes){
-    for (var i=0;i<productIds.length;i++) {
-        var foundMatchingProduct = true;
-        for (var a=0;a<attributes.length;a++) {
-            if (attributes[a].indexOf(productIds[i]) == -1) {
-                foundMatchingProduct = false;
-                break;
-            }
-        }
-        if (foundMatchingProduct) {
-            return productIds[i];
-        }
+Product.Config.prototype.getMatchingSimpleProduct = function(){
+    var inScopeProductIds = this.getInScopeProductIds();
+    if ((typeof inScopeProductIds != 'undefined') && (inScopeProductIds.length == 1)) {
+        return inScopeProductIds[0];
     }
     return false;
 }
 
-//Determines which simple product the currently selected configurable attributes
-//map to
-Product.Config.prototype.getMatchingSimpleProduct = function(){
 
-    var childProducts = this.config.childProducts;
-    var childProductIds = [];
-    for (var x in childProducts) {
-        childProductIds.push(x);
-    }
 
-    var attributeProducts = [];
-    for(var s=this.settings.length-1;s>=0;s--){
-        var selected = this.settings[s].options[this.settings[s].selectedIndex];
-        if (!selected.config){
-            return false;
-        }
-        attributeProducts.push(selected.config.allowedProducts);
-    }
-    return this.getProductByAttributes(childProductIds, attributeProducts);
-}
+/*
+    Find products which are within consideration based on user's selection of
+    config options so far
+    Returns a normal array containing product ids
+    allowedProducts is a normal numeric array containing product ids.
+    childProducts is a hash keyed on product id
+*/
+Product.Config.prototype.getInScopeProductIds = function() {
 
-Product.Config.prototype.getProductIdThatHasLowestPossiblePrice = function(priceType) {
-    //Find products which are within consideration based on user's selection of
-    //config options so far
-
-    //allowedProducts is a normal numeric array containing product ids.
-    //childProducts is a hash keyed on product id
     var childProducts = this.config.childProducts;
     var allowedProducts = [];
 
-    //For each selected config option, get productids still in scope
     for(var s=0, len=this.settings.length-1; s<=len; s++) {
         if (this.settings[s].selectedIndex <= 0){
             break;
@@ -61,18 +33,25 @@ Product.Config.prototype.getProductIdThatHasLowestPossiblePrice = function(price
         if (s==0){
             allowedProducts = selected.config.allowedProducts;
         } else {
-            allowedProducts.intersect(selected.config.allowedProducts).uniq();
+            allowedProducts = allowedProducts.intersect(selected.config.allowedProducts).uniq();
         }
     }
 
-    //If we can't find any products (because nothing's been selected most likely.
+    //If we can't find any products (because nothing's been selected most likely)
+    //then just use all product ids.
     if ((typeof allowedProducts == 'undefined') || (allowedProducts.length == 0)) {
-        //Just use all product ids.
         productIds = Object.keys(childProducts);
     } else {
         productIds = allowedProducts;
     }
+    return productIds;
+}
 
+
+Product.Config.prototype.getProductIdOfCheapestProductInScope = function(priceType) {
+
+    var childProducts = this.config.childProducts;
+    var productIds = this.getInScopeProductIds();
 
     var minPrice = Infinity;
     var lowestPricedProdId = false;
@@ -88,6 +67,25 @@ Product.Config.prototype.getProductIdThatHasLowestPossiblePrice = function(price
     return lowestPricedProdId;
 }
 
+
+Product.Config.prototype.getProductIdOfMostExpensiveProductInScope = function(priceType) {
+
+    var childProducts = this.config.childProducts;
+    var productIds = this.getInScopeProductIds();
+
+    var maxPrice = 0;
+    var highestPricedProdId = false;
+
+    //Get highest price from product ids.
+    for (var x=0, len=productIds.length; x<len; ++x) {
+        var thisPrice = Number(childProducts[productIds[x]][priceType]);
+        if (thisPrice > maxPrice) {
+            maxPrice = thisPrice;
+            highestPricedProdId = productIds[x];
+        }
+    }
+    return highestPricedProdId;
+}
 
 
 
@@ -170,7 +168,8 @@ Product.Config.prototype.reloadPrice = function() {
         }
 
     } else {
-        var cheapestPid = this.getProductIdThatHasLowestPossiblePrice("finalPrice");
+        var cheapestPid = this.getProductIdOfCheapestProductInScope("finalPrice");
+        //var mostExpensivePid = this.getProductIdOfMostExpensiveProductInScope("finalPrice");
         var price = childProducts[cheapestPid]["price"];
         var finalPrice = childProducts[cheapestPid]["finalPrice"];
         optionsPrice.productPrice = finalPrice;
