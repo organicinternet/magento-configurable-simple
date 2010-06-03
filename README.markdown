@@ -47,6 +47,7 @@ Main Features
 * SCP fully supports special prices, catalog price rules, tier prices, custom options etc.
 * In addition it can optionally change the product's image, associated image gallery, name and description to match the associated product when a user has made their selection of a product's configurable options. (so if a user has chosen a silver phone they can see it in silver before they buy it)
 * There's the option to show whether the configurable product or associated product name and image are shown in the cart
+* There's the option to show price ranges for the remaining choices in the configurable product option drop downs on the product page
 * It now uses the new Magento 1.4 indexers to perform most calculations behind the scenes, so doesn't slow down your site.
 * There's no theme setup needed. Just install the extension like any other, refresh your caches, and away you go.
 
@@ -82,7 +83,6 @@ SCP *does* allow this association, as it is able to show these custom options to
 
 
 ## Feature Aspirations
-* Option to show price ranges rather than just 'Price From'.
 * Backordering enhancements. Currently only in-stock associated products are shown even if allow backordering is enabled. This is inline with default Magento behaviour, but it's something that could possibly be enhanced by SCP.
 * Possibly allow SCP logic and Magento logic for Configurable Options to run side-by-side.
 * Investigate whether it's possible to allow custom options to be set on the Configurable Product (for when they need to be the same across all associated products).
