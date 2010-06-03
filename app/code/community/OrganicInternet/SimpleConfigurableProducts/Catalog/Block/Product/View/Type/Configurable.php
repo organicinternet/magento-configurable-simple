@@ -73,6 +73,12 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                                                      ->toHtml();
             }
         }
+
+        if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_show_price_ranges_in_options')) {
+            $config['showPriceRangesInOptions'] = true;
+            $config['rangeToLabel'] = $this->__('to');
+
+        }
         //Mage::log($config);
         return Zend_Json::encode($config);
     }

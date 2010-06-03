@@ -9,9 +9,7 @@ Product.Config.prototype.getMatchingSimpleProduct = function(){
         return inScopeProductIds[0];
     }
     return false;
-}
-
-
+};
 
 /*
     Find products which are within consideration based on user's selection of
@@ -19,21 +17,30 @@ Product.Config.prototype.getMatchingSimpleProduct = function(){
     Returns a normal array containing product ids
     allowedProducts is a normal numeric array containing product ids.
     childProducts is a hash keyed on product id
+    optionalAllowedProducts lets you pass a set of products to restrict by,
+    in addition to just using the ones already selected by the user
 */
-Product.Config.prototype.getInScopeProductIds = function() {
+Product.Config.prototype.getInScopeProductIds = function(optionalAllowedProducts) {
 
     var childProducts = this.config.childProducts;
     var allowedProducts = [];
+
+    if ((typeof optionalAllowedProducts != 'undefined') && (optionalAllowedProducts.length > 0)) {
+       // alert("starting with: " + optionalAllowedProducts.inspect());
+        allowedProducts = optionalAllowedProducts;
+    }
 
     for(var s=0, len=this.settings.length-1; s<=len; s++) {
         if (this.settings[s].selectedIndex <= 0){
             break;
         }
         var selected = this.settings[s].options[this.settings[s].selectedIndex];
-        if (s==0){
+        if (s==0 && allowedProducts.length == 0){
             allowedProducts = selected.config.allowedProducts;
         } else {
+           // alert("merging: " + allowedProducts.inspect() + " with: " + selected.config.allowedProducts.inspect());
             allowedProducts = allowedProducts.intersect(selected.config.allowedProducts).uniq();
+           // alert("to give: " + allowedProducts.inspect());
         }
     }
 
@@ -45,13 +52,13 @@ Product.Config.prototype.getInScopeProductIds = function() {
         productIds = allowedProducts;
     }
     return productIds;
-}
+};
 
 
-Product.Config.prototype.getProductIdOfCheapestProductInScope = function(priceType) {
+Product.Config.prototype.getProductIdOfCheapestProductInScope = function(priceType, optionalAllowedProducts) {
 
     var childProducts = this.config.childProducts;
-    var productIds = this.getInScopeProductIds();
+    var productIds = this.getInScopeProductIds(optionalAllowedProducts);
 
     var minPrice = Infinity;
     var lowestPricedProdId = false;
@@ -65,13 +72,13 @@ Product.Config.prototype.getProductIdOfCheapestProductInScope = function(priceTy
         }
     }
     return lowestPricedProdId;
-}
+};
 
 
-Product.Config.prototype.getProductIdOfMostExpensiveProductInScope = function(priceType) {
+Product.Config.prototype.getProductIdOfMostExpensiveProductInScope = function(priceType, optionalAllowedProducts) {
 
     var childProducts = this.config.childProducts;
-    var productIds = this.getInScopeProductIds();
+    var productIds = this.getInScopeProductIds(optionalAllowedProducts);
 
     var maxPrice = 0;
     var highestPricedProdId = false;
@@ -85,7 +92,7 @@ Product.Config.prototype.getProductIdOfMostExpensiveProductInScope = function(pr
         }
     }
     return highestPricedProdId;
-}
+};
 
 
 
@@ -97,7 +104,7 @@ Product.Config.prototype.updateFormProductId = function(productId){
     newcurrentAction = currentAction.sub(/product\/\d+\//, 'product/' + productId + '/');
     $('product_addtocart_form').action = newcurrentAction;
     $('product_addtocart_form').product.value = productId;
-}
+};
 
 
 Product.Config.prototype.addParentProductIdToCartForm = function(parentProductId) {
@@ -109,7 +116,7 @@ Product.Config.prototype.addParentProductIdToCartForm = function(parentProductId
     el.name = "cpid";
     el.value = parentProductId.toString();
     $('product_addtocart_form').appendChild(el);
-}
+};
 
 
 
@@ -136,7 +143,7 @@ Product.OptionsPrice.prototype.updateSpecialPriceDiplay = function(price, finalP
             x.addClassName('old-price');
         });
     }
-}
+};
 
 //This triggers reload of price and other elements that can change
 //once all options are selected
@@ -186,7 +193,7 @@ Product.Config.prototype.reloadPrice = function() {
             this.updateProductImage(false);
         }
     }
-}
+};
 
 
 Product.Config.prototype.updateProductImage = function(productId) {
@@ -197,7 +204,7 @@ Product.Config.prototype.updateProductImage = function(productId) {
         }
     }
     $('image').src = imageUrl;
-}
+};
 
 
 Product.Config.prototype.updateProductName = function(productId) {
@@ -215,7 +222,7 @@ Product.Config.prototype.updateProductName = function(productId) {
             innerEl.innerHTML = productName;
         });
     });
-}
+};
 
 
 Product.Config.prototype.updateShortDescription = function(productId) {
@@ -233,7 +240,7 @@ Product.Config.prototype.updateShortDescription = function(productId) {
             innerEl.innerHTML = shortDescription;
         });
     });
-}
+};
 
 Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) {
     var coUrl = this.config.ajaxBaseUrl + "co/?id=" + productId + '&pid=' + parentId;
@@ -264,7 +271,6 @@ Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) 
         window.opConfig = new Product.Options([]);
     }
 };
-
 
 
 Product.Config.prototype.showFullImageDiv = function(productId, parentId) {
@@ -322,4 +328,121 @@ Product.OptionsPrice.prototype.reloadPriceLabels = function(productPriceIsKnown)
             label.innerHTML = priceFromLabel;
         });
     }
-}
+};
+
+
+
+//SCP: Forces the 'next' element to have it's optionLabels reloaded too
+Product.Config.prototype.configureElement = function(element) {
+    this.reloadOptionLabels(element);
+    if(element.value){
+        this.state[element.config.id] = element.value;
+        if(element.nextSetting){
+            element.nextSetting.disabled = false;
+            this.fillSelect(element.nextSetting);
+            this.reloadOptionLabels(element.nextSetting);
+            this.resetChildren(element.nextSetting);
+        }
+    }
+    else {
+        this.resetChildren(element);
+    }
+    this.reloadPrice();
+};
+
+
+//SCP: Changed logic to use absolute price ranges rather than price differentials
+Product.Config.prototype.reloadOptionLabels = function(element){
+    var selectedPrice;
+    var childProducts = this.config.childProducts;
+
+    //Don't update elements that have a selected option
+    if(element.options[element.selectedIndex].config){
+        return;
+    }
+
+    for(var i=0;i<element.options.length;i++){
+        if(element.options[i].config){
+            var cheapestPid = this.getProductIdOfCheapestProductInScope("finalPrice", element.options[i].config.allowedProducts);
+            var mostExpensivePid = this.getProductIdOfMostExpensiveProductInScope("finalPrice", element.options[i].config.allowedProducts);
+            var cheapestFinalPrice = childProducts[cheapestPid]["finalPrice"];
+            var mostExpensiveFinalPrice = childProducts[mostExpensivePid]["finalPrice"];
+            element.options[i].text = this.getOptionLabel(element.options[i].config, cheapestFinalPrice, mostExpensiveFinalPrice);
+        }
+    }
+};
+
+//SCP: Changed label formatting to show absolute price ranges rather than price differentials
+Product.Config.prototype.getOptionLabel = function(option, lowPrice, highPrice){
+
+    var str = option.label;
+
+    if (!this.config.showPriceRangesInOptions) {
+        return str;
+    }
+
+    var to = ' ' + this.config.rangeToLabel + ' ';
+    var separator = ': ';
+
+    lowPrices = this.getTaxPrices(lowPrice);
+    highPrices = this.getTaxPrices(highPrice);
+
+    if(lowPrice && highPrice){
+        if (lowPrice != highPrice) {
+            if (this.taxConfig.showBothPrices) {
+                str+= separator + this.formatPrice(lowPrices[2], false) + ' (' + this.formatPrice(lowPrices[1], false) + ' ' + this.taxConfig.inclTaxTitle + ')';
+                str+= to + this.formatPrice(highPrices[2], false) + ' (' + this.formatPrice(highPrices[1], false) + ' ' + this.taxConfig.inclTaxTitle + ')';
+            } else {
+                str+= separator + this.formatPrice(lowPrices[0], false);
+                str+= to + this.formatPrice(highPrices[0], false);
+            }
+        } else {
+            if (this.taxConfig.showBothPrices) {
+                str+= separator + this.formatPrice(lowPrices[2], false) + ' (' + this.formatPrice(lowPrices[1], false) + ' ' + this.taxConfig.inclTaxTitle + ')';
+            } else {
+                str+= separator + this.formatPrice(lowPrices[0], false);
+            }
+        }
+    }
+    return str;
+};
+
+
+//SCP: Refactored price calculations into separate function
+Product.Config.prototype.getTaxPrices = function(price) {
+    var price = parseFloat(price);
+
+    if (this.taxConfig.includeTax) {
+        var tax = price / (100 + this.taxConfig.defaultTax) * this.taxConfig.defaultTax;
+        var excl = price - tax;
+        var incl = excl*(1+(this.taxConfig.currentTax/100));
+    } else {
+        var tax = price * (this.taxConfig.currentTax / 100);
+        var excl = price;
+        var incl = excl + tax;
+    }
+
+    if (this.taxConfig.showIncludeTax || this.taxConfig.showBothPrices) {
+        price = incl;
+    } else {
+        price = excl;
+    }
+
+    return [price, incl, excl];
+};
+
+
+//SCP: Forces price labels to be updated on load
+//so that first select shows ranges from the start
+document.observe("dom:loaded", function() {
+    //Really only needs to be the first element that has configureElement set on it,
+    //rather than all.
+    $('product_addtocart_form').getElements().each(function(el) {
+        if(el.type == 'select-one') {
+            if(el.options && (el.options.length > 1)) {
+                el.options[0].selected = true;
+                spConfig.configureElement(el);
+            }
+        }
+    });
+});
