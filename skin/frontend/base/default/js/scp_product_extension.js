@@ -164,6 +164,7 @@ Product.Config.prototype.reloadPrice = function() {
         optionsPrice.reloadPriceLabels(true);
         optionsPrice.updateSpecialPriceDiplay(price, finalPrice);
         this.updateShortDescription(childProductId);
+        this.updateDescription(childProductId);
         this.updateProductName(childProductId);
         this.updateFormProductId(childProductId);
         this.addParentProductIdToCartForm(this.config.productId);
@@ -185,6 +186,7 @@ Product.Config.prototype.reloadPrice = function() {
         optionsPrice.reloadPriceLabels(false);
         optionsPrice.updateSpecialPriceDiplay(price, finalPrice);
         this.updateShortDescription(false);
+        this.updateDescription(false);
         this.updateProductName(false);
         this.showCustomOptionsBlock(false, false);
         if (usingZoomer) {
@@ -242,6 +244,24 @@ Product.Config.prototype.updateShortDescription = function(productId) {
     });
 };
 
+Product.Config.prototype.updateDescription = function(productId) {
+    var description = this.config.description;
+    if(productId) {
+        if (this.config.childProducts[productId].description) {
+            description = this.config.childProducts[productId].description;
+        }
+    }
+    var descriptionElements = $$('div.box-description');
+
+    descriptionElements.each(function(outerEl) {
+        var innerDescriptionElements = outerEl.select('div.std');
+        innerDescriptionElements.each(function(innerEl) {
+            innerEl.innerHTML = description;
+        });
+    });
+};
+
+
 Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) {
     var coUrl = this.config.ajaxBaseUrl + "co/?id=" + productId + '&pid=' + parentId;
     var prodForm = $('product_addtocart_form');
@@ -286,23 +306,23 @@ Product.Config.prototype.showFullImageDiv = function(productId, parentId) {
     if(productId) {
         new Ajax.Updater(destElement, imgUrl, {
             method: 'get',
-            evalScripts: true,
+            evalScripts: false,
             onComplete: function() {
-                //There is some kind of race condidtion where Product.Zoom doesn't resize the main image,
-                //hence the setTimeout...
-                setTimeout(function() {
-                    if ($('image')){
-                        product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint')
-                    } else {
-                        destElement.innerHTML = defaultZoomer;
-                        product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint')
-                    }
-                ;}, 250);
+                //Product.Zoom needs the *image* (not just the html source from the ajax)
+                //to have loaded before it works, hence image object and onload handler
+                if ($('image')){
+                    var imgObj = new Image();
+                    imgObj.src = $('image').src;
+                    imgObj.onload = function() {product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint'); };
+                } else {
+                    destElement.innerHTML = defaultZoomer;
+                    product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint')
+                }
           }
         });
     } else {
         destElement.innerHTML = defaultZoomer;
-        product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint')
+        product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint');
     }
 };
 
@@ -441,7 +461,7 @@ document.observe("dom:loaded", function() {
         if(el.type == 'select-one') {
             if(el.options && (el.options.length > 1)) {
                 el.options[0].selected = true;
-                spConfig.configureElement(el);
+                spConfig.reloadOptionLabels(el);
             }
         }
     });

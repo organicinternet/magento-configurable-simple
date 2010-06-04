@@ -12,6 +12,11 @@
             </simpleconfigurableproducts>
         </helpers>
         <models>
+            <catalogrule_mysql4>
+                <rewrite>
+                    <rule>OrganicInternet_SimpleConfigurableProducts_CatalogRule_Model_Mysql4_Rule</rule>
+                </rewrite>
+            </catalogrule_mysql4>
             <catalog>
                 <rewrite>
                     <product_type_configurable_price>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Configurable_Price</product_type_configurable_price>

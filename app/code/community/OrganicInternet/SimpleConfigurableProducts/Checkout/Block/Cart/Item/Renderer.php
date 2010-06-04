@@ -26,7 +26,7 @@ class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Render
 
     public function getProductName()
     {
-        if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_cart_show_configurable_product_name')
+        if (Mage::getStoreConfig('SCP_options/cart/show_configurable_product_name')
             && $this->getConfigurableProductParentId()) {
             return $this->getConfigurableProductParent()->getName();
         } else {
@@ -58,11 +58,11 @@ class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Render
     public function getOptionList()
     {
         $options = false;
-        if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_cart_show_custom_options')) {
+        if (Mage::getStoreConfig('SCP_options/cart/show_custom_options')) {
             $options = parent::getOptionList();
         }
 
-        if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_cart_show_config_product_options')) {
+        if (Mage::getStoreConfig('SCP_options/cart/show_config_product_options')) {
             if ($this->getConfigurableProductParentId()) {
                 $attributes = $this->getConfigurableProductParent()
                     ->getTypeInstance()
@@ -82,7 +82,7 @@ class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Render
     public function getProductThumbnail()
     {
 
-        if (!Mage::getStoreConfig('SCP_options/SCP_group/SCP_cart_show_configurable_product_image')) {
+        if (!Mage::getStoreConfig('SCP_options/cart/show_configurable_product_image')) {
             $childThumbnail = parent::getProductThumbnail();
             #If image is not placeholder...
             Mage::log("thumb:" . $childThumbnail);

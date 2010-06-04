@@ -15,6 +15,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
 
     #Has extra col 'child_entity_id' so that it's possible to join correctly against the child's
     #price rules (other wise any rules applying to the conf parent are used, which is incorrect with SCP
+/*
     protected function _prepareSCPFinalPriceTable()
     {
         $write = $this->_getWriteAdapter();
@@ -42,7 +43,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
 
         return $this;
     }
-
+*/
 
     #This calculates final price using SCP logic: minimal child product finalprice
     #instead of the just the entered configurable price
@@ -52,38 +53,29 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
 
     protected function _prepareFinalPriceData($entityIds = null)
     {
-        $this->_prepareSCPFinalPriceTable();
+#        $this->_prepareSCPFinalPriceTable();
+        $this->_prepareDefaultFinalPriceTable();
 
         $write  = $this->_getWriteAdapter();
         $select = $write->select()
-            ->from(array('e' => $this->getTable('catalog/product')), array('entity_id'))
-            ->join(
-                array('cg' => $this->getTable('customer/customer_group')),
-                '',
-                array('customer_group_id'))
+            ->from(
+                array('e' => $this->getTable('catalog/product')),
+                array())
             ->joinLeft(
                 array('l' => $this->getTable('catalog/product_super_link')),
                 'l.parent_id = e.entity_id',
                 array())
-             ->join(
-                array('le' => $this->getTable('catalog/product')),
-                'le.entity_id = l.product_id',
+            ->join(
+                array('ce' => $this->getTable('catalog/product')),
+                'ce.entity_id = l.product_id',
                 array())
             ->join(
-                array('cis' => $this->getTable('cataloginventory/stock')),
-                '',
-                array())
-            ->joinLeft(
-                array('cisi' => $this->getTable('cataloginventory/stock_item')),
-                'cisi.stock_id = cis.stock_id AND cisi.product_id = le.entity_id',
+                array('pi' => $this->getIdxTable()),
+                'ce.entity_id = pi.entity_id',
                 array())
             ->join(
                 array('cw' => $this->getTable('core/website')),
                 '',
-                array('website_id'))
-            ->join(
-                array('cwd' => $this->_getWebsiteDateTable()),
-                'cw.website_id = cwd.website_id',
                 array())
             ->join(
                 array('csg' => $this->getTable('core/store_group')),
@@ -94,27 +86,17 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
                 'csg.default_store_id = cs.store_id AND cs.store_id != 0',
                 array())
             ->join(
-                array('pw' => $this->getTable('catalog/product_website')),
-                'pw.product_id = le.entity_id AND pw.website_id = cw.website_id',
+                array('cis' => $this->getTable('cataloginventory/stock')),
+                '',
                 array())
             ->joinLeft(
-                array('tp' => $this->_getTierPriceIndexTable()),
-                'tp.entity_id = le.entity_id AND tp.website_id = cw.website_id'
-                    . ' AND tp.customer_group_id = cg.customer_group_id',
+                array('cisi' => $this->getTable('cataloginventory/stock_item')),
+                'cisi.stock_id = cis.stock_id AND cisi.product_id = ce.entity_id',
                 array())
-            ->where('e.type_id=?', $this->getTypeId());
+            ->where('e.type_id=?', $this->getTypeId()); ## is this one needed?
 
 
-        $taxClassId = $this->_addAttributeToSelect($select, 'tax_class_id', 'le.entity_id', 'cs.store_id');
-        $select->columns(array('tax_class_id' => $taxClassId));
-
-        $price              = $this->_addAttributeToSelect($select, 'price', 'le.entity_id', 'cs.store_id');
-        $productStatusExpr  = $this->_addAttributeToSelect($select, 'status', 'le.entity_id', 'cs.store_id');
-        $specialPrice       = $this->_addAttributeToSelect($select, 'special_price', 'le.entity_id', 'cs.store_id');
-        $specialFrom        = $this->_addAttributeToSelect($select, 'special_from_date', 'le.entity_id', 'cs.store_id');
-        $specialTo          = $this->_addAttributeToSelect($select, 'special_to_date', 'le.entity_id', 'cs.store_id');
-        $curentDate         = new Zend_Db_Expr('cwd.date');
-
+        $productStatusExpr  = $this->_addAttributeToSelect($select, 'status', 'ce.entity_id', 'cs.store_id');
 
         if ($this->_isManageStock()) {
             $stockStatusExpr = new Zend_Db_Expr('IF(cisi.use_config_manage_stock = 0 AND cisi.manage_stock = 0,' . ' 1, cisi.is_in_stock)');
@@ -123,26 +105,23 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
         }
         $isInStockExpr = new Zend_Db_Expr("IF({$stockStatusExpr}, 1, 0)");
 
-#        $isValidChildProductExpr = new Zend_Db_Expr("LEAST({$isInStockExpr}, {$productStatusExpr})");
         $isValidChildProductExpr = new Zend_Db_Expr("{$productStatusExpr}");
 
-        $finalPriceExpr = new Zend_Db_Expr("IF(IF({$specialFrom} IS NULL, 1, "
-            . "IF(DATE({$specialFrom}) <= {$curentDate}, 1, 0)) > 0 AND IF({$specialTo} IS NULL, 1, "
-            . "IF(DATE({$specialTo}) >= {$curentDate}, 1, 0)) > 0 AND {$specialPrice} < {$price}, "
-            . "{$specialPrice}, {$price})");
-
-        $finalPrice = new Zend_Db_Expr("IF({$isValidChildProductExpr}=1, ${finalPriceExpr}, null)");
-
         $select->columns(array(
-            'child_entity_id'  =>  new Zend_Db_Expr('le.entity_id'),
-            'orig_price'    => $price,
-            'price'         => $finalPrice,
-            'min_price'     => $finalPrice,
-            'max_price'     => $finalPrice,
-            'tier_price'    => new Zend_Db_Expr('tp.min_price'),
-            'base_tier'     => new Zend_Db_Expr('tp.min_price'),
-            #'scp_is_in_stock' => $isInStockExpr
+            'entity_id'         => new Zend_Db_Expr('e.entity_id'),
+            'customer_group_id' => new Zend_Db_Expr('pi.customer_group_id'),
+            'website_id'        => new Zend_Db_Expr('cw.website_id'),
+            'tax_class_id'      => new Zend_Db_Expr('pi.tax_class_id'),
+           # 'child_entity_id'   => new Zend_Db_Expr('ce.entity_id'),
+            'orig_price'        => new Zend_Db_Expr('pi.price'),
+            'price'             => new Zend_Db_Expr('pi.final_price'),
+            'min_price'         => new Zend_Db_Expr('pi.final_price'),
+            'max_price'         => new Zend_Db_Expr('pi.final_price'),
+            'tier_price'        => new Zend_Db_Expr('pi.tier_price'),
+            'base_tier'         => new Zend_Db_Expr('pi.tier_price'),
         ));
+
+
 
         if (!is_null($entityIds)) {
             $select->where('e.entity_id IN(?)', $entityIds);
@@ -152,7 +131,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
         #1st) If it's in stock come first (out of stock product prices aren't used if not-all products are out of stock)
         #2nd) Finalprice
         #3rd) $price, in case all finalPrices are NULL. (this gives the lowest price for all associated products when they're all out of stock)
-        $sortExpr = new Zend_Db_Expr("${isInStockExpr} DESC, ${finalPrice} ASC, ${price} ASC");
+        $sortExpr = new Zend_Db_Expr("${isInStockExpr} DESC, pi.final_price ASC, pi.price ASC");
         $select->order($sortExpr);
 
         /**
@@ -182,31 +161,13 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             'max_price'     => new Zend_Db_Expr('MAX(inner.max_price)'),
             'tier_price',
             'base_tier',
-            'child_entity_id'
+            #'child_entity_id'
         ));
 
         $query = $outerSelect->insertFromSelect($this->_getDefaultFinalPriceTable());
         $write->query($query);
         #Mage::log("SCP Price inner query: " . $select->__toString());
         #Mage::log("SCP Price outer query: " . $outerSelect->__toString());
-
-        /**
-         * Add possibility modify prices from external events
-         */
-        $select = $write->select()
-            ->join(array('wd' => $this->_getWebsiteDateTable()),
-                'i.website_id = wd.website_id',
-                array());
-        Mage::dispatchEvent('prepare_catalog_product_price_index_table', array(
-            'index_table'       => array('i' => $this->_getDefaultFinalPriceTable()),
-            'select'            => $select,
-       #     'entity_id'         => 'i.entity_id',
-            'entity_id'         => 'i.child_entity_id',
-            'customer_group_id' => 'i.customer_group_id',
-            'website_id'        => 'i.website_id',
-            'website_date'      => 'wd.date',
-            'update_fields'     => array('price', 'min_price', 'max_price')
-        ));
 
         return $this;
     }

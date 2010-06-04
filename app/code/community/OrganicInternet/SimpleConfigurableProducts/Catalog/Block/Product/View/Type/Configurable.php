@@ -18,16 +18,19 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                 "finalPrice" => $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice()))
             );
 
-            if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_name')) {
+            if (Mage::getStoreConfig('SCP_options/product_page/change_name')) {
                 $childProducts[$productId]["productName"] = $product->getName();
             }
-            if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_description')) {
+            if (Mage::getStoreConfig('SCP_options/product_page/change_description')) {
+                $childProducts[$productId]["description"] = $product->getDescription();
+            }
+            if (Mage::getStoreConfig('SCP_options/product_page/change_short_description')) {
                 $childProducts[$productId]["shortDescription"] = $product->getShortDescription();
             }
             #if image changing is enabled..
-            if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_image')) {
+            if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
                 #but dont bother if fancy image changing is enabled
-                if (!Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_image_fancy')) {
+                if (!Mage::getStoreConfig('SCP_options/product_page/change_image_fancy')) {
                     #If image is not placeholder...
                     if(strpos((string)Mage::helper('catalog/image')->init($product, 'image'), (string)Mage::helper('catalog/image')->getPlaceHolder($product)) === FALSE) {
                         #add child product image url to json spConfig var
@@ -62,11 +65,12 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         }
         $config['ajaxBaseUrl'] = Mage::getUrl('oi/ajax/');
         $config['productName'] = $this->getProduct()->getName();
+        $config['description'] = $this->getProduct()->getDescription();
         $config['shortDescription'] = $this->getProduct()->getShortDescription();
         $config["imageUrl"] = (string)Mage::helper('catalog/image')->init($this->getProduct(), 'image');
 
-        if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_image')) {
-            if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_change_image_fancy')) {
+        if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
+            if (Mage::getStoreConfig('SCP_options/product_page/change_image_fancy')) {
                 $childBlock = $this->getLayout()->createBlock('catalog/product_view_media');
                 $config["imageZoomer"] =  $childBlock->setTemplate('catalog/product/view/media.phtml')
                                                      ->setProduct($this->getProduct())
@@ -74,7 +78,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             }
         }
 
-        if (Mage::getStoreConfig('SCP_options/SCP_group/SCP_product_page_show_price_ranges_in_options')) {
+        if (Mage::getStoreConfig('SCP_options/product_page/show_price_ranges_in_options')) {
             $config['showPriceRangesInOptions'] = true;
             $config['rangeToLabel'] = $this->__('to');
 

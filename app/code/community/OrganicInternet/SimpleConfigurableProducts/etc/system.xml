@@ -16,14 +16,14 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <SCP_group translate="label">
-                    <label>SCP</label>
+                <cart translate="label">
+                    <label>SCP - Cart</label>
                     <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <SCP_cart_show_config_product_options>
+                        <show_config_product_options>
                             <label>Show Configurable Product Options In Cart</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -31,8 +31,8 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </SCP_cart_show_config_product_options>
-                        <SCP_cart_show_custom_options>
+                        </show_config_product_options>
+                        <show_custom_options>
                             <label>Show Custom Options In Cart</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -41,8 +41,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <comment>Only applies to SCP configurable products</comment>
-                        </SCP_cart_show_custom_options>
-                        <SCP_cart_show_configurable_product_name>
+                        </show_custom_options>
+                        <show_configurable_product_name>
                             <label>Show Configurable Product Name in Cart</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -51,8 +51,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <comment>No = Show simple product name in cart</comment>
-                        </SCP_cart_show_configurable_product_name>
-                        <SCP_cart_show_configurable_product_image>
+                        </show_configurable_product_name>
+                        <show_configurable_product_image>
                             <label>Show Configurable Product Image in Cart</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -61,8 +61,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <comment>No = Show simple product image in cart</comment>
-                        </SCP_cart_show_configurable_product_image>
-                       <SCP_product_page_change_name>
+                        </show_configurable_product_image>
+                    </fields>
+                </cart>
+                <product_page translate="label">
+                    <label>SCP - Product Page</label>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <change_name>
                             <label>Dynamically update product name shown on Product Page</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -71,9 +80,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <comment>Takes affect once all configurable options have been selected</comment>
-                        </SCP_product_page_change_name>
-
-                        <SCP_product_page_change_description>
+                        </change_name>
+                        <change_description>
                             <label>Dynamically update product description shown on Product Page</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -82,8 +90,18 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <comment>Takes affect once all configurable options have been selected</comment>
-                        </SCP_product_page_change_description>
-                        <SCP_product_page_change_image>
+                        </change_description>
+                        <change_short_description>
+                            <label>Dynamically update product short description shown on Product Page</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>65</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Takes affect once all configurable options have been selected</comment>
+                        </change_short_description>
+                        <change_image>
                             <label>Dynamically update product picture shown on Product Page</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -92,8 +110,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <comment>Takes affect once all configurable options have been selected</comment>
-                        </SCP_product_page_change_image>
-                        <SCP_product_page_change_image_fancy>
+                        </change_image>
+                        <change_image_fancy>
                             <label>Update gallery images as well as main image?</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -102,8 +120,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <comment>Uses ajax to pull in the correct related product images too</comment>
-                        </SCP_product_page_change_image_fancy>
-                        <SCP_product_page_show_price_ranges_in_options>
+                        </change_image_fancy>
+                        <show_price_ranges_in_options>
                             <label>Show price ranges in Configurable Product Option Dropdowns</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -111,9 +129,9 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </SCP_product_page_show_price_ranges_in_options>
+                        </show_price_ranges_in_options>
                     </fields>
-                </SCP_group>
+                </product_page>
             </groups>
         </SCP_options>
     </sections>
