@@ -27,12 +27,12 @@ class OrganicInternet_SimpleConfigurableProducts_CatalogRule_Model_Mysql4_Rule e
         ));
 
         if (!$rule->getConditions()->validate($product)) {
-
+/*
             $write->delete($this->getTable('catalogrule/rule_product_price'), array(
 #                $write->quoteInto('rule_id=?', $ruleId),
                 $write->quoteInto('product_id=?', $productId),
             ));
-
+*/
             $write->commit();
             return $this;
         }
