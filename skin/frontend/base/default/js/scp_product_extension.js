@@ -339,7 +339,8 @@ Product.OptionsPrice.prototype.reloadPriceLabels = function(productPriceIsKnown)
     var priceSpanId = 'configurable-price-from-' + this.productId;
     var duplicatePriceSpanId = priceSpanId + this.duplicateIdSuffix;
 
-    $(priceSpanId).select('span.configurable-price-from-label').each(function(label) {
+    if($(priceSpanId) && $(priceSpanId).select('span.configurable-price-from-label'))
+        $(priceSpanId).select('span.configurable-price-from-label').each(function(label) {
         label.innerHTML = priceFromLabel;
     });
 
