@@ -22,7 +22,7 @@ Installation
 ------------
 
 Installation of SCP is the same as for most extensions, that is via your Magento Connect Manager using the extension key found on the MagentoCommerce site.
-Important: Once installed you will need to logout then login of Admin. You must also refresh cache and reindex all data (under System->Cache Management and System->Index Management).
+Important: Once installed you must refresh all caches and reindex all data (under System->Cache Management and System->Index Management). You will then also need to logout then login of Admin (the SCP Admin options will not be displayed otherwise).
 
 There are also some SCP configuration options under System->Configuration->SCP Config, and it's likely you will want to change these from their default values. What each option does should hopefully be self-explanatory.
 
