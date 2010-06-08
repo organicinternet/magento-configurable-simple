@@ -81,12 +81,9 @@ class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Render
 
     public function getProductThumbnail()
     {
-
         if (!Mage::getStoreConfig('SCP_options/cart/show_configurable_product_image')) {
             $childThumbnail = parent::getProductThumbnail();
             #If image is not placeholder...
-            Mage::log("thumb:" . $childThumbnail);
-            Mage::log("place:" . Mage::helper('catalog/image')->getPlaceHolder($this->getProduct()));
             if(strpos($childThumbnail, Mage::helper('catalog/image')->getPlaceHolder($this->getProduct())) === FALSE) {
                 return $childThumbnail;
             }
