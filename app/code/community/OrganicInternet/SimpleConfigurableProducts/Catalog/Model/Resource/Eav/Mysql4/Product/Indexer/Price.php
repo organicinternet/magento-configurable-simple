@@ -72,6 +72,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
                 $processIds = array_merge($processIds, array_keys($children));
                 #Ignore tier price data for actual configurable product
                 $tierPriceIds = array_keys($children);
+            } else {
+                $tierPriceIds = $productId;
             }
             #Mage::log("catalogProductSave: " . "copyRelationIndexData for: " . $productId);
             $this->_copyRelationIndexData($productId);

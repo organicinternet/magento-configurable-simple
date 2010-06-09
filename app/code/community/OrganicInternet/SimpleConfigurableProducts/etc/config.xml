@@ -2,7 +2,7 @@
 <config>
     <modules>
         <OrganicInternet_SimpleConfigurableProducts>
-            <version>0.7</version>
+            <version>0.7.2</version>
         </OrganicInternet_SimpleConfigurableProducts>
     </modules>
     <global>
