@@ -218,21 +218,33 @@ Product.Config.prototype.updateProductImage = function(productId) {
 };
 
 Product.Config.prototype.updateProductName = function(productId) {
+    var productName = this.config.productName;
+    if (productId && this.config.childProducts[productId].productName) {
+        productName = this.config.childProducts[productId].productName;
+    }
     $$('#product_addtocart_form div.product-name h1').each(function(el) {
-        el.innerHTML = productId ? this.config.childProducts[productId].productName : this.config.productName;
-    }.bind(this));
+        el.innerHTML = productName;
+    });
 };
 
 Product.Config.prototype.updateShortDescription = function(productId) {
+    var shortDescription = this.config.shortDescription;
+    if (productId && this.config.childProducts[productId].shortDescription) {
+        shortDescription = this.config.childProducts[productId].shortDescription;
+    }
     $$('#product_addtocart_form div.short-description div.std').each(function(el) {
-        el.innerHTML = productId ? this.config.childProducts[productId].shortDescription : this.config.shortDescription;
-    }.bind(this));
+        el.innerHTML = shortDescription;
+    });
 };
 
 Product.Config.prototype.updateDescription = function(productId) {
-    $$('#product_addtocart_form div.box-description div.std').each(function(el) {
-        el.innerHTML = productId ? this.config.childProducts[productId].description : this.config.description;
-    }.bind(this));
+    var description = this.config.description;
+    if (productId && this.config.childProducts[productId].description) {
+        description = this.config.childProducts[productId].description;
+    }
+    $$('div.box-description div.std').each(function(el) {
+        el.innerHTML = description;
+    });
 };
 
 
