@@ -1,8 +1,5 @@
 <?php
 
-# MD NEEDS REWORK TO INDEX CHILD PRODUCTS WHEN SAVING CONF PRODUCT
-# THIS IT'S EASY BUT IT'S HALF 3 SO WHO KNOWS? :)
-
 class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price
     extends Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price
 {
