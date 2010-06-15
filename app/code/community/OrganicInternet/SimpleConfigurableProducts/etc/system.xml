@@ -72,7 +72,7 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                         <change_name>
-                            <label>Dynamically update product name shown on Product Page</label>
+                            <label>Dynamically update displayed product name</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>65</sort_order>
@@ -82,7 +82,7 @@
                             <comment>Takes affect once all configurable options have been selected</comment>
                         </change_name>
                         <change_description>
-                            <label>Dynamically update product description shown on Product Page</label>
+                            <label>Dynamically update displayed product description</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>60</sort_order>
@@ -92,7 +92,7 @@
                             <comment>Takes affect once all configurable options have been selected</comment>
                         </change_description>
                         <change_short_description>
-                            <label>Dynamically update product short description shown on Product Page</label>
+                            <label>Dynamically update displayed product short description</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>65</sort_order>
@@ -101,8 +101,18 @@
                             <show_in_store>1</show_in_store>
                             <comment>Takes affect once all configurable options have been selected</comment>
                         </change_short_description>
+                        <change_attributes>
+                            <label>Dynamically update displayed product 'additional information'</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>67</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Takes affect once all configurable options have been selected</comment>
+                        </change_attributes>
                         <change_image>
-                            <label>Dynamically update product picture shown on Product Page</label>
+                            <label>Dynamically update displayed product picture</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>70</sort_order>
@@ -122,7 +132,7 @@
                             <comment>Uses ajax to pull in the correct related product images too</comment>
                         </change_image_fancy>
                         <show_price_ranges_in_options>
-                            <label>Show price ranges in Configurable Product Option Dropdowns</label>
+                            <label>Show price ranges in Configurable Product Option dropdowns</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>90</sort_order>

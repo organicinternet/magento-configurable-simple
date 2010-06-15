@@ -12,7 +12,6 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         //Create the extra price and tier price data/html we need.
         foreach ($this->getAllowProducts() as $product) {
             $productId  = $product->getId();
-            #$childProducts[$productId] = $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice()));
             $childProducts[$productId] = array(
                 "price" => $this->_registerJsPrice($this->_convertPrice($product->getPrice())),
                 "finalPrice" => $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice()))
@@ -27,6 +26,14 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             if (Mage::getStoreConfig('SCP_options/product_page/change_short_description')) {
                 $childProducts[$productId]["shortDescription"] = $product->getShortDescription();
             }
+
+            if (Mage::getStoreConfig('SCP_options/product_page/change_attributes')) {
+                $childBlock = $this->getLayout()->createBlock('catalog/product_view_attributes');
+                $childProducts[$productId]["productAttributes"] = $childBlock->setTemplate('catalog/product/view/attributes.phtml')
+                    ->setProduct($product)
+                    ->toHtml();
+            }
+
             #if image changing is enabled..
             if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
                 #but dont bother if fancy image changing is enabled
@@ -69,12 +76,17 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         $config['shortDescription'] = $this->getProduct()->getShortDescription();
         $config["imageUrl"] = (string)Mage::helper('catalog/image')->init($this->getProduct(), 'image');
 
+        $childBlock = $this->getLayout()->createBlock('catalog/product_view_attributes');
+        $config["productAttributes"] = $childBlock->setTemplate('catalog/product/view/attributes.phtml')
+            ->setProduct($this->getProduct())
+            ->toHtml();
+
         if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
             if (Mage::getStoreConfig('SCP_options/product_page/change_image_fancy')) {
                 $childBlock = $this->getLayout()->createBlock('catalog/product_view_media');
-                $config["imageZoomer"] =  $childBlock->setTemplate('catalog/product/view/media.phtml')
-                                                     ->setProduct($this->getProduct())
-                                                     ->toHtml();
+                $config["imageZoomer"] = $childBlock->setTemplate('catalog/product/view/media.phtml')
+                    ->setProduct($this->getProduct())
+                    ->toHtml();
             }
         }
 

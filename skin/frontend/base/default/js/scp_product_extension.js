@@ -120,7 +120,7 @@ Product.Config.prototype.addParentProductIdToCartForm = function(parentProductId
 
 
 
-Product.OptionsPrice.prototype.updateSpecialPriceDiplay = function(price, finalPrice) {
+Product.OptionsPrice.prototype.updateSpecialPriceDisplay = function(price, finalPrice) {
 
     var prodForm = $('product_addtocart_form');
 
@@ -162,10 +162,11 @@ Product.Config.prototype.reloadPrice = function() {
         optionsPrice.productOldPrice = price;
         optionsPrice.reload();
         optionsPrice.reloadPriceLabels(true);
-        optionsPrice.updateSpecialPriceDiplay(price, finalPrice);
-        this.updateShortDescription(childProductId);
-        this.updateDescription(childProductId);
+        optionsPrice.updateSpecialPriceDisplay(price, finalPrice);
+        this.updateProductShortDescription(childProductId);
+        this.updateProductDescription(childProductId);
         this.updateProductName(childProductId);
+        this.updateProductAttributes(childProductId);
         this.updateFormProductId(childProductId);
         this.addParentProductIdToCartForm(this.config.productId);
         this.showCustomOptionsBlock(childProductId, this.config.productId);
@@ -184,10 +185,11 @@ Product.Config.prototype.reloadPrice = function() {
         optionsPrice.productOldPrice = price;
         optionsPrice.reload();
         optionsPrice.reloadPriceLabels(false);
-        optionsPrice.updateSpecialPriceDiplay(price, finalPrice);
-        this.updateShortDescription(false);
-        this.updateDescription(false);
+        optionsPrice.updateSpecialPriceDisplay(price, finalPrice);
+        this.updateProductShortDescription(false);
+        this.updateProductDescription(false);
         this.updateProductName(false);
+        this.updateProductAttributes(false);
         this.showCustomOptionsBlock(false, false);
         if (usingZoomer) {
             this.showFullImageDiv(false, false);
@@ -227,7 +229,7 @@ Product.Config.prototype.updateProductName = function(productId) {
     });
 };
 
-Product.Config.prototype.updateShortDescription = function(productId) {
+Product.Config.prototype.updateProductShortDescription = function(productId) {
     var shortDescription = this.config.shortDescription;
     if (productId && this.config.childProducts[productId].shortDescription) {
         shortDescription = this.config.childProducts[productId].shortDescription;
@@ -237,7 +239,7 @@ Product.Config.prototype.updateShortDescription = function(productId) {
     });
 };
 
-Product.Config.prototype.updateDescription = function(productId) {
+Product.Config.prototype.updateProductDescription = function(productId) {
     var description = this.config.description;
     if (productId && this.config.childProducts[productId].description) {
         description = this.config.childProducts[productId].description;
@@ -247,6 +249,15 @@ Product.Config.prototype.updateDescription = function(productId) {
     });
 };
 
+Product.Config.prototype.updateProductAttributes = function(productId) {
+    var productAttributes = this.config.productAttributes;
+    if (productId && this.config.childProducts[productId].productAttributes) {
+        productAttributes = this.config.childProducts[productId].productAttributes;
+    }
+    $$('div.product-collateral div.box-additional').each(function(el) {
+        el.innerHTML = productAttributes;
+    });
+};
 
 Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) {
     var coUrl = this.config.ajaxBaseUrl + "co/?id=" + productId + '&pid=' + parentId;
