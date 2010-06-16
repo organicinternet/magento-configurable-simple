@@ -13,47 +13,13 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
         return $this;
     }
 
-    #Has extra col 'child_entity_id' so that it's possible to join correctly against the child's
-    #price rules (other wise any rules applying to the conf parent are used, which is incorrect with SCP
-/*
-    protected function _prepareSCPFinalPriceTable()
-    {
-        $write = $this->_getWriteAdapter();
-        $table = $this->_getDefaultFinalPriceTable();
-
-        $query = sprintf('DROP TABLE IF EXISTS %s', $write->quoteIdentifier($table));
-        $write->query($query);
-
-        $query = sprintf('CREATE TABLE %s ('
-            . ' `entity_id` INT(10) UNSIGNED NOT NULL,'
-            . ' `customer_group_id` SMALLINT(5) UNSIGNED NOT NULL,'
-            . ' `website_id` SMALLINT(5) UNSIGNED NOT NULL,'
-            . ' `tax_class_id` SMALLINT(5) UNSIGNED DEFAULT \'0\','
-            . ' `orig_price` DECIMAL(12,4) DEFAULT NULL,'
-            . ' `price` DECIMAL(12,4) DEFAULT NULL,'
-            . ' `min_price` DECIMAL(12,4) DEFAULT NULL,'
-            . ' `max_price` DECIMAL(12,4) DEFAULT NULL,'
-            . ' `tier_price` DECIMAL(12,4) DEFAULT NULL,'
-            . ' `base_tier` DECIMAL(12,4) DEFAULT NULL,'
-            . ' `child_entity_id` INT(10) UNSIGNED DEFAULT NULL,'
-            . ' PRIMARY KEY (`entity_id`,`customer_group_id`,`website_id`)'
-            . ') ENGINE=MYISAM DEFAULT CHARSET=utf8',
-            $write->quoteIdentifier($table));
-        $write->query($query);
-
-        return $this;
-    }
-*/
-
     #This calculates final price using SCP logic: minimal child product finalprice
     #instead of the just the entered configurable price
     #It uses a subquery/group-by hack to ensure that the various column values are all from the row with the lowest final price.
     #See Kasey Speakman comment here: http://dev.mysql.com/doc/refman/5.1/en/example-maximum-column-group-row.html
     #It's all quite complicated. :/
-
     protected function _prepareFinalPriceData($entityIds = null)
     {
-#        $this->_prepareSCPFinalPriceTable();
         $this->_prepareDefaultFinalPriceTable();
 
         $write  = $this->_getWriteAdapter();
@@ -75,7 +41,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
                 array())
             ->join(
                 array('cw' => $this->getTable('core/website')),
-                '',
+                 'pi.website_id = cw.website_id',
                 array())
             ->join(
                 array('csg' => $this->getTable('core/store_group')),
@@ -112,7 +78,6 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             'customer_group_id' => new Zend_Db_Expr('pi.customer_group_id'),
             'website_id'        => new Zend_Db_Expr('cw.website_id'),
             'tax_class_id'      => new Zend_Db_Expr('pi.tax_class_id'),
-           # 'child_entity_id'   => new Zend_Db_Expr('ce.entity_id'),
             'orig_price'        => new Zend_Db_Expr('pi.price'),
             'price'             => new Zend_Db_Expr('pi.final_price'),
             'min_price'         => new Zend_Db_Expr('pi.final_price'),
