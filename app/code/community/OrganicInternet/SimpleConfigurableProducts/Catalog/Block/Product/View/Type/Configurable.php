@@ -38,8 +38,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
                 #but dont bother if fancy image changing is enabled
                 if (!Mage::getStoreConfig('SCP_options/product_page/change_image_fancy')) {
-                    #If image is not placeholder...
-                    if(strpos((string)Mage::helper('catalog/image')->init($product, 'image'), (string)Mage::helper('catalog/image')->getPlaceHolder($product)) === FALSE) {
+                    #If image is not placeholder...  shame there's not a proper method for this as this method while seeminly reliable isn't great
+                    if(strpos((string)Mage::helper('catalog/image')->init($product, 'image'), '/placeholder/') === FALSE) {
                         #add child product image url to json spConfig var
                         $childProducts[$productId]["imageUrl"] = (string)Mage::helper('catalog/image')->init($product, 'image');
                     }
@@ -74,7 +74,9 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         $config['productName'] = $this->getProduct()->getName();
         $config['description'] = $this->getProduct()->getDescription();
         $config['shortDescription'] = $this->getProduct()->getShortDescription();
-        $config["imageUrl"] = (string)Mage::helper('catalog/image')->init($this->getProduct(), 'image');
+        if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
+            $config["imageUrl"] = (string)Mage::helper('catalog/image')->init($this->getProduct(), 'image');
+        }
 
         $childBlock = $this->getLayout()->createBlock('catalog/product_view_attributes');
         $config["productAttributes"] = $childBlock->setTemplate('catalog/product/view/attributes.phtml')
@@ -97,5 +99,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         }
         //Mage::log($config);
         return Zend_Json::encode($config);
+        //parent getJsonConfig uses the following instead, but it seems to just break inline translate of this json?
+        //return Mage::helper('core')->jsonEncode($config);
     }
 }

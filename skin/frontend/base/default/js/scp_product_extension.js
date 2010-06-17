@@ -207,6 +207,10 @@ Product.Config.prototype.updateProductImage = function(productId) {
         imageUrl = this.config.childProducts[productId].imageUrl;
     }
 
+    if (!imageUrl) {
+        return;
+    }
+
     if($('image')) {
         $('image').src = imageUrl;
     } else {
