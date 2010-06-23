@@ -93,7 +93,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         }
 
         $childProducts = $product->getTypeInstance(true)->getUsedProductCollection($product);
-        $childProducts->addAttributeToSelect(array('price', 'special_price', 'status'));
+        $childProducts->addAttributeToSelect(array('price', 'special_price', 'status', 'special_from_date', 'special_to_date'));
 
         if ($checkSalable) {
             $salableChildProducts = array();
