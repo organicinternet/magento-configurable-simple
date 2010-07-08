@@ -79,21 +79,36 @@ class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Render
         return $options;
     }
 
+    /*
+    Logic is:
+    If not SCP product, use normal thumbnail behaviour
+    If is SCP product, and admin value is set to use configurable image, do so
+    If is SCP product, and admin value is set to use simple image, do so,
+      but 'fail back' to configurable image if simple image is placeholder
+    If logic says to use it, but configurable product image is placeholder, then
+      just display placeholder
+
+    */
     public function getProductThumbnail()
     {
+        #If product not added via SCP, use default behaviour
+        if (!$this->getConfigurableProductParentId()) {
+           return parent::getProductThumbnail();
+        }
+
+
+        #If showing simple product image
         if (!Mage::getStoreConfig('SCP_options/cart/show_configurable_product_image')) {
-            $childThumbnail = parent::getProductThumbnail();
-            #If image is not placeholder...
-            if(strpos($childThumbnail, Mage::helper('catalog/image')->getPlaceHolder($this->getProduct())) === FALSE) {
-                return $childThumbnail;
+            $product = $this->getProduct();
+            #if product image is not a thumbnail
+            if($product->getData('thumbnail') && ($product->getData('thumbnail') != 'no_selection')) {
+                return $this->helper('catalog/image')->init($product, 'thumbnail');
             }
         }
 
-        #If we're showing parents anyway, or we can't show the child, show the parent.
-        #If there's no image then a placeholder will be shown
-        if ($this->getConfigurableProductParentId()) {
-            $parentProduct = $this->getConfigurableProductParent();
-            return $this->helper('catalog/image')->init($parentProduct, 'thumbnail');
-        }
+        #If simple prod thumbnail image is placeholder, or we're not using simple product image
+        #show configurable product image
+        $product = $this->getConfigurableProductParent();
+        return $this->helper('catalog/image')->init($product, 'thumbnail');
     }
 }
