@@ -258,9 +258,20 @@ Product.Config.prototype.updateProductAttributes = function(productId) {
     if (productId && this.config.childProducts[productId].productAttributes) {
         productAttributes = this.config.childProducts[productId].productAttributes;
     }
-    $$('div.product-collateral div.box-additional').each(function(el) {
-        el.innerHTML = productAttributes;
-    });
+
+    //If config product doesn't already have an additional information section,
+    //add it. Note that it will appear above any other 'collateral' elements - i.e.
+    //it won't necessarily appear in the usual order
+    if($$('div.product-collateral div.box-additional').length > 0) {
+        $$('div.product-collateral div.box-additional').each(function(el) {
+            el.innerHTML = productAttributes;
+            decorateTable('product-attribute-specs-table');
+        });
+    } else {
+        $$('div.product-collateral').each(function(el) {
+            el.insert({'top' : productAttributes});
+        });
+    }
 };
 
 Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) {
