@@ -38,9 +38,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
                 #but dont bother if fancy image changing is enabled
                 if (!Mage::getStoreConfig('SCP_options/product_page/change_image_fancy')) {
-                    #If image is not placeholder...  shame there's not a proper method for this as this method while seeminly reliable isn't great
-                    if(strpos((string)Mage::helper('catalog/image')->init($product, 'image'), '/placeholder/') === FALSE) {
-                        #add child product image url to json spConfig var
+                    #If image is not placeholder...
+                    if($product->getImage()!=='no_selection') {
                         $childProducts[$productId]["imageUrl"] = (string)Mage::helper('catalog/image')->init($product, 'image');
                     }
                 }
@@ -74,6 +73,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         $config['productName'] = $this->getProduct()->getName();
         $config['description'] = $this->getProduct()->getDescription();
         $config['shortDescription'] = $this->getProduct()->getShortDescription();
+
         if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
             $config["imageUrl"] = (string)Mage::helper('catalog/image')->init($this->getProduct(), 'image');
         }
@@ -95,7 +95,6 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         if (Mage::getStoreConfig('SCP_options/product_page/show_price_ranges_in_options')) {
             $config['showPriceRangesInOptions'] = true;
             $config['rangeToLabel'] = $this->__('to');
-
         }
         //Mage::log($config);
         return Zend_Json::encode($config);

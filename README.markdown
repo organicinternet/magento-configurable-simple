@@ -65,7 +65,7 @@ SCP's original goal was to allow site owners to have more direct control over pr
 
 The main benefit is that it allows site owners to not only directly choose the price that each combination of configurable options will result in, but it also allows them to assign completely different tier prices, custom options, special prices (aka offer prices) etc on the same basis.  So for example if the products in question are tables, a {small, oak} table could have a 'buy 2 for only £129.99 each' offer, whereas the {large, pine} version of the same table may have a Custom Option which allows the customer to specify what kind of finish or dye they require, or have a 10% discount this week. At the time of writing this kind of flexibility is not present with standard Magento Configurable Products.
 
-The main downside to this flexibility is only when you don't need it. If you just want flexiblity around pricing, but want to have the same set of custom options, discounts, etc for every associated product there currently isn't an easy way to do this with SCP. At the moment you have to manually assign the same values to each associated product. It's something I'll look into handling better in future versions of SCP.
+The main downside to this flexibility is only when you don't need it. If you just want flexibility around pricing, but want to have the same set of custom options, discounts, etc for every associated product there currently isn't an easy way to do this with SCP. At the moment you have to manually assign the same values to each associated product. It's something I'll look into handling better in future versions of SCP.
 
 
 Notes

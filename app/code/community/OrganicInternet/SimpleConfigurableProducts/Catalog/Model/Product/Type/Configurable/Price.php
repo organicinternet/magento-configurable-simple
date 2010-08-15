@@ -109,7 +109,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         return $childProducts;
     }
 
-
+/*
     public function getLowestChildPrice($product, $priceType, $checkSalable=true)
     {
         $childProduct = $this->getChildProductWithLowestPrice($product, $priceType, $checkSalable);
@@ -124,7 +124,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
         }
         return $childPrice;
     }
-
+*/
     #Could no doubt add highest/lowest as param to save 2 near-identical functions
     public function getChildProductWithHighestPrice($product, $priceType, $checkSalable=true)
     {

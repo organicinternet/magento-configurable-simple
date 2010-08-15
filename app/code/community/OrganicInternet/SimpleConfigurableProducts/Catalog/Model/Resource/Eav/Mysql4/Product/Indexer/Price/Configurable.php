@@ -41,7 +41,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
                 array())
             ->join(
                 array('cw' => $this->getTable('core/website')),
-                 'pi.website_id = cw.website_id',
+                'pi.website_id = cw.website_id',
                 array())
             ->join(
                 array('csg' => $this->getTable('core/store_group')),
