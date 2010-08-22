@@ -7,7 +7,7 @@ class OrganicInternet_SimpleConfigurableProducts_AjaxController extends Mage_Cat
     {
        $product = $this->_initProduct();
        if (!empty($product)) {
-           $this->_initProductLayout($product);
+           $this->loadLayout(false);
            $this->renderLayout();
        }
     }
@@ -16,7 +16,7 @@ class OrganicInternet_SimpleConfigurableProducts_AjaxController extends Mage_Cat
     {
        $product = $this->_initProduct();
        if (!empty($product)) {
-           $this->_initProductLayout($product);
+           $this->loadLayout(false);
            $this->renderLayout();
        }
     }

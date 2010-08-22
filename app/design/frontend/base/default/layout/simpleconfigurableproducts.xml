@@ -36,13 +36,13 @@
             <action method="setTemplate"><template>page/scpcontentonly.phtml</template></action>
         </reference>
         <reference name="content">
-            <block type="catalog/product_view_options" name="product.info.options" as="product_options" template="catalog/product/view/scpajaxoptions.phtml">
+            <block output="toHtml" type="catalog/product_view_options" name="product.info.options" as="product_options" template="catalog/product/view/scpajaxoptions.phtml">
                 <action method="addOptionRenderer"><type>text</type><block>catalog/product_view_options_type_text</block><template>catalog/product/view/options/type/text.phtml</template></action>
                 <action method="addOptionRenderer"><type>file</type><block>catalog/product_view_options_type_file</block><template>catalog/product/view/options/type/file.phtml</template></action>
                 <action method="addOptionRenderer"><type>select</type><block>catalog/product_view_options_type_select</block><template>catalog/product/view/options/type/select.phtml</template></action>
                 <action method="addOptionRenderer"><type>date</type><block>catalog/product_view_options_type_date</block><template>catalog/product/view/options/type/date.phtml</template></action>
             </block>
-            <block type="catalog/product_view" name="product.tierprices" as="tierprices" template="catalog/product/view/tierprices.phtml"/>
+            <block output="toHtml" type="catalog/product_view" name="product.tierprices" as="tierprices" template="catalog/product/view/tierprices.phtml"/>
         </reference>
     </oi_ajax_co>
     <oi_ajax_image>
@@ -50,7 +50,7 @@
             <action method="setTemplate"><template>page/scpcontentonly.phtml</template></action>
         </reference>
         <reference name="content">
-            <block type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml"/>
+            <block output="toHtml" type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml"/>
         </reference>
     </oi_ajax_image>
 
