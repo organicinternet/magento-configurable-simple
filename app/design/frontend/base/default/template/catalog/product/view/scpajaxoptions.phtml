@@ -6,7 +6,7 @@
 ?>
 <script type="text/javascript">
     //<![CDATA[
-    window.opConfig = new Product.Options(<?php echo $this->getJsonConfig() ?>);
+    try{window.opConfig = new Product.Options(<?php echo $this->getJsonConfig() ?>);}catch(e){}
     $('product_addtocart_form').encoding = 'multipart/form-data';
     //]]>
 </script>

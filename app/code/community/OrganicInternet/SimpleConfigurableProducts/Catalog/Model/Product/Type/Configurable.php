@@ -21,7 +21,6 @@
             $usedProducts = array();
             $collection = $this->getUsedProductCollection($product)
                 ->addAttributeToSelect('*');
-            $x = $collection->getSize();
             // ->addFilterByRequiredOptions();
 
             if (is_array($requiredAttributeIds)) {
@@ -41,20 +40,4 @@
         Varien_Profiler::stop('CONFIGURABLE:'.__METHOD__);
         return $this->getProduct($product)->getData($this->_usedProducts);
     }
-
-    #This is modified to completely ignore the isSalable status of the configurable product itself
-    #It only uses the isSalable sattus of the children to determine the isSalable status of the configurable product
-
-    #Not needed since I've competely rewritten the indexing for configurable products now
-/*
-    public function isSalable($product = null)
-    {
-        $salable = false;
-        foreach ($this->getUsedProducts(null, $product) as $child) {
-            $salable = $salable || $child->isSalable();
-        }
-        return $salable;
-    }
-*/
-
 }

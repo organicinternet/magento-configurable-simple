@@ -293,7 +293,7 @@ Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) 
         });
     } else {
         $('SCPcustomOptionsDiv').innerHTML = '';
-        window.opConfig = new Product.Options([]);
+        try{window.opConfig = new Product.Options([]);} catch(e){}
     }
 };
 
