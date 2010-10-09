@@ -83,22 +83,22 @@ SCP *does* allow this association, as it is able to show these custom options to
 
 
 ## Feature Aspirations
+* Investigate whether it's possible to allow custom options to be set on the Configurable Product (for when they need to be the same across all associated products).
 * Backordering enhancements. Currently only in-stock associated products are shown even if allow backordering is enabled. This is inline with default Magento behaviour, but it's something that could possibly be enhanced by SCP.
 * Possibly allow SCP logic and Magento logic for Configurable Options to run side-by-side.
-* Investigate whether it's possible to allow custom options to be set on the Configurable Product (for when they need to be the same across all associated products).
 
 
 ## Bugs / Issues
 
 #### Open Bugs
-* If an associated product has a special price, but another product associated to the same configurable product is cheaper yet doesn't have a special price, then on the product page the 'special price' html will not be displayed when the associated product with the special price is chosen.
+* See [here](http://github.com/organicinternet/magento-configurable-simple/issues)
+* When SCP dynamically upates various parts of the product page (description, attributes, product name etc) for a matching associated product, it only works if the configurable product also has the same property present. So for example, if you have no description on your configurable product, but you do on one of your associated products, it will not be displayed when this associated product is selected by the user's choice of configurable options. This is because if there's not already a description on the page, SCP doesn't know which part of the page to update to show the associated product discription. (or name, or extended attributes, etc)
 
 #### Magento (i.e. not SCP) Bugs/Limitations
 * Selecting custom options does not affect the displayed tier price on the product page.
-* Discounts which result from Custom Options applying a percentage price reduction are only reflected on the cart page, not the product page.
 
 #### Reporting Bugs
-Please report and/or fix bugs [here](http://www.magentocommerce.com/boards/viewchild/11415/)
+Please report and/or fix bugs [here](http://github.com/organicinternet/magento-configurable-simple/issues)
 
 When reporting bugs, please specify:
 
