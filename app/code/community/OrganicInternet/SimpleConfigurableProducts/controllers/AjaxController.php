@@ -5,6 +5,8 @@ class OrganicInternet_SimpleConfigurableProducts_AjaxController extends Mage_Cat
 {
     public function coAction()
     {
+      #  $x = new Mage_Catalog_Model_Product_Option();
+      #  $x->duplicate2(32,109);
        $product = $this->_initProduct();
        if (!empty($product)) {
            $this->loadLayout(false);

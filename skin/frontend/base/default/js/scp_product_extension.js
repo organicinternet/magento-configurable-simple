@@ -155,7 +155,7 @@ Product.Config.prototype.reloadPrice = function() {
         usingZoomer = true;
     }
 
-    if (childProductId){
+    if(childProductId){
         var price = childProducts[childProductId]["price"];
         var finalPrice = childProducts[childProductId]["finalPrice"];
         optionsPrice.productPrice = finalPrice;

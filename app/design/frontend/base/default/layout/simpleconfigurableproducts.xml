@@ -24,7 +24,6 @@
         </reference>
     </customer_account>
 
-
     <customer_logged_in>
         <reference name="sale.reorder.sidebar">
             <action method="setTemplate"><template>sales/reorder/scpsidebar.phtml</template></action>
