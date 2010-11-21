@@ -86,7 +86,7 @@ Product.Config.prototype.getProductIdOfMostExpensiveProductInScope = function(pr
     //Get highest price from product ids.
     for (var x=0, len=productIds.length; x<len; ++x) {
         var thisPrice = Number(childProducts[productIds[x]][priceType]);
-        if (thisPrice > maxPrice) {
+        if (thisPrice >= maxPrice) {
             maxPrice = thisPrice;
             highestPricedProdId = productIds[x];
         }
@@ -307,6 +307,9 @@ Product.Config.prototype.showFullImageDiv = function(productId, parentId) {
     prodForm.select('div.product-img-box').each(function(el) {
         destElement = el;
     });
+
+    //Reloaded image isn't draggable if you don't do this.
+    try {product_zoom.draggable.destroy();} catch(x) {}
 
     if(productId) {
         new Ajax.Updater(destElement, imgUrl, {
