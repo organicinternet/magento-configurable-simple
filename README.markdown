@@ -88,6 +88,14 @@ SCP *does* allow this association, as it is able to show these custom options to
 * Possibly allow SCP logic and Magento logic for Configurable Options to run side-by-side.
 
 
+## Lightboxes
+
+If you're using a 3rd party lightbox to display your product images rather than the built-in Magento one, it is likely this will not work with SCP without some additional work on your part. This is not an SCP bug as such; it's not possible to SCP to be compatible with all the possible 3rd party extensions.
+To fix, it's often just a matter of editing the showFullImageDiv function in the scp_product_extension.js file: Change evalScripts to true if it's not already, and possibly you'll also need to remove the code which exists in a few places which looks like:
+  product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint');
+Depending on your choice of lightbox it may be much more complex than this, but it's very likely that it's this function that you'll have to update to support your Lightbox.
+
+
 ## Bugs / Issues
 
 #### Open Bugs
