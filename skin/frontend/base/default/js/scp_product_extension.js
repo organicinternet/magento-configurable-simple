@@ -308,7 +308,8 @@ Product.Config.prototype.showFullImageDiv = function(productId, parentId) {
         destElement = el;
     });
 
-    //Reloaded image isn't draggable if you don't do this.
+    //TODO: This is needed to reinitialise Product.Zoom correctly,
+    //but there's still a race condition (in the onComplete below) which can break it
     try {product_zoom.draggable.destroy();} catch(x) {}
 
     if(productId) {
