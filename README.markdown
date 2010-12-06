@@ -100,7 +100,7 @@ Depending on your choice of lightbox it may be much more complex than this, but 
 
 #### Open Bugs
 * See [here](http://github.com/organicinternet/magento-configurable-simple/issues)
-* When SCP dynamically upates various parts of the product page (description, attributes, product name etc) for a matching associated product, it only works if the configurable product also has the same property present. So for example, if you have no description on your configurable product, but you do on one of your associated products, it will not be displayed when this associated product is selected by the user's choice of configurable options. This is because if there's not already a description on the page, SCP doesn't know which part of the page to update to show the associated product discription. (or name, or extended attributes, etc)
+* When SCP dynamically upates various parts of the product page (description, attributes, product name etc) for a matching associated product, it only works if the configurable product also has the same property present. So for example, if you have no description on your configurable product, but you do on one of your associated products, it will not be displayed when this associated product is selected by the user's choice of configurable options. This is because if there's not already a description on the page, SCP doesn't know which part of the page to update to show the associated product description. (or name, or extended attributes, etc)
 
 #### Magento (i.e. not SCP) Bugs/Limitations
 * Selecting custom options does not affect the displayed tier price on the product page.
