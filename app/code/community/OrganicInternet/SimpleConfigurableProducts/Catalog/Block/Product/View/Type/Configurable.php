@@ -21,10 +21,10 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                 $childProducts[$productId]["productName"] = $product->getName();
             }
             if (Mage::getStoreConfig('SCP_options/product_page/change_description')) {
-                $childProducts[$productId]["description"] = $product->getDescription();
+                $childProducts[$productId]["description"] = $this->helper('catalog/output')->productAttribute($product, $product->getDescription(), 'description');
             }
             if (Mage::getStoreConfig('SCP_options/product_page/change_short_description')) {
-                $childProducts[$productId]["shortDescription"] = $product->getShortDescription();
+                $childProducts[$productId]["shortDescription"] = $this->helper('catalog/output')->productAttribute($product, nl2br($product->getShortDescription()), 'short_description');
             }
 
             if (Mage::getStoreConfig('SCP_options/product_page/change_attributes')) {
@@ -70,12 +70,12 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             $config['priceFromLabel'] = $this->__('');
         }
         $config['ajaxBaseUrl'] = Mage::getUrl('oi/ajax/');
-        $config['productName'] = $this->getProduct()->getName();
-        $config['description'] = $this->getProduct()->getDescription();
-        $config['shortDescription'] = $this->getProduct()->getShortDescription();
+        $config['productName'] = $p->getName();
+        $config['description'] = $this->helper('catalog/output')->productAttribute($p, $p->getDescription(), 'description');
+        $config['shortDescription'] = $this->helper('catalog/output')->productAttribute($p, nl2br($p->getShortDescription()), 'short_description');
 
         if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
-            $config["imageUrl"] = (string)Mage::helper('catalog/image')->init($this->getProduct(), 'image');
+            $config["imageUrl"] = (string)Mage::helper('catalog/image')->init($p, 'image');
         }
 
         $childBlock = $this->getLayout()->createBlock('catalog/product_view_attributes');
@@ -96,7 +96,6 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             $config['showPriceRangesInOptions'] = true;
             $config['rangeToLabel'] = $this->__('to');
         }
-        //Mage::log($config);
         return Zend_Json::encode($config);
         //parent getJsonConfig uses the following instead, but it seems to just break inline translate of this json?
         //return Mage::helper('core')->jsonEncode($config);
