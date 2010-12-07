@@ -321,8 +321,8 @@ Product.Config.prototype.showFullImageDiv = function(productId, parentId) {
                 //to have loaded before it works, hence image object and onload handler
                 if ($('image')){
                     var imgObj = new Image();
-                    imgObj.src = $('image').src;
                     imgObj.onload = function() {product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint'); };
+                    imgObj.src = $('image').src;
                 } else {
                     destElement.innerHTML = defaultZoomer;
                     product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint')
