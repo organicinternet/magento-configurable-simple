@@ -44,7 +44,7 @@ Some key things to be aware of
 Main Features
 -------------
 
-* SCP fully supports special prices, catalog price rules, tier prices, custom options etc.
+* SCP fully supports special prices, catalog price rules, tier prices, custom options etc. (see notes about use of custom options)
 * In addition it can optionally change the product's image, associated image gallery, name and description to match the associated product when a user has made their selection of a product's configurable options. (so if a user has chosen a silver phone they can see it in silver before they buy it)
 * There's the option to show whether the configurable product or associated product name and image are shown in the cart
 * There's the option to show price ranges for the remaining choices in the configurable product option drop downs on the product page
@@ -78,7 +78,7 @@ SCP *does* allow this association, as it is able to show these custom options to
 
 * SCP uses a JavaScript file called scp_product_extension.js. This needs to be loaded after the Magento product.js file, and SCP is written such that it will be. However in some cases the new Magento 'Merge JavaScript Files' option may cause it to be loaded earlier, which will stop SCP from working. If you are seeing JavaScript errors, or if you are seeing the Configurable Product being added to the cart instead of the Associated Products, turn off the 'Merge JavaScript Files' option in Admin->Configuration->Developer
 
-* Some of SCP's JavaScript is dependent on the DOM structure of the Product Page (just as the core Magento product.js is). If you have a very heavily customised theme you may find you have JavaScript errors and may need to modify some of the JS in product_extension.js to match your modified theme.
+* Some of SCP's JavaScript is dependent on the DOM structure of the Product Page (just as the core Magento product.js is). If you have a customised theme you may find you have JavaScript errors or that some product properties don't update even if enabled in Admin, and so you may need to modify some of the JS in product_extension.js to match your modified theme.
 
 
 
@@ -99,7 +99,7 @@ Depending on your choice of lightbox it may be much more complex than this, but 
 ## Bugs / Issues
 
 #### Open Bugs
-* See [here](http://github.com/organicinternet/magento-configurable-simple/issues)
+* See [here](http://github.com/organicinternet/magento-configurable-simple/issues) also see [here](https://github.com/organicinternet/magento-configurable-simple/issues/closed) for any issues that either have been fixed, are unfixable, are not SCP related, etc.
 * When SCP dynamically upates various parts of the product page (description, attributes, product name etc) for a matching associated product, it only works if the configurable product also has the same property present. So for example, if you have no description on your configurable product, but you do on one of your associated products, it will not be displayed when this associated product is selected by the user's choice of configurable options. This is because if there's not already a description on the page, SCP doesn't know which part of the page to update to show the associated product description. (or name, or extended attributes, etc)
 
 #### Magento (i.e. not SCP) Bugs/Limitations
