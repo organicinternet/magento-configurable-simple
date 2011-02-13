@@ -7,6 +7,15 @@ class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Render
         if ($this->getItem()->getOptionByCode('cpid')) {
             return $this->getItem()->getOptionByCode('cpid')->getValue();
         }
+        #No idea why in 1.5 the stuff in buyRequest isn't auto-decoded from info_buyRequest
+        #but then it's Magento we're talking about, so I've not a clue what's *meant* to happen.
+        try {
+            $buyRequest = unserialize($this->getItem()->getOptionByCode('info_buyRequest')->getValue());
+            if(!empty($buyRequest['cpid'])) {
+                return $buyRequest['cpid'];
+            }
+        } catch (Exception $e) {
+        }
         return null;
     }
 
