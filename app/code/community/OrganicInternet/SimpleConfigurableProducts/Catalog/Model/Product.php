@@ -23,4 +23,18 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product
             return parent::isVisibleInSiteVisibility();
         }
     }
+
+
+    public function getProductUrl($useSid = null)
+    {
+        if(is_callable(array($this->getTypeInstance(), 'hasConfigurableProductParentId'))
+            && $this->getTypeInstance()->hasConfigurableProductParentId()) {
+
+            $confProdId = $this->getTypeInstance()->getConfigurableProductParentId();
+            return Mage::getModel('catalog/product')->load($confProdId)->getProductUrl();
+
+        } else {
+            return parent::getProductUrl($useSid);
+        }
+    }
 }
