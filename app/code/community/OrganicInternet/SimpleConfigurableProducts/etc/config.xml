@@ -39,11 +39,11 @@
                     <data_configurable>OrganicInternet_SimpleConfigurableProducts_CatalogIndex_Model_Data_Configurable</data_configurable>
                 </rewrite>
             </catalogindex>
-            <cataloginventory_mysql4>
-                <rewrite>
-                    <indexer_stock_configurable>OrganicInternet_SimpleConfigurableProducts_CatalogInventory_Model_Mysql4_Indexer_Stock_Configurable</indexer_stock_configurable>
-                </rewrite>
-            </cataloginventory_mysql4>
+    		<cataloginventory_resource>
+    			<rewrite>
+					   <indexer_stock_configurable>OrganicInternet_SimpleConfigurableProducts_CatalogInventory_Model_Resource_Indexer_Stock_Configurable</indexer_stock_configurable> 			
+    			</rewrite>
+    		</cataloginventory_resource>
             <catalog_resource_eav_mysql4>
                 <rewrite>
                     <product_collection>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Collection</product_collection>
