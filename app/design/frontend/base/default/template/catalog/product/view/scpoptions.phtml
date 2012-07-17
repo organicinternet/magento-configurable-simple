@@ -121,7 +121,7 @@ if (count($_options) || $this->getProduct()->isConfigurable()):
                         }
                     } else {
                         if (element.getValue().strip() != '') {
-                            price += parseFloat(this.config[optionId]);
+                            price += parseFloat(this.config[optionId].price);
                         }
                     }
                 }
