@@ -119,6 +119,15 @@
                 </args>
             </oi>
         </routers>
+	<translate>
+            <modules>
+                <simpleconfigurableproducts>
+                    <files>
+                        <default>OrganicInternet_SimpleConfigurableProducts.csv</default>
+                    </files>
+                </simpleconfigurableproducts>
+            </modules>
+        </translate>
     </frontend>
     <adminhtml>
         <acl>
@@ -140,5 +149,14 @@
                 </admin>
             </resources>
         </acl>
+	<translate>
+            <modules>
+                <simpleconfigurableproducts>
+                    <files>
+                        <default>OrganicInternet_SimpleConfigurableProducts.csv</default>
+                    </files>
+                </simpleconfigurableproducts>
+            </modules>
+        </translate>
     </adminhtml>
 </config>
