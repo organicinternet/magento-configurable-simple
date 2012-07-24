@@ -95,7 +95,11 @@ if (count($_options) || $this->getProduct()->isConfigurable()):
                     if (element.type == 'checkbox' || element.type == 'radio') {
                         if (element.checked) {
                             if (config[optionId][element.getValue()]) {
-                                price += parseFloat(config[optionId][element.getValue()]);
+                                /* begin DMTW */
+    							/* fix price resetting to zero when custom option checkbox is clicked */
+                                // price += parseFloat(config[optionId][element.getValue()]);
+								price += parseFloat(config[optionId][element.getValue()].price);
+								/* end DMTW */
                             }
                         }
                     } else if(element.hasClassName('datetime-picker') && !skipIds.include(optionId)) {
