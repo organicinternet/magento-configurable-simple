@@ -14,7 +14,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             $productId  = $product->getId();
             $childProducts[$productId] = array(
                 "price" => $this->_registerJsPrice($this->_convertPrice($product->getPrice())),
-                "finalPrice" => $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice()))
+                "finalPrice" => $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice())),
+                "sku" => $product->getSku(),
             );
 
             if (Mage::getStoreConfig('SCP_options/product_page/change_name')) {
@@ -32,6 +33,12 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                 $childProducts[$productId]["productAttributes"] = $childBlock->setTemplate('catalog/product/view/attributes.phtml')
                     ->setProduct($product)
                     ->toHtml();
+            }
+            
+            $bChangeStock = Mage::getStoreConfig('SCP_options/product_page/change_stock');
+            if ($bChangeStock) {
+                $oStockBlock = $this->getLayout()->createBlock('catalog/product_view_type_simple')->setTemplate('catalog/product/view/scpavailability.phtml');
+                $childProducts[$productId]["stockStatus"] = $oStockBlock->setProduct($product)->toHtml();
             }
 
             #if image changing is enabled..

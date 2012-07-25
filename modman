@@ -3,6 +3,7 @@ app/design/frontend/base/default/layout/simpleconfigurableproducts.xml app/desig
 app/design/frontend/base/default/template/catalog/product/view/options/scpwrapper.phtml app/design/frontend/base/default/template/catalog/product/view/options/scpwrapper.phtml
 app/design/frontend/base/default/template/catalog/product/view/scpajaxoptions.phtml app/design/frontend/base/default/template/catalog/product/view/scpajaxoptions.phtml
 app/design/frontend/base/default/template/catalog/product/view/scpoptions.phtml app/design/frontend/base/default/template/catalog/product/view/scpoptions.phtml
+app/design/frontend/base/default/template/catalog/product/view/scpavailability.phtml app/design/frontend/base/default/template/catalog/product/view/scpavailability.phtml
 app/design/frontend/base/default/template/page/scpcontentonly.phtml app/design/frontend/base/default/template/page/scpcontentonly.phtml
 app/design/frontend/base/default/template/sales/reorder/scpsidebar.phtml app/design/frontend/base/default/template/sales/reorder/scpsidebar.phtml
 app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml

@@ -189,6 +189,7 @@ Product.Config.prototype.reloadPrice = function() {
         this.updateProductShortDescription(false);
         this.updateProductDescription(false);
         this.updateProductName(false);
+        this.updateProductStock(childProductId);
         this.updateProductAttributes(false);
         this.showCustomOptionsBlock(false, false);
         if (usingZoomer) {
@@ -250,6 +251,19 @@ Product.Config.prototype.updateProductDescription = function(productId) {
     }
     $$('div.box-description div.std').each(function(el) {
         el.innerHTML = description;
+    });
+};
+
+Product.Config.prototype.updateProductStock = function(productId) {
+    var stockStatusHtml = this.config.stockStatus;
+    if (productId && this.config.childProducts[productId].stockStatus) {
+        stockStatusHtml = this.config.childProducts[productId].stockStatus;
+    }
+    //If config product doesn't already have an additional information section,
+    //it won't be shown for associated product either. It's too hard to work out
+    //where to place it given that different themes use very different html here
+    $$('.availability').each(function(el) { 
+        el.replace(stockStatusHtml);
     });
 };
 
