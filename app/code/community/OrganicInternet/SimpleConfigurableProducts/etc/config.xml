@@ -12,11 +12,11 @@
             </simpleconfigurableproducts>
         </helpers>
         <models>
-            <catalogrule_mysql4>
+            <catalogrule_resource>
                 <rewrite>
-                    <rule>OrganicInternet_SimpleConfigurableProducts_CatalogRule_Model_Mysql4_Rule</rule>
+                    <rule>OrganicInternet_SimpleConfigurableProducts_CatalogRule_Model_Resource_Rule</rule>
                 </rewrite>
-            </catalogrule_mysql4>
+            </catalogrule_resource>
             <catalog>
                 <rewrite>
                     <product_type_configurable_price>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Configurable_Price</product_type_configurable_price>
@@ -34,27 +34,29 @@
                     <product>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product</product>
                 </rewrite>
             </catalog>
+            <catalog_resource>
+            	<rewrite>
+            		<product_indexer_price_configurable>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Product_Indexer_Price_Configurable</product_indexer_price_configurable>
+            	</rewrite>
+            	<rewrite>
+            		<product_collection>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Product_Collection</product_collection>
+            	</rewrite>
+            </catalog_resource>
             <catalogindex>
                 <rewrite>
                     <data_configurable>OrganicInternet_SimpleConfigurableProducts_CatalogIndex_Model_Data_Configurable</data_configurable>
                 </rewrite>
             </catalogindex>
-            <cataloginventory_mysql4>
+    		<cataloginventory_resource>
+    			<rewrite>
+					   <indexer_stock_configurable>OrganicInternet_SimpleConfigurableProducts_CatalogInventory_Model_Resource_Indexer_Stock_Configurable</indexer_stock_configurable> 			
+    			</rewrite>
+    		</cataloginventory_resource>
+            <catalog_resource>
                 <rewrite>
-                    <indexer_stock_configurable>OrganicInternet_SimpleConfigurableProducts_CatalogInventory_Model_Mysql4_Indexer_Stock_Configurable</indexer_stock_configurable>
+                    <product_indexer_price>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Product_Indexer_Price</product_indexer_price>
                 </rewrite>
-            </cataloginventory_mysql4>
-            <catalog_resource_eav_mysql4>
-                <rewrite>
-                    <product_collection>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Collection</product_collection>
-                </rewrite>
-                <rewrite>
-                    <product_indexer_price_configurable>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price_Configurable</product_indexer_price_configurable>
-                </rewrite>
-                <rewrite>
-                    <product_indexer_price>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price</product_indexer_price>
-                </rewrite>
-            </catalog_resource_eav_mysql4>
+            </catalog_resource>
         </models>
         <blocks>
             <adminhtml>
@@ -117,6 +119,15 @@
                 </args>
             </oi>
         </routers>
+	<translate>
+            <modules>
+                <simpleconfigurableproducts>
+                    <files>
+                        <default>OrganicInternet_SimpleConfigurableProducts.csv</default>
+                    </files>
+                </simpleconfigurableproducts>
+            </modules>
+        </translate>
     </frontend>
     <adminhtml>
         <acl>
@@ -138,5 +149,14 @@
                 </admin>
             </resources>
         </acl>
+	<translate>
+            <modules>
+                <simpleconfigurableproducts>
+                    <files>
+                        <default>OrganicInternet_SimpleConfigurableProducts.csv</default>
+                    </files>
+                </simpleconfigurableproducts>
+            </modules>
+        </translate>
     </adminhtml>
 </config>

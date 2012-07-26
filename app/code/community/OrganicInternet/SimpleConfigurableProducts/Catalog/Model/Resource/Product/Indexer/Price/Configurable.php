@@ -1,5 +1,5 @@
 <?php
-class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price_Configurable
+class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Product_Indexer_Price_Configurable
     extends Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price_Configurable
 {
     protected function _isManageStock()
@@ -84,6 +84,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             'max_price'         => new Zend_Db_Expr('pi.final_price'),
             'tier_price'        => new Zend_Db_Expr('pi.tier_price'),
             'base_tier'         => new Zend_Db_Expr('pi.tier_price'),
+            'group_price'       => new Zend_Db_Expr('pi.group_price'),
+            'base_group_price'  => new Zend_Db_Expr('pi.group_price'),
         ));
 
 
@@ -126,6 +128,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             'max_price'     => new Zend_Db_Expr('MAX(inner.max_price)'),
             'tier_price',
             'base_tier',
+            'group_price',
+            'base_group_price',
             #'child_entity_id'
         ));
 
@@ -133,6 +137,23 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
         $write->query($query);
         #Mage::log("SCP Price inner query: " . $select->__toString());
         #Mage::log("SCP Price outer query: " . $outerSelect->__toString());
+
+	/**
+         * Add possibility modify prices from external events
+        */
+        $select = $write->select()
+            ->join(array('wd' => $this->_getWebsiteDateTable()),
+                'i.website_id = wd.website_id',
+                array());
+        Mage::dispatchEvent('prepare_catalog_product_price_index_table', array(
+            'index_table'       => array('i' => $this->_getDefaultFinalPriceTable()),
+            'select'            => $select,
+            'entity_id'         => 'i.entity_id',
+            'customer_group_id' => 'i.customer_group_id',
+            'website_id'        => 'i.website_id',
+            'website_date'      => 'wd.website_date',
+            'update_fields'     => array('price', 'min_price', 'max_price')
+        ));
 
         return $this;
     }
