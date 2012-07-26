@@ -95,11 +95,7 @@ if (count($_options) || $this->getProduct()->isConfigurable()):
                     if (element.type == 'checkbox' || element.type == 'radio') {
                         if (element.checked) {
                             if (config[optionId][element.getValue()]) {
-                                /* begin DMTW */
-    							/* fix price resetting to zero when custom option checkbox is clicked */
-                                // price += parseFloat(config[optionId][element.getValue()]);
-								price += parseFloat(config[optionId][element.getValue()].price);
-								/* end DMTW */
+                                price += parseFloat(config[optionId][element.getValue()].price);
                             }
                         }
                     } else if(element.hasClassName('datetime-picker') && !skipIds.include(optionId)) {
@@ -110,7 +106,7 @@ if (count($_options) || $this->getProduct()->isConfigurable()):
                             }
                         });
                         if (dateSelected) {
-                            price += parseFloat(this.config[optionId]);
+                            price += parseFloat(this.config[optionId].price);
                             skipIds[optionId] = optionId;
                         }
                     } else if(element.type == 'select-one' || element.type == 'select-multiple') {
@@ -118,7 +114,7 @@ if (count($_options) || $this->getProduct()->isConfigurable()):
                             $A(element.options).each(function(selectOption){
                                 if (selectOption.selected) {
                                     if (this.config[optionId][selectOption.value]) {
-                                        price += parseFloat(this.config[optionId][selectOption.value]);
+                                        price += parseFloat(this.config[optionId][selectOption.value].price);
                                     }
                                 }
                             });
