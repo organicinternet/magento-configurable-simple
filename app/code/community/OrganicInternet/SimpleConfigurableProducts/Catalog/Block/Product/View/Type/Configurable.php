@@ -40,6 +40,14 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                 $oStockBlock = $this->getLayout()->createBlock('catalog/product_view_type_simple')->setTemplate('catalog/product/view/scpavailability.phtml');
                 $childProducts[$productId]["stockStatus"] = $oStockBlock->setProduct($product)->toHtml();
             }
+            
+            $bShowProductAlerts = Mage::getStoreConfig(Mage_ProductAlert_Model_Observer::XML_PATH_STOCK_ALLOW);
+            if ($bShowProductAlerts && !$product->isAvailable()) {
+                $oAlertBlock = $this->getLayout()->createBlock('productalert/product_view')
+                        ->setTemplate('productalert/product/view.phtml')
+                        ->setSignupUrl(Mage::helper('productalert')->setProduct($product)->getSaveUrl('stock'));;
+                $childProducts[$productId]["alertHtml"] = $oAlertBlock->toHtml();
+            }
 
             #if image changing is enabled..
             if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
@@ -89,6 +97,14 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         $config["productAttributes"] = $childBlock->setTemplate('catalog/product/view/attributes.phtml')
             ->setProduct($this->getProduct())
             ->toHtml();
+        
+        $bShowProductAlerts = Mage::getStoreConfig(Mage_ProductAlert_Model_Observer::XML_PATH_STOCK_ALLOW);
+        if ($bShowProductAlerts && !Mage::registry('child_product')->isAvailable()) {
+            $oAlertBlock = $this->getLayout()->createBlock('productalert/product_view')
+                    ->setTemplate('productalert/product/view.phtml')
+                    ->setSignupUrl(Mage::helper('productalert')->setProduct(Mage::registry('child_product'))->getSaveUrl('stock'));;
+            $config["alertHtml"] = $oAlertBlock->toHtml();
+        }
 
         if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
             if (Mage::getStoreConfig('SCP_options/product_page/change_image_fancy')) {
