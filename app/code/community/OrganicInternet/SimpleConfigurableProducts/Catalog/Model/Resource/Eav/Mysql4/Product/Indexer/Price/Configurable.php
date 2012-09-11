@@ -84,6 +84,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             'max_price'         => new Zend_Db_Expr('pi.final_price'),
             'tier_price'        => new Zend_Db_Expr('pi.tier_price'),
             'base_tier'         => new Zend_Db_Expr('pi.tier_price'),
+             'group_price'         => new Zend_Db_Expr('pi.tier_price'),
+         'base_group_price'         => new Zend_Db_Expr('pi.tier_price'),
         ));
 
 
@@ -126,13 +128,17 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             'max_price'     => new Zend_Db_Expr('MAX(inner.max_price)'),
             'tier_price',
             'base_tier',
+            'group_price',
+            'base_group_price',
+            #'base_tier',
             #'child_entity_id'
         ));
-
+      # Mage::log("SCP Price inner query: " . $select->__toString());
+      # Mage::log("SCP Price outer query: " . $outerSelect->__toString());
         $query = $outerSelect->insertFromSelect($this->_getDefaultFinalPriceTable());
+       # Mage::log("===================SCP Price outer query: " . $outerSelect->__toString());
         $write->query($query);
-        #Mage::log("SCP Price inner query: " . $select->__toString());
-        #Mage::log("SCP Price outer query: " . $outerSelect->__toString());
+       
 
         return $this;
     }
