@@ -166,6 +166,8 @@ Product.Config.prototype.reloadPrice = function() {
         this.updateProductShortDescription(childProductId);
         this.updateProductDescription(childProductId);
         this.updateProductName(childProductId);
+        this.updateProductStock(childProductId);
+        this.updateProductSku(childProductId);
         this.updateProductAttributes(childProductId);
         this.updateFormProductId(childProductId);
         this.addParentProductIdToCartForm(this.config.productId);
@@ -189,7 +191,8 @@ Product.Config.prototype.reloadPrice = function() {
         this.updateProductShortDescription(false);
         this.updateProductDescription(false);
         this.updateProductName(false);
-        this.updateProductStock(childProductId);
+        this.updateProductStock(false);
+        this.updateProductSku(false);
         this.updateProductAttributes(false);
         this.showCustomOptionsBlock(false, false);
         if (usingZoomer) {
@@ -215,7 +218,7 @@ Product.Config.prototype.updateProductImage = function(productId) {
     if($('image')) {
         $('image').src = imageUrl;
     } else {
-        $$('#product_addtocart_form p.product-image img').each(function(el) {
+        $$('#product_addtocart_form a.product-image img').each(function(el) {
             var dims = el.getDimensions();
             el.src = imageUrl;
             el.width = dims.width;
@@ -239,7 +242,7 @@ Product.Config.prototype.updateProductShortDescription = function(productId) {
     if (productId && this.config.childProducts[productId].shortDescription) {
         shortDescription = this.config.childProducts[productId].shortDescription;
     }
-    $$('#product_addtocart_form div.short-description div.std').each(function(el) {
+    $$('#product_addtocart_form div.short-description div').each(function(el) {
         el.innerHTML = shortDescription;
     });
 };
@@ -259,12 +262,30 @@ Product.Config.prototype.updateProductStock = function(productId) {
     if (productId && this.config.childProducts[productId].stockStatus) {
         stockStatusHtml = this.config.childProducts[productId].stockStatus;
     }
+    var addToCartHtml = this.config.addToCart;
+    if (productId && this.config.childProducts[productId].addToCart) {
+        addToCartHtml = this.config.childProducts[productId].addToCart;
+    }
     //If config product doesn't already have an additional information section,
     //it won't be shown for associated product either. It's too hard to work out
     //where to place it given that different themes use very different html here
-    $$('.availability').each(function(el) { 
+    $$('p.availability').each(function(el) { 
         el.replace(stockStatusHtml);
     });
+    $$('div.add-to-box').each(function(el) { 
+        el.innerHTML=addToCartHtml;
+    });
+};
+
+Product.Config.prototype.updateProductSku = function(productId) {
+    var skuHtml = this.config.sku;
+    if (productId && this.config.childProducts[productId].sku) {
+        skuHtml = this.config.childProducts[productId].sku;
+    }
+    //If config product doesn't already have an additional information section,
+    //it won't be shown for associated product either. It's too hard to work out
+    //where to place it given that different themes use very different html here
+    $('product-sku').innerHTML=skuHtml;
 };
 
 Product.Config.prototype.updateProductAttributes = function(productId) {

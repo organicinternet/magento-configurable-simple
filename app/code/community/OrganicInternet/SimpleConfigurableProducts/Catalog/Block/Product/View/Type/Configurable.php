@@ -37,8 +37,13 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             
             $bChangeStock = Mage::getStoreConfig('SCP_options/product_page/change_stock');
             if ($bChangeStock) {
+                // Stock status HTML
                 $oStockBlock = $this->getLayout()->createBlock('catalog/product_view_type_simple')->setTemplate('catalog/product/view/scpavailability.phtml');
                 $childProducts[$productId]["stockStatus"] = $oStockBlock->setProduct($product)->toHtml();
+
+                // Add to cart button
+                $oAddToCartBlock = $this->getLayout()->createBlock('catalog/product_view_type_simple')->setTemplate('catalog/product/view/addtocart.phtml');
+                $childProducts[$productId]["addToCart"] = $oAddToCartBlock->setProduct($product)->toHtml();
             }
             
             $bShowProductAlerts = Mage::getStoreConfig(Mage_ProductAlert_Model_Observer::XML_PATH_STOCK_ALLOW);
