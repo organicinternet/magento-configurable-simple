@@ -285,7 +285,7 @@ Product.Config.prototype.updateProductSku = function(productId) {
     //If config product doesn't already have an additional information section,
     //it won't be shown for associated product either. It's too hard to work out
     //where to place it given that different themes use very different html here
-    $('product-sku').innerHTML=skuHtml;
+    if($('product-sku')){ $('product-sku').innerHTML=skuHtml } ;
 };
 
 Product.Config.prototype.updateProductAttributes = function(productId) {
