@@ -34,7 +34,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                     ->setProduct($product)
                     ->toHtml();
             }
-            
+
             $bChangeStock = Mage::getStoreConfig('SCP_options/product_page/change_stock');
             if ($bChangeStock) {
                 // Stock status HTML
@@ -45,7 +45,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                 $oAddToCartBlock = $this->getLayout()->createBlock('catalog/product_view_type_simple')->setTemplate('catalog/product/view/addtocart.phtml');
                 $childProducts[$productId]["addToCart"] = $oAddToCartBlock->setProduct($product)->toHtml();
             }
-            
+
             $bShowProductAlerts = Mage::getStoreConfig(Mage_ProductAlert_Model_Observer::XML_PATH_STOCK_ALLOW);
             if ($bShowProductAlerts && !$product->isAvailable()) {
                 $oAlertBlock = $this->getLayout()->createBlock('productalert/product_view')
@@ -85,7 +85,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         $p = $this->getProduct();
         $config['childProducts'] = $childProducts;
         if ($p->getMaxPossibleFinalPrice() != $p->getFinalPrice()) {
-            $config['priceFromLabel'] = $this->__('Price From:');
+            $config['priceFromLabel'] = $this->__('Preis ab: &nbsp;');
         } else {
             $config['priceFromLabel'] = $this->__('');
         }
@@ -102,7 +102,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         $config["productAttributes"] = $childBlock->setTemplate('catalog/product/view/attributes.phtml')
             ->setProduct($this->getProduct())
             ->toHtml();
-        
+
         $bShowProductAlerts = Mage::getStoreConfig(Mage_ProductAlert_Model_Observer::XML_PATH_STOCK_ALLOW);
         if ($bShowProductAlerts && !Mage::registry('child_product')->isAvailable()) {
             $oAlertBlock = $this->getLayout()->createBlock('productalert/product_view')

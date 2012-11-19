@@ -69,7 +69,7 @@ class OrganicInternet_SimpleConfigurableProducts_Rss_Block_Catalog_Category
                             '<td><a href="'.$_product->getProductUrl().'"><img src="' . $this->helper('catalog/image')->init($_product, 'thumbnail')->resize(75, 75)
                             .'" border="0" align="left" height="75" width="75"></a></td>'.
                             '<td  style="text-decoration:none;">'.$_product->getDescription().
-                            ($_product->isConfigurable() ? '<p> Price From:' : '<p> Price:').
+                            ($_product->isConfigurable() ? '<p> Preis ab: &nbsp; ' : '<p> Preis:').
                             Mage::helper('core')->currency($_product->getPrice()).
                             ($_product->getPrice() != $final_price  ? ' Special Price:'. Mage::helper('core')->currency($final_price) : '').
                             '</p>'.
