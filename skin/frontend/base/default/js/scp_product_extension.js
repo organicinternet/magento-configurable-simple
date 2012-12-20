@@ -159,6 +159,7 @@ Product.Config.prototype.reloadPrice = function() {
         var price = childProducts[childProductId]["price"];
         var finalPrice = childProducts[childProductId]["finalPrice"];
         optionsPrice.productPrice = finalPrice;
+        optionsPrice.productPriceBeforeRedemptions = finalPrice;
         optionsPrice.productOldPrice = price;
         optionsPrice.reload();
         optionsPrice.reloadPriceLabels(true);
