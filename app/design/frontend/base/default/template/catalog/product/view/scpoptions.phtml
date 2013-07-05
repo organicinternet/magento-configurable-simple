@@ -95,10 +95,10 @@ if (count($_options) || $this->getProduct()->isConfigurable()):
                     if (element.type == 'checkbox' || element.type == 'radio') {
                         if (element.checked) {
                             if (config[optionId][element.getValue()]) {
-                                price += parseFloat(config[optionId][element.getValue()]);
+    			price += parseFloat(config[optionId][element.getValue()].price);
                             }
                         }
-                    } else if(element.hasClassName('datetime-picker') && !skipIds.include(optionId)) {
+                    } else if(element.hasClassName('datetime-picker') &amp;&amp; !skipIds.include(optionId)) {
                         dateSelected = true;
                         $$('.product-custom-option[id^="options_' + optionId + '"]').each(function(dt){
                             if (dt.getValue() == '') {
@@ -106,7 +106,7 @@ if (count($_options) || $this->getProduct()->isConfigurable()):
                             }
                         });
                         if (dateSelected) {
-                            price += parseFloat(this.config[optionId]);
+			    price += parseFloat(this.config[optionId].price);
                             skipIds[optionId] = optionId;
                         }
                     } else if(element.type == 'select-one' || element.type == 'select-multiple') {
@@ -114,14 +114,14 @@ if (count($_options) || $this->getProduct()->isConfigurable()):
                             $A(element.options).each(function(selectOption){
                                 if (selectOption.selected) {
                                     if (this.config[optionId][selectOption.value]) {
-                                        price += parseFloat(this.config[optionId][selectOption.value]);
+					price += parseFloat(this.config[optionId][selectOption.value].price);
                                     }
                                 }
                             });
                         }
                     } else {
                         if (element.getValue().strip() != '') {
-                            price += parseFloat(this.config[optionId]);
+                            price += parseFloat(this.config[optionId].price);
                         }
                     }
                 }
