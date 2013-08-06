@@ -1,0 +1,10 @@
+app/code/community/OrganicInternet/SimpleConfigurableProducts/  app/code/community/OrganicInternet/SimpleConfigurableProducts/
+app/design/frontend/base/default/layout/*   app/design/frontend/base/default/layout/
+app/design/frontend/base/default/template/catalog/product/view/options/scpwrapper.phtml app/design/frontend/base/default/template/catalog/product/view/options/scpwrapper.phtml
+app/design/frontend/base/default/template/catalog/product/view/scpajaxoptions.phtml app/design/frontend/base/default/template/catalog/product/view/scpajaxoptions.phtml
+app/design/frontend/base/default/template/catalog/product/view/scpoptions.phtml app/design/frontend/base/default/template/catalog/product/view/scpoptions.phtml
+app/design/frontend/base/default/template/page/scpcontentonly.phtml app/design/frontend/base/default/template/page/scpcontentonly.phtml
+app/design/frontend/base/default/template/sales/reorder/scpsidebar.phtml    app/design/frontend/base/default/template/sales/reorder/scpsidebar.phtml
+app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml  app/etc/modules/OrganicInternet_SimpleConfigurableProducts.xml
+skin/frontend/base/default/images/scp-ajax-loader.gif   skin/frontend/base/default/images/scp-ajax-loader.gif
+skin/frontend/base/default/js/scp_product_extension.js  skin/frontend/base/default/js/scp_product_extension.js
