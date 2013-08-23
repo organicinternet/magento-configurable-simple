@@ -1,0 +1,18 @@
+{
+    "name":"blissmedia/part-finder",
+    "type":"magento-module",
+    "homepage":"https://bitbucket.org/blissmedia/part-finder",
+    "authors":[
+        {
+            "name":"James Harrison"
+        }
+    ],
+    "minimum-stability":"dev",
+    "repositories":[
+        { "type": "vcs", "url": "git@bitbucket.org:blissmedia/ecommerceteam-sln.git" }
+    ],
+    "require":{
+        "magento-hackathon/magento-composer-installer":"*",
+        "blissmedia/ecommerceteam_sln":"*"
+    }
+}
