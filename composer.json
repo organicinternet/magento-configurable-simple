@@ -1,18 +1,11 @@
 {
-    "name":"blissmedia/part-finder",
+    "name":"blissmedia/organicinternet_magento-configurable-simple",
     "type":"magento-module",
-    "homepage":"https://bitbucket.org/blissmedia/part-finder",
+    "homepage":"https://github.com/blissmedia/organicinternet_magento-configurable-simple",
     "authors":[
         {
             "name":"James Harrison"
         }
     ],
-    "minimum-stability":"dev",
-    "repositories":[
-        { "type": "vcs", "url": "git@bitbucket.org:blissmedia/ecommerceteam-sln.git" }
-    ],
-    "require":{
-        "magento-hackathon/magento-composer-installer":"*",
-        "blissmedia/ecommerceteam_sln":"*"
-    }
+    "minimum-stability":"dev"
 }
