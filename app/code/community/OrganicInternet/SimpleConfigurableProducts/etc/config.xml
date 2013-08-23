@@ -104,7 +104,7 @@
         <layout>
             <updates>
                 <simpleconfigurableproducts>
-                    <file>simpleconfigurableproducts.xml</file>
+                    <file>scp.xml</file>
                 </simpleconfigurableproducts>
             </updates>
         </layout>

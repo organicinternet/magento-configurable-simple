@@ -1,0 +1,8 @@
+app/code/community/OrganicInternet/SimpleConfigurableProducts/                app/code/community/OrganicInternet/SimpleConfigurableProducts/
+app/design/frontend/base/default/layout/*                                     app/design/frontend/base/default/layout/
+app/design/frontend/base/default/template/*                                   app/design/frontend/base/default/template/
+
+app/etc/modules/*                                                             app/etc/modules/
+
+skin/frontend/base/default/images/*                                           skin/frontend/base/default/images/
+skin/frontend/base/default/js/*                                               skin/frontend/base/default/js/
