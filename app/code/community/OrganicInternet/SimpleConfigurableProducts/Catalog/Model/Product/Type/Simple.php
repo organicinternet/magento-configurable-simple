@@ -35,7 +35,6 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Simp
     public function hasConfigurableProductParentId()
     {
         $cpid = $this->getCpid();
-        Mage::log("cpid: ". $cpid);
         return !empty($cpid);
     }
 
