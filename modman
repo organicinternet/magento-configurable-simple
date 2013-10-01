@@ -1,5 +1,5 @@
 app/code/community/OrganicInternet app/code/community/OrganicInternet
-app/design/frontend/base/default/layout/simpleconfigurableproducts.xml app/design/frontend/base/default/layout/simpleconfigurableproducts.xml
+app/design/frontend/base/default/layout/scp.xml app/design/frontend/base/default/layout/scp.xml
 app/design/frontend/base/default/template/catalog/product/view/options/scpwrapper.phtml app/design/frontend/base/default/template/catalog/product/view/options/scpwrapper.phtml
 app/design/frontend/base/default/template/catalog/product/view/scpajaxoptions.phtml app/design/frontend/base/default/template/catalog/product/view/scpajaxoptions.phtml
 app/design/frontend/base/default/template/catalog/product/view/scpoptions.phtml app/design/frontend/base/default/template/catalog/product/view/scpoptions.phtml
