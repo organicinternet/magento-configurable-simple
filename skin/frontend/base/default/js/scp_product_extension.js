@@ -211,16 +211,14 @@ Product.Config.prototype.updateProductImage = function(productId) {
         return;
     }
 
-    if($('image')) {
-        $('image').src = imageUrl;
-    } else {
-        $$('#product_addtocart_form p.product-image img').each(function(el) {
-            var dims = el.getDimensions();
-            el.src = imageUrl;
-            el.width = dims.width;
-            el.height = dims.height;
-        });
+    // Galleria update
+    var gal = Galleria.get(0);
+    var dataArr = new Array();
+    for(var i=0;i<imageUrl.length;i++)
+    {
+        dataArr.push({image: imageUrl[i]});
     }
+    gal.load(dataArr);
 };
 
 Product.Config.prototype.updateProductName = function(productId) {

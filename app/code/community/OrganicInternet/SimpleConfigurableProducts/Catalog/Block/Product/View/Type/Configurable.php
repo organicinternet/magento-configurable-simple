@@ -40,7 +40,11 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                 if (!Mage::getStoreConfig('SCP_options/product_page/change_image_fancy')) {
                     #If image is not placeholder...
                     if($product->getImage()!=='no_selection') {
-                        $childProducts[$productId]["imageUrl"] = (string)Mage::helper('catalog/image')->init($product, 'image');
+                        $productMag = Mage::getModel('catalog/product')->load($productId);
+                        foreach($productMag->getMediaGalleryImages() as $image)
+                        {
+                            $childProducts[$productId]["imageUrl"][] = (string)Mage::helper('catalog/image')->init($product, 'image', $image->getFile());
+                        }
                     }
                 }
             }
@@ -75,7 +79,10 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         $config['shortDescription'] = $this->helper('catalog/output')->productAttribute($p, nl2br($p->getShortDescription()), 'short_description');
 
         if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
-            $config["imageUrl"] = (string)Mage::helper('catalog/image')->init($p, 'image');
+            foreach($p->getMediaGalleryImages() as $image)
+            {
+                $config["imageUrl"][] = (string)Mage::helper('catalog/image')->init($p, 'image', $image->getFile());
+            }
         }
 
         $childBlock = $this->getLayout()->createBlock('catalog/product_view_attributes');
