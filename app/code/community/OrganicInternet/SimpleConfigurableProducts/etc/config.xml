@@ -119,6 +119,15 @@
         </routers>
     </frontend>
     <adminhtml>
+        <translate>
+            <modules>
+                <Loewenstark_Magebook>
+                    <files>
+                        <default>OrganicInternet_SimpleConfigurableProducts.csv</default>
+                    </files>
+                </Loewenstark_Magebook>
+            </modules>
+        </translate>
         <acl>
             <resources>
                 <admin>
