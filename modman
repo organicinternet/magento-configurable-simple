@@ -1,0 +1,9 @@
+app/etc/modules/*    app/etc/modules/
+app/code/community/Organic*     app/code/community/
+app/design/frontend/base/default/layout/*    app/design/frontend/base/default/layout/
+app/design/frontend/base/default/template/page/scp*    app/design/frontend/base/default/template/page/
+app/design/frontend/base/default/template/sales/reorder/scp*    app/design/frontend/base/default/template/sales/reorder/
+app/design/frontend/base/default/template/catalog/product/view/scp*    app/design/frontend/base/default/template/catalog/product/view/
+app/design/frontend/base/default/template/catalog/product/view/options/scp*    app/design/frontend/base/default/template/catalog/product/view/options/
+skin/frontend/base/default/images/scp*    skin/frontend/base/default/images/
+skin/frontend/base/default/js/scp*    skin/frontend/base/default/js/
