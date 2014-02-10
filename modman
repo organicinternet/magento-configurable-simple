@@ -1,0 +1,5 @@
+app/etc/modules/*    app/etc/modules/
+app/code/community/Organic*     app/code/community/
+app/design/frontend/base/default/layout/*    app/design/frontend/base/default/layout/
+app/design/frontend/base/default/template/* app/design/frontend/base/default/template/
+skin/frontend/base/default/* skin/frontend/base/default/
