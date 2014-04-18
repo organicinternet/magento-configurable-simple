@@ -47,8 +47,7 @@ class OrganicInternet_SimpleConfigurableProducts_AjaxController extends Mage_Cat
         $parent = Mage::getModel('catalog/product')
             ->setStoreId(Mage::app()->getStore()->getId())
             ->load($parentId);
-
-        if (!Mage::helper('catalog/product')->canShow($parent)) {
+        if (!$parent->getId()) {
             return false;
         }
 
@@ -64,6 +63,11 @@ class OrganicInternet_SimpleConfigurableProducts_AjaxController extends Mage_Cat
         if (!$product->getId()) {
             return false;
         }
+        
+        if (!Mage::helper('catalog/product')->canShow($parent) && !Mage::helper('catalog/product')->canShow($product)) {
+            return false;
+        }
+        
         if ($categoryId) {
             $category = Mage::getModel('catalog/category')->load($categoryId);
             Mage::register('current_category', $category);

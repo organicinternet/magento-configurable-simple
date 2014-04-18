@@ -1,11 +1,24 @@
 <?php
-class OrganicInternet_SimpleConfigurableProducts_CatalogInventory_Model_Mysql4_Indexer_Stock_Configurable
-    extends Mage_CatalogInventory_Model_Mysql4_Indexer_Stock_Configurable
+class OrganicInternet_SimpleConfigurableProducts_CatalogInventory_Model_Resource_Indexer_Stock_Configurable
+    extends Mage_CatalogInventory_Model_Resource_Indexer_Stock_Configurable
 {    
-    #Changes stock status indexing such that:
-    #Configurable product's status is ignored
-    #If any child product is enabled+in_stock then conf product is in stock
-    #Doesn't filter based on children having required custom attributes, as they're fine with SCP
+	/**
+	 *
+     * Get the select object for get stock status by product ids
+     *
+     * @param int|array $entityIds
+     * @param bool $usePrimaryTable use primary or temporary index table
+     * @return Varien_Db_Select
+     *
+	 * 
+	 * Locally changes stock status indexing such that:
+	 * 
+	 * -Configurable products' statuses are ignored
+	 * -If any child product is enabled and in_stock then configurable product is in stock
+	 * -Doesn't filter based on children having required custom attributes
+	 * 
+	 * @see Mage_CatalogInventory_Model_Resource_Indexer_Stock_Configurable::_getStockStatusSelect()
+	 */
     protected function _getStockStatusSelect($entityIds = null, $usePrimaryTable = false)
     {
         $adapter  = $this->_getWriteAdapter();
@@ -39,20 +52,20 @@ class OrganicInternet_SimpleConfigurableProducts_CatalogInventory_Model_Mysql4_I
             ->where('e.type_id = ?', $this->getTypeId())
             ->group(array('e.entity_id', 'cw.website_id', 'cis.stock_id'));
 
-        $this->_addProductWebsiteJoinToSelect($select, 'cw.website_id', 'le.entity_id'); #may need to use le.entity_id?
+        $this->_addProductWebsiteJoinToSelect($select, 'cw.website_id', 'le.entity_id');
 
         $psExpr = $this->_addAttributeToSelect($select, 'status', 'le.entity_id', 'cs.store_id');
         $psCond = $adapter->quoteInto($psExpr . '=?', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
 
         if ($this->_isManageStock()) {
-            $statusExpr = new Zend_Db_Expr('IF(cisi.use_config_manage_stock = 0 AND cisi.manage_stock = 0,'
-                . ' 1, cisi.is_in_stock)');
+            $statusExpr = $adapter->getCheckSql('cisi.use_config_manage_stock = 0 AND cisi.manage_stock = 0',
+                1, 'cisi.is_in_stock');
         } else {
-            $statusExpr = new Zend_Db_Expr('IF(cisi.use_config_manage_stock = 0 AND cisi.manage_stock = 1,'
-                . 'cisi.is_in_stock, 1)');
+            $statusExpr = $adapter->getCheckSql('cisi.use_config_manage_stock = 0 AND cisi.manage_stock = 1',
+                'cisi.is_in_stock', 1);
         }
 
-        $stockStatusExpr = new Zend_Db_Expr("MAX(LEAST(IF({$psCond}, 1, 0), {$statusExpr}))");
+        $stockStatusExpr = new Zend_Db_Expr("MAX(LEAST(IF({$psCond}, 1, 0), {$statusExpr}))"); 
 
         $select->columns(array(
             'status' => $stockStatusExpr
@@ -60,8 +73,7 @@ class OrganicInternet_SimpleConfigurableProducts_CatalogInventory_Model_Mysql4_I
 
         if (!is_null($entityIds)) {
             $select->where('e.entity_id IN(?)', $entityIds);
-        }
-
+        }        
         return $select;
     }
 }

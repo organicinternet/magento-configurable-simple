@@ -45,7 +45,7 @@ class OrganicInternet_SimpleConfigurableProducts_Rss_Block_Wishlist
                         '<td><a href="'.$item->getProductUrl().'"><img src="' . $this->helper('catalog/image')->init($item, 'thumbnail')->resize(75, 75) . '" border="0" align="left" height="75" width="75"></a></td>'.
                         '<td  style="text-decoration:none;">'.
                         $product->getDescription().
-                        ($product->isConfigurable() ? '<p> Price From:' : '<p> Price:').
+                        ($product->isConfigurable() ? '<p> Preis ab: &nbsp;' : '<p> Preis:').
                         Mage::helper('core')->currency($product->getPrice()).
                         ($product->getPrice() != $product->getFinalPrice() ? ' Special Price:'. Mage::helper('core')->currency($product->getFinalPrice()) : '').
                         ($item->getDescription() && $item->getDescription() != Mage::helper('wishlist')->defaultCommentString() ? '<p>Comment: '.$item->getDescription().'<p>' : '').
