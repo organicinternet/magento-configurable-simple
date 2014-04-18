@@ -84,8 +84,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             'max_price'         => new Zend_Db_Expr('pi.final_price'),
             'tier_price'        => new Zend_Db_Expr('pi.tier_price'),
             'base_tier'         => new Zend_Db_Expr('pi.tier_price'),
-            'group_price'       => new Zend_Db_Expr('pi.tier_price'),
-            'base_group_price'  => new Zend_Db_Expr('pi.tier_price'),
+            'group_price'       => new Zend_Db_Expr('pi.group_price'),
+            'base_group_price'  => new Zend_Db_Expr('pi.group_price'),
         ));
 
 
