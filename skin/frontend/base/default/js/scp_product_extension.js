@@ -275,7 +275,7 @@ Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) 
       return;
    }
 
-    Effect.Fade('SCPcustomOptionsDiv', { duration: 0.5, from: 1, to: 0.5 });
+    //Effect.Fade('SCPcustomOptionsDiv', { duration: 0.5, from: 1, to: 0.5 });
     if(productId) {
         //Uncomment the line below if you want an ajax loader to appear while any custom
         //options are being loaded.
