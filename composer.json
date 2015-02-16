@@ -1,0 +1,11 @@
+{
+    "name":"organicinternet/magento-configurable-simple",
+    "type":"magento-module",
+    "homepage":"https://github.com/blissmedia/organicinternet_magento-configurable-simple",
+    "authors":[
+        {
+            "name":"James Harrison"
+        }
+    ],
+    "minimum-stability":"dev"
+}

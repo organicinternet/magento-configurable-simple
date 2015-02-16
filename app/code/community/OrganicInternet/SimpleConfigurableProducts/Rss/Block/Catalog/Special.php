@@ -82,7 +82,7 @@ class OrganicInternet_SimpleConfigurableProducts_Rss_Block_Catalog_Special
                $description = '<table><tr>'.
                 '<td><a href="'.$product->getProductUrl().'"><img src="'. $this->helper('catalog/image')->init($product, 'thumbnail')->resize(75, 75) .'" border="0" align="left" height="75" width="75"></a></td>'.
                 '<td  style="text-decoration:none;">'.$product->getDescription().
-                ($product->isConfigurable() ? '<p> Price From:' : '<p> Price:').
+                ($product->isConfigurable() ? '<p> Preis ab: &nbsp;' : '<p> Preis:').
                 Mage::helper('core')->currency($product->getPrice()).
                 ' Special Price:'. Mage::helper('core')->currency($special_price).
                 ($result['use_special'] && $result['special_to_date'] ? '<br/> Special Expires on: '.$this->formatDate($result['special_to_date'], Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM) : '').

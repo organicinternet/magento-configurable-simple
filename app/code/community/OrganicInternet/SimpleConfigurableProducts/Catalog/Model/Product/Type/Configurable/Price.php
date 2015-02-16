@@ -45,6 +45,16 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
             return $product->getCalculatedFinalPrice();
         }
 */
+
+		#check if it's a 'Wishlist buy request', if so return the price of the particular option added to the wishlist
+		$buyRequest = $product->getCustomOption('info_buyRequest');
+		if ($buyRequest) {
+			$options = $product->getCustomOption('info_buyRequest')->getItem()->getOptionByCode('simple_product')->getData();
+			$productId = $options["product_id"];
+			$childProduct = Mage::getModel('catalog/product')->load($productId);
+            return $childProduct->getPrice();
+		}
+		
         $childProduct = $this->getChildProductWithLowestPrice($product, "finalPrice");
         if (!$childProduct) {
             $childProduct = $this->getChildProductWithLowestPrice($product, "finalPrice", false);
@@ -56,8 +66,19 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product_Type_Conf
             return false;
         }
 
-        $product->setFinalPrice($fp);
-        return $fp;
+        if(Mage::app()->getStore()->isAdmin()) {
+            $productAdmin = Mage::getModel('catalog/product')->loadByAttribute('sku',$product->getSku());
+            if($productAdmin->getSpecialPrice()) {
+                $fp = $productAdmin->getSpecialPrice();
+            } else {
+                $fp = $productAdmin->getPrice();
+            }
+            $product->setFinalPrice($fp);
+            return $fp;
+        } else {
+            $product->setFinalPrice($fp);
+            return $fp;
+        }
     }
 
     public function getPrice($product)

@@ -14,7 +14,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             $productId  = $product->getId();
             $childProducts[$productId] = array(
                 "price" => $this->_registerJsPrice($this->_convertPrice($product->getPrice())),
-                "finalPrice" => $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice()))
+                "finalPrice" => $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice())),
+                "sku" => $product->getSku(),
             );
 
             if (Mage::getStoreConfig('SCP_options/product_page/change_name')) {
@@ -34,13 +35,36 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                     ->toHtml();
             }
 
+            $bChangeStock = Mage::getStoreConfig('SCP_options/product_page/change_stock');
+            if ($bChangeStock) {
+                // Stock status HTML
+                $oStockBlock = $this->getLayout()->createBlock('catalog/product_view_type_simple')->setTemplate('catalog/product/view/scpavailability.phtml');
+                $childProducts[$productId]["stockStatus"] = $oStockBlock->setProduct($product)->toHtml();
+
+                // Add to cart button
+                $oAddToCartBlock = $this->getLayout()->createBlock('catalog/product_view_type_simple')->setTemplate('catalog/product/view/addtocart.phtml');
+                $childProducts[$productId]["addToCart"] = $oAddToCartBlock->setProduct($product)->toHtml();
+            }
+
+            $bShowProductAlerts = Mage::getStoreConfig(Mage_ProductAlert_Model_Observer::XML_PATH_STOCK_ALLOW);
+            if ($bShowProductAlerts && !$product->isAvailable()) {
+                $oAlertBlock = $this->getLayout()->createBlock('productalert/product_view')
+                        ->setTemplate('productalert/product/view.phtml')
+                        ->setSignupUrl(Mage::helper('productalert')->setProduct($product)->getSaveUrl('stock'));;
+                $childProducts[$productId]["alertHtml"] = $oAlertBlock->toHtml();
+            }
+
             #if image changing is enabled..
             if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
                 #but dont bother if fancy image changing is enabled
                 if (!Mage::getStoreConfig('SCP_options/product_page/change_image_fancy')) {
                     #If image is not placeholder...
                     if($product->getImage()!=='no_selection') {
-                        $childProducts[$productId]["imageUrl"] = (string)Mage::helper('catalog/image')->init($product, 'image');
+                        $productMag = Mage::getModel('catalog/product')->load($productId);
+                        foreach($productMag->getMediaGalleryImages() as $image)
+                        {
+                            $childProducts[$productId]["imageUrl"][] = (string)Mage::helper('catalog/image')->init($product, 'image', $image->getFile());
+                        }
                     }
                 }
             }
@@ -75,13 +99,28 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         $config['shortDescription'] = $this->helper('catalog/output')->productAttribute($p, nl2br($p->getShortDescription()), 'short_description');
 
         if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
-            $config["imageUrl"] = (string)Mage::helper('catalog/image')->init($p, 'image');
+            foreach($p->getMediaGalleryImages() as $image)
+            {
+                $config["imageUrl"][] = (string)Mage::helper('catalog/image')->init($p, 'image', $image->getFile());
+            }
         }
 
         $childBlock = $this->getLayout()->createBlock('catalog/product_view_attributes');
         $config["productAttributes"] = $childBlock->setTemplate('catalog/product/view/attributes.phtml')
             ->setProduct($this->getProduct())
             ->toHtml();
+
+        // Prevent Issue 6 start
+        /*
+        $bShowProductAlerts = Mage::getStoreConfig(Mage_ProductAlert_Model_Observer::XML_PATH_STOCK_ALLOW);
+        if ($bShowProductAlerts && !Mage::registry('child_product')->isAvailable()) {
+            $oAlertBlock = $this->getLayout()->createBlock('productalert/product_view')
+                    ->setTemplate('productalert/product/view.phtml')
+                    ->setSignupUrl(Mage::helper('productalert')->setProduct(Mage::registry('child_product'))->getSaveUrl('stock'));;
+            $config["alertHtml"] = $oAlertBlock->toHtml();
+        }
+        */
+        // Prevent Issue 6 end
 
         if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
             if (Mage::getStoreConfig('SCP_options/product_page/change_image_fancy')) {
