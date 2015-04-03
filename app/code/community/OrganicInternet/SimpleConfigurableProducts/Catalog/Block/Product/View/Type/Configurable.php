@@ -110,6 +110,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
             ->setProduct($this->getProduct())
             ->toHtml();
 
+        // Prevent Issue 6 start
+        /*
         $bShowProductAlerts = Mage::getStoreConfig(Mage_ProductAlert_Model_Observer::XML_PATH_STOCK_ALLOW);
         if ($bShowProductAlerts && !Mage::registry('child_product')->isAvailable()) {
             $oAlertBlock = $this->getLayout()->createBlock('productalert/product_view')
@@ -117,6 +119,8 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                     ->setSignupUrl(Mage::helper('productalert')->setProduct(Mage::registry('child_product'))->getSaveUrl('stock'));;
             $config["alertHtml"] = $oAlertBlock->toHtml();
         }
+        */
+        // Prevent Issue 6 end
 
         if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
             if (Mage::getStoreConfig('SCP_options/product_page/change_image_fancy')) {
