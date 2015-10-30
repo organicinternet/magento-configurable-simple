@@ -81,7 +81,7 @@ class OrganicInternet_SimpleConfigurableProducts_Checkout_Block_Cart_Item_Render
                     ->getUsedProductAttributes();
                 foreach($attributes as $attribute) {
                     $options[] = array(
-                        'label' => $attribute->getFrontendLabel(),
+                        'label' => $attribute->getStoreLabel(),
                         'value' => $this->getProduct()->getAttributeText($attribute->getAttributeCode()),
                         'option_id' => $attribute->getId(),
                     );
