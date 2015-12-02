@@ -53,4 +53,18 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Product_
 
         return $this;
     }
+    
+    /**
+     * Added exception handling to addItem, otherwise in some cases will throw an exception
+     * 
+     * @param \Varien_Object $object
+     */
+    public function addItem(\Varien_Object $object)
+    {
+        try {
+            return parent::addItem($object);
+        } catch (Exception $e) {
+            
+        }
+    }
 }
