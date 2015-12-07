@@ -30,6 +30,12 @@
         </reference>
     </customer_logged_in>
 
+    <checkout_cart_configure translate="label">
+       <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/scp/scp_product_extension.js</name></action>
+        </reference>
+    </checkout_cart_configure>
+
     <oi_ajax_co>
         <reference name="root">
             <action method="setTemplate"><template>scp/page/scpcontentonly.phtml</template></action>
