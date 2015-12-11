@@ -32,6 +32,8 @@
             }
 
             foreach ($collection as $item) {
+                if ($item->getStatus() == 2) 
+                    continue; // Hide disabled products from dropdowns;
                 $usedProducts[] = $item;
             }
 
