@@ -5,8 +5,8 @@
 #My fix is: only delete pricerule price entries for the rule that fails to validate
 #It's an odd bug - and maybe there's a good reason, but it's making my rules disappear when I save products, which is pretty annoying
 
-class OrganicInternet_SimpleConfigurableProducts_CatalogRule_Model_Mysql4_Rule extends
-    Mage_CatalogRule_Model_Mysql4_Rule
+class OrganicInternet_SimpleConfigurableProducts_CatalogRule_Model_Resource_Rule extends
+    Mage_CatalogRule_Model_Resource_Rule
 
 {
    public function applyToProduct($rule, $product, $websiteIds)
