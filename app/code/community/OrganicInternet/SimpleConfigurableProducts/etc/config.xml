@@ -55,6 +55,11 @@
                     <product_indexer_price>OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price</product_indexer_price>
                 </rewrite>
             </catalog_resource_eav_mysql4>
+            <sales>
+                <rewrite>
+                    <order_item>OrganicInternet_SimpleConfigurableProducts_Sales_Model_Order_Item</order_item>
+                </rewrite>
+            </sales>
         </models>
         <blocks>
             <adminhtml>
